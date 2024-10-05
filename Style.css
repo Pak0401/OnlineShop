@@ -76,3 +76,24 @@ a{
     }
     
 }
+
+.categories{
+    margin: 70px 0;
+}
+
+.title{
+    text-align: center;
+    margin: 0 auto 80px;
+    position: relative;
+    line-height: 60px;
+}
+
+.col-pd-4{
+    flex-basis: 20%;
+    min-width: 250px;
+    margin-bottom: 30px;
+}
+
+.col-pd-4 img{
+    width: 100%;
+}
