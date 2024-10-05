@@ -48,3 +48,15 @@ a{
     justify-content: space-around;
 }
 
+.col-ip-6 img, .col-pc-6 img{
+    width: 100%;
+    min-width: 300px;
+    max-width: 500px;
+    padding: 15px;
+}
+
+.col-ip-6, .col-pc-6{
+    width: 50%;
+    padding: 15px;
+}
+
