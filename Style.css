@@ -27,20 +27,23 @@ nav ul li{
 
 a{
     text-decoration: none;
-    color: #555;
+    color: #fff;
 }
 
  p{
-    color: #555;
+    color: #373737;
 }
 
+/* Logo的圖文格式 */
 .container{
     max-width: 2000px;
     margin: auto;
     padding-left: 25px;
     padding-right: 25px;
+    background: #000000;
 }
 
+/* 主頁的格式 */
 .row{
     display: flex;
     align-items: center;
@@ -60,6 +63,7 @@ a{
     padding: 15px;
 }
 
+/* 手機的圖文格式(btw好似有啲問題?) */
 @media (max-width: 768px) {
     .row{
         flex-direction: column;
@@ -77,6 +81,7 @@ a{
     
 }
 
+/* 推薦產品的圖文格式 */
 .categories{
     margin: 70px 0;
 }
@@ -88,6 +93,7 @@ a{
     padding-right: 25px;
 }
 
+/* 標題> [推薦產品] */
 .title{
     text-align: center;
     margin: 0 auto 80px;
@@ -95,6 +101,7 @@ a{
     line-height: 60px;
 }
 
+/* 推薦產品的標示 */
 .title::before{
     content: '';
     background: #636363;
@@ -119,6 +126,7 @@ a{
     transform: translateX(-50%);
 }
 
+/* 產品的格式 */
 .col-pd-4{
     flex-basis: 20%;
     min-width: 250px;
@@ -130,8 +138,18 @@ a{
     width: 100%;
 }
 
+/* 產品的動畫 */
 .col-pd-4:hover{
     transform: translateY(-10px);
+}
+
+/* 訂單的格式 */
+.container2{
+    max-width: 2000px;
+    margin: auto;
+    padding-left: 25px;
+    padding-right: 25px;
+    background: radial-gradient(#ffdf75 3%, #ff9b18 100%);
 }
 
 .col-pd-7{
