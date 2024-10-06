@@ -32,6 +32,7 @@ a{
 
  p{
     color: #373737;
+    font-size: 20px;
 }
 
 /* Logo的圖文格式 */
@@ -163,4 +164,22 @@ a{
     max-width: 900px;
     padding: 15px;
     padding-left: 200px;
+}
+
+.title2{
+    margin: 0 auto 50px;
+    position: relative;
+    line-height: 30px;
+}
+
+.title2::before{
+    content: '';
+    background: #fff;
+    width: 275px;    
+    height: 5px;
+    border-radius: 5px;
+    position: absolute;
+    top: 40px; 
+    left: 152%;
+    transform: translateX(-500%);
 }
