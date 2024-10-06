@@ -64,7 +64,8 @@ a{
     padding: 15px;
 }
 
-/* 手機的圖文格式(btw好似有啲問題?) */
+/* 手機的圖文格式(btw好似有啲問題?)
+   喜報今日(10月6號)有冇問題啦 哈利 */
 @media (max-width: 768px) {
     .row{
         flex-direction: column;
@@ -151,7 +152,7 @@ a{
     padding-left: 25px;
     padding-right: 25px;
     background: radial-gradient(#ffdf75 3%, #ff9b18 100%);
-    height: 725px;
+    height: auto;
 }
 
 /* 圖片滑動 */
@@ -182,6 +183,7 @@ img{
     cursor: pointer;
 }
 
+/* 箭頭(前/後) */
 .prev, .next{
     cursor: pointer;
     position: absolute;
@@ -217,7 +219,73 @@ img{
     opacity: 1;
 }
 
+/* 最新產品的文字 */
 .col-dp-7{
     width: 50%;
     padding: 15px;
+}
+
+/* 購買鏈接 */
+.btn{
+    display: inline-block;
+    background: #20beee;
+    color: #fff;
+    padding: 8px 30px;
+    margin: 30px 0;
+    border-radius: 30px;
+    transition: background 0.5s;
+}
+
+/* 合作品牌 */
+.brands{
+    margin: 50px auto;
+}
+
+/* 標題> [合作品牌] */
+.title3{
+    max-width: 2000px;
+    height: 100px;
+    text-align: center;
+    font-size: 35px;
+    margin-bottom: 20px;
+    color: #000000;
+    line-height: 100px;
+}
+
+.title3::after{
+    content: '';
+    background: #ffdc15;
+    width: 155px;    
+    height: 5px;
+    border-radius: 5px;
+    position: absolute;
+    bottom: -1233px; 
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* 合作品牌的Logo */
+.small-container2{
+    padding-left: 25px;
+    padding-right: 25px;
+    height: auto;
+}
+
+.row3{
+    display: flex;
+    max-width: 2000px;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin: auto;
+}
+
+.col-b-5 img{
+    width: 100%;
+    cursor: pointer;
+    filter: grayscale(80%)
+}
+
+.col-b-5 img:hover{
+    filter: grayscale(0);
 }
