@@ -159,9 +159,9 @@ a{
     font-size: 30px;
     margin: 0 auto 80px;
     position: relative;
-    width: 230px;
-    border: 5px solid #20beee;
-    background-color: #d8f9ff;
+    width: 250px;
+    border: 10px groove #20beee;
+    background-color: #cecece;
 }
 
 /* 圖片滑動 */
