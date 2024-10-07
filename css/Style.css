@@ -7,7 +7,6 @@
 .navbar{
     display: flex;
     align-items: center;
-    padding: 20px; 
 }
 
 nav{
@@ -33,6 +32,40 @@ a{
  p{
     color: #373737;
     font-size: 20px;
+}
+
+.menu-icon{
+    width: 28px;
+    margin-left: 20px;
+    display: none;
+}
+
+/* 手機菜單 */
+@media (max-width: 768px){
+    
+    nav ul{
+        position: absolute;
+        top: 90px;
+        left: 0;
+        background: #000;
+        width: 100%;
+        overflow: hidden;
+        transition: max-height 0.3s;
+    }
+
+    nav ul li{ 
+        display: block;
+        margin-right: 25px;
+        margin-bottom: 10px;
+        padding: 10px 0;
+        text-align: right;
+    }
+
+    .menu-icon{
+        width: 50px;
+        display: block;
+        cursor: pointer;
+    }
 }
 
 /* Logo的圖文格式 */
@@ -157,7 +190,6 @@ a{
 .title2{
     text-align: center;
     font-size: 30px;
-    margin: 0 auto 80px;
     position: relative;
     width: 250px;
     border: 10px groove #20beee;

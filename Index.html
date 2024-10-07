@@ -17,7 +17,7 @@
             </div>
             <!-- 橫向菜單 -->
             <nav>
-                <ul>
+                <ul id="menuItems">
                     <li><a href="Index.html"><u>主頁</u></a></li>
                     <li><a href="Products.html"><u>產品</u></a></li>
                     <li><a href="Contact.html"><u>關於我們</u></a></li>
@@ -25,8 +25,23 @@
                     <li><a href="Account.html"><u>登入</u></a></li>
                 </ul>
             </nav>
+            <img src="image/menu.png" class="menu-icon" onclick="menutoggle()">
         </div>
     </div>
+    <script>
+        var menuItems = document.getElementById("menuItems");
+
+        menuItems.style.maxHeight = "0px";
+
+        function menutoggle(){
+            if(menuItems.style.maxHeight == "0px"){
+                menuItems.style.maxHeight = "200px";
+            }
+            else{
+                menuItems.style.maxHeight = "0px";
+            }
+        }
+    </script>
     
     <!-- *[col size max: 12]
         手機 col-p-12
@@ -106,6 +121,7 @@
                         <!-- 要記得add link!! -->
                         <a href="" class="btn">立即購買 </a>
                     </div>
+                <!-- 圖片滑動的腳本 -->
                 <script>
                     // 預設數值是1 //
                     let slideIndex = 1;
