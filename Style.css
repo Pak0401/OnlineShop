@@ -147,12 +147,21 @@ a{
 
 /* 訂單的格式 */
 .container2{
-    /* max-width: 2000px; */
-    /* margin: auto; */
+    margin: auto;
     padding-left: 25px;
     padding-right: 25px;
     background: radial-gradient(#ffdf75 3%, #ff9b18 100%);
     height: auto;
+}
+
+.title2{
+    text-align: center;
+    font-size: 30px;
+    margin: 0 auto 80px;
+    position: relative;
+    width: 230px;
+    border: 5px solid #20beee;
+    background-color: #d8f9ff;
 }
 
 /* 圖片滑動 */
@@ -241,17 +250,28 @@ img{
     margin: 50px auto;
 }
 
+/* 合作品牌的Logo */
+.small-container2{
+    padding-left: 25px;
+    padding-right: 25px;
+    margin: auto;
+    height: auto;
+}
+
 /* 標題> [合作品牌] */
 .title3{
-    max-width: 2000px;
     height: 100px;
     text-align: center;
     font-size: 35px;
     margin-bottom: 20px;
+    position: relative;
+    line-height: 60px;
     color: #000000;
-    line-height: 100px;
 }
 
+/* 如果想要讓標題有低線，
+上面title要有position: relative，
+下面title3要有position: absolute */
 .title3::after{
     content: '';
     background: #ffdc15;
@@ -259,16 +279,9 @@ img{
     height: 5px;
     border-radius: 5px;
     position: absolute;
-    bottom: -1233px; 
+    bottom: 40px; 
     left: 50%;
     transform: translateX(-50%);
-}
-
-/* 合作品牌的Logo */
-.small-container2{
-    padding-left: 25px;
-    padding-right: 25px;
-    height: auto;
 }
 
 .row3{
