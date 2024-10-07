@@ -1,0 +1,78 @@
+.row-2{
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 50px auto 50px;
+}
+
+.row-2 h2{
+    font-size: 30px;
+    line-height: 60px;
+    margin: 25px 0;
+    text-align: center;
+    position: relative;
+}
+
+.row-2 h2::after{
+    content: '';
+    background: #636363;
+    width: 120px;
+    height: 5px;
+    border-radius: 5px;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+}
+
+select{
+    border: 1px solid #20beee;
+    padding: 5px;
+    border-radius: 10px;
+    padding: 7px;
+}
+
+select:focus{
+    outline: none;
+}
+
+/* 產品的格式 */
+.col-pd-5{
+    flex-basis: 20%;
+    min-width: 250px;
+    margin: 50px;
+    margin-bottom: 30px;
+    transition: transform 0.5s;
+}
+
+.col-pd-5 img{
+    width: 100%;
+}
+
+/* 產品的動畫 */
+.col-pd-5:hover{
+    transform: translateY(-10px);
+}
+
+.page-btn{
+    margin: 0 auto 80px;
+    text-align: center;
+}
+
+.page-btn span{
+    display: inline-block;
+    border: 1px solid #20beee;
+    margin-left: 10px;
+    width: 35px;
+    height: 35px;
+    text-align: center;
+    line-height: 40px;
+    cursor: pointer;
+}
+
+.page-btn span:hover{
+    background: #20beee;
+    color: #fff;
+}
