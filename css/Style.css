@@ -345,6 +345,21 @@ img{
 }
 
 /* 頁尾 */
+.footer-row{
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    .footer-row {
+        flex-direction: column; /* 小螢幕垂直排列 */
+        align-items: center;
+    }
+}
+
 .footer{
     background: #000;
     color: #cecece;
