@@ -1,3 +1,11 @@
+/* 基本資料[class]
+    所有產品成體格式 row/row-2(睇過冇乜差別)
+    產品格式 col-pd-5
+    評分 rating
+    愛心 heart
+    頁數 page-btn
+*/
+
 .row-2{
     display: flex;
     align-items: center;

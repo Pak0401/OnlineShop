@@ -1,3 +1,11 @@
+/* 基本資料[class]
+    產品詳細內容的整體格式 small-container + pd-detail
+    產品詳細內容的圖文 col-pd-1
+
+    其他產品的整體格式 other-pd + row-Otherpd
+    其他產品的圖文 col-pd-4
+*/
+
 /* 產品的選擇 */
 select{
     border: 1px solid #20beee;
@@ -42,17 +50,55 @@ input:focus{
     padding: 0;
 }
 
-.pd-detail .col-pd-1 h2{
+.pd-detail .col-pd-1 h1{
     font-size: 30px;    
-    line-height: 60px;
-    margin: 25px 0;
+    line-height: 30px;
     text-align: left;
 }
 
 .pd-detail .col-pd-1 h3{
     font-size: 30px;    
-    line-height: 25px;
+    line-height: 15px;
     margin: 25px 0;
     text-align: left;
-    color: #636363;
+}
+
+.pd-detail .col-pd-1 h4{
+    margin: 25px 0;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.other-pd{
+    text-align: left;
+    font-size: 20px;
+    margin-top: 50px;
+    position: relative;
+}
+
+.other-pd::after{
+    content: '';
+    background: #636363;
+    width: 125px;
+    height: 5px;
+    border-radius: 5px;
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    z-index: 1;
+}
+
+.row-Otherpd{
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 50px auto 50px;
+}
+
+/* 手機產品版面 */
+@media (max-width: 768px) {
+    .pd-detail .row{
+        text-align: left;
+    }
 }

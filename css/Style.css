@@ -1,3 +1,24 @@
+/* 基本資料[class] (因為有點亂)
+    手機 col-p-12
+    平板 col-ip-6
+    電腦 col-pc-4
+
+    推薦產品的整體格式 small-container
+    推薦產品的圖文 col-pd-4
+
+    新品推出的整體格式 container2
+    新品推出的格式 row-2
+    新品推出文字格式 col-dp-7
+    購買鏈接 btn
+
+    合作品牌的整體格式 small-cntainer2
+    合作品牌格式 row3
+    合作品牌圖片 col-b-5
+
+    頁尾格式 footer-row
+    頁尾文字 footer-col-1/2/3/4
+*/
+
 *{
     margin: 0;
     padding: 0;
