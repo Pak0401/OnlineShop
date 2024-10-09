@@ -7,14 +7,14 @@
 */
 
 /* 產品的選擇 */
-select{
+.col-pd-1 select{
     border: 1px solid #20beee;
     padding: 5px;
     border-radius: 10px;
     padding: 7px;
 }
 
-select:focus{
+.col-pd-1 select:focus{
     outline: none;
 }
 
