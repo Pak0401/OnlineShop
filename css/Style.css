@@ -304,7 +304,11 @@ img{
     padding: 8px 30px;
     margin: 30px 0;
     border-radius: 30px;
-    transition: background 0.5s;
+    transition: background 0.3s;
+}
+
+.btn:hover{
+    background: #ff9b18;
 }
 
 /* 合作品牌 */
