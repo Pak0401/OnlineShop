@@ -46,28 +46,73 @@
         }
     </script>
 
-    <!-- 登入 -->
+    <!-- 註冊 -->
     <div class="account-page">
         <div class="form-row">
             <div class="form-container form-text">
                 <div class="form-btn">
-                    <span>登入</span>
+                    <span>註冊</span>
                 </div>
                 <div class="form">
                     <form>
-                        <input type="text" placeholder="電郵地址"><br>
-                        <input type="password" placeholder="密碼">
-                        <button type="submit" calss="login-btn">登入</button>
+                        <input type="text" placeholder="用戶名稱" id="username"><br>
+                        <input type="text" placeholder="電郵地址" id="email"><br>
+                        <input type="text" placeholder="確認電郵地址" id="confirmEmail"><br>
+                        <input type="password" placeholder="密碼" id="password"><br>
+                        <input type="password" placeholder="確認密碼" id="confirmPassword"><br>
+                        <button type="button" onclick="register()" calss="login-btn">註冊</button>
                     </form><br>
-                    <!-- 記得add link -->
-                    <div class="form-link">
-                        <a href="">忘記密碼</a><br>
-                        <a href="Register.html">立即註冊</a>
-                    </div>
+                </div>
+                <div class="form-message" id="message" style="display: none;">
+                    <p>請確認郵箱是否收到驗證信，並點擊確認鏈接完成註冊!</p>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- 註冊的腳本 -->
+    <script>
+        function register(){
+            const email = document.getElementById("email").value;
+            const confirmEmail = document.getElementById("confirmEmail").value;
+            const password = document.getElementById("password").value;
+            const confirmPassword = document.getElementById("confirmPassword").value;
+
+            // 檢查是否輸入了空白/錯誤輸入
+            if(document.getElementById("username").value == ""){
+                alert("請輸入用戶名稱");
+            }
+            else if(document.getElementById("email").value == ""){
+                alert("請輸入電郵地址");
+            }
+            else if(document.getElementById("confirmEmail").value == ""){
+                alert("請確認電郵地址");
+            }
+            else if(document.getElementById("email").value !== document.getElementById("confirmEmail").value){
+                alert("電郵地址不相符");
+                return;
+            }
+            else if(document.getElementById("password").value == ""){
+                alert("請輸入密碼");
+            }
+            else if(document.getElementById("confirmPassword").value == ""){
+                alert("請確認密碼");
+            }
+            else if(document.getElementById("password").value !== document.getElementById("confirmPassword").value){
+                alert("密碼不相符");
+                return;
+            }
+
+            const message = document.getElementById("message");
+            message.style.display = "block";
+
+            // 5秒後消失通知
+            document.getElementById("message").style.display = "block";
+            setTimeout(() => {
+                message.style.display = "none";
+            }, 5000);
+        }
+    </script>
 
     <!-- 頁尾 -->
     <div class="footer">

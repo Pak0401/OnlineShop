@@ -13,7 +13,7 @@
     background-image: url('../image/cat.png');
     background-size: cover;
     background-position: center;
-    height: 350px;
+    height: 400px;
     padding: 20px;
     position: relative;
 }
@@ -31,7 +31,7 @@
 
 .form-container{
     width: 200px;
-    height: 250px;
+    height: 320px;
     background: rgba(255, 255, 255, 0.8);
     text-align: center;
     border-radius: 10px;
@@ -62,4 +62,22 @@ form .login-btn{
 .form a{
     text-decoration: underline;
     color: #333;
+}
+
+.form-link{
+    text-align: center;
+    margin-top: 80px;
+}
+
+.form-message{
+    background: rgba(255, 255, 255, 1);
+    border-radius: 10px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    width: 300px;
+    padding: 20px;
+    text-align: center;
 }
