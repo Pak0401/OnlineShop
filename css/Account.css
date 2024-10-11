@@ -31,9 +31,35 @@
 
 .form-container{
     width: 200px;
-    height: 200px;
+    height: 250px;
     background: rgba(255, 255, 255, 0.8);
     text-align: center;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-btn span{
+    cursor: pointer;
+    display: inline-block;
+}
+
+form input{
+    margin: 10px auto;
+    padding: 5px 5px;
+    border: none;
+    border: 1px solid #333;
+    outline: none;
+}
+
+form .login-btn{
+    margin: 10px auto;
+    padding: 5px 5px;
+    border: none;
+    border: 1px solid #333;
+    outline: none;
+}
+
+.form a{
+    text-decoration: underline;
+    color: #333;
 }
