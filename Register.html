@@ -76,45 +76,41 @@
     <!-- 註冊的腳本 -->
     <script>
         function register(){
+            const username = document.getElementById("username").value;
             const email = document.getElementById("email").value;
             const confirmEmail = document.getElementById("confirmEmail").value;
             const password = document.getElementById("password").value;
             const confirmPassword = document.getElementById("confirmPassword").value;
-
-            // 檢查是否輸入了空白/錯誤輸入
-            if(document.getElementById("username").value == ""){
-                alert("請輸入用戶名稱");
-            }
-            else if(document.getElementById("email").value == ""){
-                alert("請輸入電郵地址");
-            }
-            else if(document.getElementById("confirmEmail").value == ""){
-                alert("請確認電郵地址");
-            }
-            else if(document.getElementById("email").value !== document.getElementById("confirmEmail").value){
-                alert("電郵地址不相符");
-                return;
-            }
-            else if(document.getElementById("password").value == ""){
-                alert("請輸入密碼");
-            }
-            else if(document.getElementById("confirmPassword").value == ""){
-                alert("請確認密碼");
-            }
-            else if(document.getElementById("password").value !== document.getElementById("confirmPassword").value){
-                alert("密碼不相符");
-                return;
-            }
-
             const message = document.getElementById("message");
+            const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+            // 檢查電郵地址是否完整
+            if(!username || !email || !confirmEmail || !password || !confirmPassword){
+                alert("請輸入完整的註冊資訊");
+                return false;
+            }
+            if(!emailPattern.test(email)){
+                alert("請輸入有效的電郵地址");
+                return false;
+            }
+            if(email !== confirmEmail){
+                alert("電郵地址不相符");
+                return false;
+            }
+            if(password !== confirmPassword){
+                alert("密碼不相符");
+                return false;
+            }
+
             message.style.display = "block";
 
             // 5秒後消失通知
-            document.getElementById("message").style.display = "block";
             setTimeout(() => {
                 message.style.display = "none";
                 window.location.href = "Account.html";
             }, 5000);
+
+            return false;
         }
     </script>
 
