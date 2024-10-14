@@ -193,11 +193,14 @@ a{
 
 /* 產品的格式 */
 .col-pd-4{
+    border: 1px solid #20beee;
+    border-radius: 10px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+    padding: 15px;
     flex-basis: 20%;
     min-width: 250px;
     margin-bottom: 30px;
     transition: transform 0.5s;
-    margin: 25px;
 }
 
 .col-pd-4 img{
@@ -207,6 +210,7 @@ a{
 /* 產品的動畫 */
 .col-pd-4:hover{
     transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
 }
 
 /* 訂單的格式 */
@@ -224,6 +228,7 @@ a{
     position: relative;
     width: 250px;
     border: 10px groove #20beee;
+    border-radius: 5px;
     background-color: #cecece;
 }
 
@@ -245,6 +250,10 @@ img{
 
 .slidesContainer{
     position: relative;
+}
+
+.slidesContainer a{
+    text-decoration: none;
 }
 
 .slideImg{
@@ -368,6 +377,13 @@ img{
 
 .col-b-5 img:hover{
     filter: grayscale(0);
+}
+
+/* 手機的合作品牌 */
+@media (max-width: 768px){
+    .col-b-5 img{
+        filter: none;
+    }
 }
 
 /* 頁尾 */

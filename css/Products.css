@@ -50,9 +50,13 @@ select:focus{
 
 /* 產品的格式 */
 .col-pd-5{
+    border: 1px solid #20beee;
+    border-radius: 10px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+    padding: 15px;
     flex-basis: 20%;
     min-width: 250px;
-    margin: 50px;
+    margin: 40px;
     margin-bottom: 30px;
     transition: transform 0.5s;
 }
@@ -64,6 +68,7 @@ select:focus{
 /* 產品的動畫 */
 .col-pd-5:hover{
     transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
 }
 
 /* 頁數 */
