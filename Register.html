@@ -64,7 +64,8 @@
                     </form><br>
                 </div>
                 <div class="form-message" id="message" style="display: none;">
-                    <p>請確認郵箱是否收到驗證信，並點擊確認鏈接完成註冊!</p>
+                    <p>請確認郵箱是否收到驗證信，並點擊確認鏈接完成註冊!</p><br>
+                    <p>並在數秒後，回到登入頁面</p>
                 </div>
             </div>
         </div>
@@ -110,6 +111,7 @@
             document.getElementById("message").style.display = "block";
             setTimeout(() => {
                 message.style.display = "none";
+                window.location.href = "Account.html";
             }, 5000);
         }
     </script>

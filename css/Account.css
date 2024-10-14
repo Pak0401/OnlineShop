@@ -44,7 +44,7 @@
 }
 
 form input{
-    margin: 10px auto;
+    margin: 7px auto;
     padding: 5px 5px;
     border: none;
     border: 1px solid #333;
@@ -52,7 +52,7 @@ form input{
 }
 
 form .login-btn{
-    margin: 10px auto;
+    margin: 5px auto;
     padding: 5px 5px;
     border: none;
     border: 1px solid #333;
