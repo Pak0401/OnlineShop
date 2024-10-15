@@ -26,8 +26,16 @@
 }
 
 .navbar{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 3;
+    background: #000;
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    padding: 20px;
 }
 
 nav{
@@ -99,7 +107,7 @@ a{
 /* Logo的圖文格式 */
 .container{
     max-width: 2000px;
-    margin: auto;
+    margin-top: 190px;
     padding-left: 25px;
     padding-right: 25px;
     background: #000;
@@ -407,6 +415,12 @@ img{
     color: #cecece;
     font-size: 20px;
     padding: 30px 0 30px;
+}
+
+.footer-container{
+    max-width: auto;
+    margin: auto;
+    padding: 0 25px;
 }
 
 .footer p{
