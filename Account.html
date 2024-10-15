@@ -6,6 +6,7 @@
     <title>OnlineShop | Account</title>
     <link rel="stylesheet" href="css/Style.css">
     <link rel="stylesheet" href="css/Account.css">
+    <link rel="stylesheet" href="css/Chat.css">
 </head>
 <body>
     <!-- 圖文格式 -->
@@ -47,6 +48,68 @@
             }
         }
     </script>
+
+    <!-- 客服 -->
+    <div class="service">
+        <!-- 聊天按鈕 -->
+        <div id="chatButton">聯絡客服</div>
+
+            <!-- 聊天室窗口 -->
+            <div id="chatBox">
+                <div id="chatBoxHeader">
+                    聊天室
+                    <span id="closeButton">&times;</span>
+                </div>
+                <div id="chatContent">
+                    <p>歡迎來到客服聊天室! 有問題隨時詢問我們!</p>
+                </div>
+                <div id="chatInputArea">
+                    <input type="text" id="chatInput" placeholder="輸入一則訊息...">
+                    <button id="sendButton">發送</button>
+                </div>
+            </div>
+    </div>
+
+    <script>
+        // 選取按鈕和聊天室窗口的元素
+        const chatButton = document.getElementById("chatButton");
+        const chatBox = document.getElementById("chatBox");
+        const closeButton = document.getElementById("closeButton");
+
+        // 點擊按鈕時，顯示或隱藏聊天室框
+        chatButton.addEventListener("click", () => {
+            chatBox.style.display = chatBox.style.display === "none" ? "flex" : "none";
+        });
+
+        // 點擊右上方的關閉按鈕時，隱藏聊天室框
+        closeButton.addEventListener("click", () => {
+            chatBox.style.display = "none";
+        });
+
+        // 送出訊息功能
+        const sendButton = document.getElementById("sendButton");
+        const chatInput = document.getElementById("chatInput");
+        const chatContent = document.getElementById("chatContent");
+
+        sendButton.addEventListener("click", () => {
+            const message = chatInput.value.trim();
+            if (message) {
+                const messageElement = document.createElement("p");
+                messageElement.textContent = message;
+                chatContent.appendChild(messageElement);
+                chatInput.value = "";
+                chatContent.scrollTop = chatContent.scrollHeight; // 自動滾動到底部
+            }
+        });
+
+        // 允許按 Enter 鍵送出訊息
+        chatInput.addEventListener("keypress", (e) => {
+            if (e.key === "Enter") {
+                sendButton.click();
+            }
+        });
+    </script>
+
 
     <!-- 登入 -->
     <div class="account-page">
