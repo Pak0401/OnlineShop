@@ -11,7 +11,7 @@
     新品推出文字格式 col-dp-7
     購買鏈接 btn
 
-    合作品牌的整體格式 small-cntainer2
+    合作品牌的整體格式 small-container2
     合作品牌格式 row3
     合作品牌圖片 col-b-5
 
@@ -28,7 +28,7 @@
 .navbar{
     position: fixed;
     top: 0;
-    bottom:800px;
+    bottom: auto;
     left: 0;
     width: 100%;
     z-index: 3;
@@ -60,7 +60,7 @@ a{
     text-decoration: underline;
 }
 
- p{
+p{
     color: #373737;
     font-size: 20px;
 }
@@ -77,7 +77,7 @@ a{
     .navbar{
         position: fixed;
         top: 0;
-        bottom:660px;
+        bottom: auto;
         left: 0;
         width: 100%;
         z-index: 3;
@@ -90,7 +90,7 @@ a{
 
     nav ul{
         position: absolute;
-        top: 90px;
+        top: 110px;
         left: 0;
         background: #000;
         width: 100%;
@@ -121,8 +121,8 @@ a{
 
 /* Logo的圖文格式 */
 .container{
-    max-width: 2000px;
-    margin-top: 150px;
+    max-width: auto;
+    margin-top: 190px;
     padding-left: 25px;
     padding-right: 25px;
     background: #000;
@@ -137,10 +137,9 @@ a{
 }
 
 .col-ip-6 img, .col-pc-6 img{
-    width: 100%;
-    min-width: 300px;
-    max-width: 900px;
-    padding: 15px;
+    max-width: 100%;
+    height: auto;
+    padding:15px;
 }
 
 .col-ip-6, .col-pc-6{
@@ -156,9 +155,19 @@ a{
         text-align: center;
     }
 
+    .homeImg{
+        width: 100%;
+    }
+
+    .honeImg img{
+        width: 100vw;
+        height: auto;
+        max-width: none;
+    }
+
     .col-p-12 img{
         width: 100%;
-        max-width: none;
+        max-width: 100%;
     };
 
     .col-p-12{
