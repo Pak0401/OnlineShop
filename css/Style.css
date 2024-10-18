@@ -74,6 +74,7 @@ p{
 /* 手機菜單 */
 @media (max-width: 768px){
     
+    /* 控制navbar在手機上的顯示 */
     .navbar{
         position: fixed;
         top: 0;
