@@ -1,0 +1,116 @@
+/* 基本重置 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+/* 頂部導航欄 */
+header {
+    background-color: #f65b5b;
+    padding: 15px;
+    color: #fff;
+}
+
+header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header .logo h1 {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+header nav ul {
+    list-style-type: none;
+    display: flex;
+}
+
+header nav ul li {
+    margin-left: 20px;
+}
+
+header nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+header nav ul li a:hover {
+    text-decoration: underline;
+}
+
+/* 主內容區域 */
+.about-section {
+    padding: 50px 20px;
+    background-color: #fff;
+}
+
+.about-section .content {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.about-section .text {
+    flex: 1;
+    text-align: left;
+    max-width: 50%;
+}
+
+.about-section .text h2 {
+    font-size: 32px;
+    margin-bottom: 20px;
+}
+
+.about-section .text p {
+    font-size: 18px;
+    margin-bottom: 20px;
+    color: #555;
+}
+
+.about-section .gallery {
+    max-width: 50%;
+}
+
+.about-section .gallery img {
+    width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+    .about-section .content {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .about-section .gallery {
+        max-width: 100%;
+        margin-top: 20px;
+    }
+}
+
+/* 頁腳 */
+footer {
+    background-color: #f65b5b;
+    padding: 20px;
+    text-align: center;
+    color: white;
+}
+
+footer p {
+    margin: 5px 0;
+}

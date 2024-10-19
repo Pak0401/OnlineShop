@@ -1,185 +1,55 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-HK">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Slide-out Chat Button</title>
-<style>
-    /* 側邊聊天室按鈕的樣式 */
-    #chatButton {
-        position: fixed;
-        right: -60px; /* 初始位置在螢幕外 */
-        top: 50%;
-        transform: translateY(-50%);
-        padding: 15px;
-        width: 60px;
-        background-color: #04AA6D;
-        color: white;
-        font-size: 20px;
-        text-align: center;
-        cursor: pointer;
-        border-radius: 5px 0 0 5px;
-        transition: right 0.3s;
-        z-index: 1000;
-    }
-
-    /* 當滑鼠移到按鈕上時滑出 */
-    #chatButton:hover {
-        right: 0;
-    }
-
-    /* 聊天室框 */
-    #chatBox {
-        position: fixed;
-        right: -301px; /* 隱藏聊天室框 */
-        top: 50%;
-        transform: translateY(-50%);
-        width: 300px;
-        height: 400px;
-        background-color: #fff;
-        border: 1px solid #ddd;
-        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-        transition: right 0.3s;
-        border-radius: 10px 0 0 10px;
-        overflow: hidden;
-        display: flex;
-        flex-direction: column;
-        z-index: 1001;
-    }
-
-    /* 顯示聊天室框 */
-    #chatBox.open {
-        right: 0;
-    }
-
-    /* 聊天室標題 */
-    #chatBoxHeader {
-        background-color: #04AA6D;
-        color: white;
-        padding: 10px;
-        font-size: 18px;
-        text-align: center;
-        position: relative;
-    }
-
-    /* 關閉按鈕樣式 */
-    #closeButton {
-        position: absolute;
-        top: 5px;
-        right: 10px;
-        color: white;
-        font-size: 18px;
-        cursor: pointer;
-        font-weight: bold;
-    }
-
-    /* 聊天內容區域 */
-    #chatContent {
-        flex: 1;
-        padding: 10px;
-        overflow-y: auto;
-    }
-
-    /* 輸入區域 */
-    #chatInputArea {
-        display: flex;
-        border-top: 1px solid #ddd;
-    }
-
-    #chatInput {
-        flex: 1;
-        padding: 10px;
-        border: none;
-        outline: none;
-    }
-
-    #sendButton {
-        padding: 10px;
-        background-color: #04AA6D;
-        color: white;
-        border: none;
-        cursor: pointer;
-    }
-
-    /* 手機模式，讓按鈕固定顯示 */
-    @media (max-width: 768px) {
-        #chatButton {
-            right: 0;
-        }
-        #chatBox {
-            top: auto;
-            bottom: 0;
-            right: -101%;
-            width: 70%;
-            height: 50%;
-            border-radius: 10px 10px 0 0;
-        }
-        #chatBox.open {
-            right: 0;
-        }
-    }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>關於我們 | PetMarket</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<!-- 右側滑動按鈕 -->
-<div id="chatButton">Chat</div>
+    <!-- 頂部導航欄 -->
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1>PetMarket</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#">主頁</a></li>
+                    <li><a href="#">產品</a></li>
+                    <li><a href="#">聯絡我們</a></li>
+                    <li><a href="#">關於我們</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
 
-<!-- 聊天室框 -->
-<div id="chatBox">
-    <div id="chatBoxHeader">
-        Chat Room
-        <!-- 關閉按鈕 -->
-        <span id="closeButton">&times;</span>
-    </div>
-    <div id="chatContent">
-        <p>Welcome to the chat!</p>
-    </div>
-    <div id="chatInputArea">
-        <input type="text" id="chatInput" placeholder="Type a message...">
-        <button id="sendButton">Send</button>
-    </div>
-</div>
+    <!-- 主內容區域 -->
+    <main class="about-section">
+        <div class="container">
+            <div class="content">
+                <div class="text">
+                    <h2>關於 Pet Market</h2>
+                    <p>我們專門提供各種寵物所需的優質產品，讓您的毛孩擁有幸福的生活。</p>
+                    <p>在 Pet Market，我們相信所有的寵物都應該得到愛護和照顧。我們致力於提供安全、優質和實惠的寵物用品，從食品到玩具，應有盡有。</p>
+                </div>
+                <div class="gallery">
+                    <div class="gallery-item">
+                        <img src="image/cat.png" alt="狗和貓一起玩耍">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
 
-<script>
-    // 選取按鈕和聊天室框的元素
-    const chatButton = document.getElementById("chatButton");
-    const chatBox = document.getElementById("chatBox");
-    const closeButton = document.getElementById("closeButton");
-
-    // 點擊按鈕時，切換聊天室框的顯示狀態
-    chatButton.addEventListener("click", () => {
-        chatBox.classList.toggle("open");
-    });
-
-    // 點擊右上方的關閉按鈕時，隱藏聊天室框
-    closeButton.addEventListener("click", () => {
-        chatBox.classList.remove("open");
-    });
-
-    // 送出訊息功能
-    const sendButton = document.getElementById("sendButton");
-    const chatInput = document.getElementById("chatInput");
-    const chatContent = document.getElementById("chatContent");
-
-    sendButton.addEventListener("click", () => {
-        const message = chatInput.value.trim();
-        if (message) {
-            const messageElement = document.createElement("p");
-            messageElement.textContent = message;
-            chatContent.appendChild(messageElement);
-            chatInput.value = "";
-            chatContent.scrollTop = chatContent.scrollHeight; // 自動滾動到底部
-        }
-    });
-
-    // 允許按 Enter 鍵送出訊息
-    chatInput.addEventListener("keypress", (e) => {
-        if (e.key === "Enter") {
-            sendButton.click();
-        }
-    });
-</script>
+    <!-- 頁腳 -->
+    <footer>
+        <div class="footer-container">
+            <p>聯絡我們 | 電話: +852 1234 5678 | 電郵: info@petmarket.com</p>
+            <p>&copy; 2024 PetMarket. 版權所有。</p>
+        </div>
+    </footer>
 
 </body>
 </html>
