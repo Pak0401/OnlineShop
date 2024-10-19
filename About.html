@@ -6,6 +6,7 @@
     <title>OnlineShop | About</title>
     <link rel="stylesheet" href="css/Style.css">
     <link rel="stylesheet" href="css/Chat.css">
+    <link rel="stylesheet" href="css/About.css">
 </head>
 <body>
     <!-- 圖文格式 -->
@@ -111,7 +112,51 @@
     </script>
 
     <!-- 關於我們 -->
-    
+    <div class="abt-container">
+        <div class="abt-text">
+            <h1>關於我們</h1><hr><br>
+            <p>我們是一個專注於寵物用品的公司，致力於為寵物和它們的主人提供最好的服務和產品。 我們的目標是為寵物提供高品質的生活，讓每一隻寵物都能健康、幸福地成長。</p>
+            <p>我們提供各種各樣的寵物食品、玩具和日常用品。每一件產品都經過嚴格的測試，確保符合安全標準。</p>
+            <p>我們明瞭作為寵物主人的你，於工作的壓力及生活的緊張下，已經忙得分身不暇，餘下的時間亦想跟心愛的寵物多些相聚及溝通，實在不能花太多的時間外出四處尋找優質的寵物產品，
+               亦因此，我們為各位寵物家長篩選世界各地各式各樣的優質產品，將好的留低，將差的淘汰，令到各位寵物主人們買得放心，用得安心，這就是我們的信念及承諾。</p>
+            <p>我們保證，決不為謀取暴利而售賣危害寵物健康的產品，務求以全線健康的寵物產品，為你的寵物帶來健康及全面的呵護，寵物食品由原產地入口，經本地特約代理分銷，
+               信心十足，我們不會將水貨混合行貨出售，以不正當手法，欺騙顧客。我們將歇力地為大家搜羅世界各地的高質素產品，集合在我們的網店，令你能夠足不出戶，就能夠安心又放心地挑選心儀的產品。</p>
+                
+        </div>
+
+        <!-- 轉換圖片 -->
+        <div class="abtslide-container">
+            <div class="abtslide fade">
+                <img src="image/cat.png" style="width:100%">
+            </div>
+            <div class="abtslide fade">
+                <img src="image/cat2.png" style="width:100%">
+            </div>
+            <div class="abtslide fade">
+                <img src="image/cat3.png" style="width:100%">
+            </div>
+        </div>
+    </div>
+
+    <!-- 轉換圖片的腳本 -->
+    <script>
+        let slideIndex = 0;
+        showSlides();
+
+        function showSlides() {
+            let i;
+            let slides = document.getElementsByClassName("abtslide");
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            slideIndex++;
+            if (slideIndex > slides.length) {
+                slideIndex = 1;
+            }
+            slides[slideIndex-1].style.display = "block";
+            setTimeout(showSlides, 3000); // 三秒自動換一張圖
+        }
+    </script>
 
     <!-- 頁尾 -->
     <div class="footer">

@@ -1,55 +1,56 @@
 <!DOCTYPE html>
-<html lang="zh-HK">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>關於我們 | PetMarket</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Two Column Layout with Stacked Images</title>
+    <link rel="stylesheet" href="Test.css">
 </head>
 <body>
-
-    <!-- 頂部導航欄 -->
-    <header>
-        <div class="container">
-            <div class="logo">
-                <h1>PetMarket</h1>
-            </div>
-            <nav>
-                <ul>
-                    <li><a href="#">主頁</a></li>
-                    <li><a href="#">產品</a></li>
-                    <li><a href="#">聯絡我們</a></li>
-                    <li><a href="#">關於我們</a></li>
-                </ul>
-            </nav>
+    <div class="container">
+        <!-- 左邊的文字區域 -->
+        <div class="text-section">
+            <h1>關於我們</h1>
+            <p>我們是一個專注於寵物用品的公司，致力於為寵物和它們的主人提供最好的服務和產品。 我們的目標是為寵物提供高品質的生活，讓每一隻寵物都能健康、幸福地成長。</p>
+            <p>我們提供各種各樣的寵物食品、玩具和日常用品。每一件產品都經過嚴格的測試，確保符合安全標準。</p>
         </div>
-    </header>
 
-    <!-- 主內容區域 -->
-    <main class="about-section">
-        <div class="container">
-            <div class="content">
-                <div class="text">
-                    <h2>關於 Pet Market</h2>
-                    <p>我們專門提供各種寵物所需的優質產品，讓您的毛孩擁有幸福的生活。</p>
-                    <p>在 Pet Market，我們相信所有的寵物都應該得到愛護和照顧。我們致力於提供安全、優質和實惠的寵物用品，從食品到玩具，應有盡有。</p>
-                </div>
-                <div class="gallery">
-                    <div class="gallery-item">
-                        <img src="image/cat.png" alt="狗和貓一起玩耍">
-                    </div>
-                </div>
+        <div class="slideshow-container">
+            <!-- 圖片1 -->
+            <div class="mySlides fade">
+                <img src="image/cat.png" style="width:100%">
+            </div>
+    
+            <!-- 圖片2 -->
+            <div class="mySlides fade">
+                <img src="image/cat2.png" style="width:100%">
+            </div>
+    
+            <!-- 圖片3 -->
+            <div class="mySlides fade">
+                <img src="image/cat3.png" style="width:100%">
             </div>
         </div>
-    </main>
+    </div>
 
-    <!-- 頁腳 -->
-    <footer>
-        <div class="footer-container">
-            <p>聯絡我們 | 電話: +852 1234 5678 | 電郵: info@petmarket.com</p>
-            <p>&copy; 2024 PetMarket. 版權所有。</p>
-        </div>
-    </footer>
+    <script>
+        let slideIndex = 0;
+        showSlides();
 
+        function showSlides() {
+            let i;
+            let slides = document.getElementsByClassName("mySlides");
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";  
+            }
+            slideIndex++;
+            if (slideIndex > slides.length) {
+                slideIndex = 1;
+            }    
+            slides[slideIndex-1].style.display = "block";  
+            setTimeout(showSlides, 3000); // 每三秒自動切換一次
+        }
+
+    </script>
 </body>
 </html>

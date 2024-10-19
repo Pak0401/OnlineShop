@@ -1,0 +1,71 @@
+.abt-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin: 20px 15%;
+    gap: 20px;
+}
+
+/* 左邊文字區域 */
+.abt-text{
+    flex: 0 0 50%;
+    padding: 20px;
+}
+
+.abt-text h1 {
+    font-size: 32px;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.abt-text h1::after {
+    content: '';
+    background: #ffdc15;
+    width: 133px;    
+    height: 5px;
+    border-radius: 5px;
+    position: absolute;
+    top: 40px; 
+    left: 0;
+    transform: translateX(0);
+    z-index: 1;
+}
+
+.abt-text p {
+    font-size: 18px;
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
+@media (max-width: 768px) {
+    .abt-container {
+        flex-direction: column;
+    }
+}
+
+.abtslide-container {
+    flex: 0 0 50%;
+    position: relative;
+    margin: auto;
+}
+
+.abtslide{
+    display: none;
+    width: 100%;
+}
+
+.abtslide img{
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+.fade{
+    animation-name: fade;
+    animation-duration: 1.5s;
+}
+
+@keyframes fade {
+    from{opacity: 0.4;}
+    to{opacity: 1;}
+}
