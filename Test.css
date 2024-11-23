@@ -1,73 +1,84 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f9f9f9;
-    padding: 20px;
-}
-
-.container {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    max-width: 1200px;
-    margin: 0 auto;
-    gap: 20px;
-}
-
-/* 左邊文字區域 */
-.text-section {
-    flex: 0 0 50%;
-    padding: 20px;
-}
-
-.text-section h1 {
-    font-size: 32px;
-    margin-bottom: 20px;
-}
-
-.text-section p {
-    font-size: 18px;
-    margin-bottom: 20px;
-    line-height: 1.6;
-}
-
-/* 響應式設計 */
-@media (max-width: 768px) {
-    .container {
-        flex-direction: column;
-    }
-}
-
-.slideshow-container {
-    flex: 0 0 50%;
-    position: relative;
-    margin: auto;
-}
-
-.mySlides {
-    display: none;
+/* 賬號 */
+.account-page{
     width: 100%;
+    padding: 50px ;
 }
 
-img {
-    width: 100%; /* 圖片寬度佔滿容器 */
-    height: auto; /* 高度根據寬度自動調整 */
-    max-height: 275px; /* 設置一個合適的最大高度 */
-    object-fit: cover; /* 保持圖片比例，避免變形 */
+.form-row{
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 30px auto 30px;
+    background-image: url('../image/cat.png');
+    background-size: cover;
+    background-position: center;
+    height: 400px;
+    padding: 20px;
+    position: relative;
 }
 
-/* 圖片切換的淡入效果 */
-.fade {
-    animation-name: fade;
-    animation-duration: 1.5s;
+.form-text{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    width: 80%;
+    padding: 20px;
+    text-align: center;
 }
 
-@keyframes fade {
-    from {opacity: 0.4}
-    to {opacity: 1}
+.form-container{
+    width: 300px;
+    height: 320px;
+    background: rgba(255, 255, 255, 0.8);
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-btn span{
+    cursor: pointer;
+    display: inline-block;
+}
+
+form input{
+    width: 80%;
+    margin: 7px auto;
+    padding: 5px 5px;
+    border: none;
+    border: 1px solid #333;
+    outline: none;
+}
+
+form .login-btn{
+    margin: 5px auto;
+    padding: 5px 5px;
+    border: none;
+    border: 1px solid #333;
+    outline: none;
+}
+
+.form a{
+    text-decoration: underline;
+    color: #333;
+}
+
+.form-link{
+    text-align: center;
+    margin-top: 80px;
+}
+
+.form-message{
+    background: rgba(255, 255, 255, 1);
+    border-radius: 10px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    width: 300px;
+    padding: 20px;
+    text-align: center;
 }

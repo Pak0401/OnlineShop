@@ -3,54 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Two Column Layout with Stacked Images</title>
-    <link rel="stylesheet" href="Test.css">
+    <title>購物車</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        tfoot {
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <!-- 左邊的文字區域 -->
-        <div class="text-section">
-            <h1>關於我們</h1>
-            <p>我們是一個專注於寵物用品的公司，致力於為寵物和它們的主人提供最好的服務和產品。 我們的目標是為寵物提供高品質的生活，讓每一隻寵物都能健康、幸福地成長。</p>
-            <p>我們提供各種各樣的寵物食品、玩具和日常用品。每一件產品都經過嚴格的測試，確保符合安全標準。</p>
-        </div>
-
-        <div class="slideshow-container">
-            <!-- 圖片1 -->
-            <div class="mySlides fade">
-                <img src="image/cat.png" style="width:100%">
-            </div>
-    
-            <!-- 圖片2 -->
-            <div class="mySlides fade">
-                <img src="image/cat2.png" style="width:100%">
-            </div>
-    
-            <!-- 圖片3 -->
-            <div class="mySlides fade">
-                <img src="image/cat3.png" style="width:100%">
-            </div>
-        </div>
-    </div>
-
-    <script>
-        let slideIndex = 0;
-        showSlides();
-
-        function showSlides() {
-            let i;
-            let slides = document.getElementsByClassName("mySlides");
-            for (i = 0; i < slides.length; i++) {
-                slides[i].style.display = "none";  
-            }
-            slideIndex++;
-            if (slideIndex > slides.length) {
-                slideIndex = 1;
-            }    
-            slides[slideIndex-1].style.display = "block";  
-            setTimeout(showSlides, 3000); // 每三秒自動切換一次
-        }
-
-    </script>
+    <h1>購物車</h1>
 </body>
 </html>

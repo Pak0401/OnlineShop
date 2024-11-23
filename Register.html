@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OnlineShop | Account</title>
     <link rel="stylesheet" href="css/Style.css">
-    <link rel="stylesheet" href="css/Account.css">
+    <link rel="stylesheet" href="css/Register.css">
     <link rel="stylesheet" href="css/Chat.css">
 </head>
 <body>
@@ -115,18 +115,27 @@
     <div class="account-page">
         <div class="form-row">
             <div class="form-container form-text">
-                <div class="form-btn">
-                    <span>註冊</span>
-                </div>
                 <div class="form">
-                    <form>
-                        <input type="text" placeholder="用戶名稱" id="username"><br>
-                        <input type="text" placeholder="電郵地址" id="email"><br>
-                        <input type="text" placeholder="確認電郵地址" id="confirmEmail"><br>
-                        <input type="password" placeholder="密碼" id="password"><br>
-                        <input type="password" placeholder="確認密碼" id="confirmPassword"><br>
-                        <button type="button" onclick="register()" class="login-btn">註冊</button>
-                    </form><br>
+                    <body>
+                        <h1 style="text-align: center; color: #333; margin-bottom: 20px;">註冊</h1>
+                        <form action="register.php" method="POST">
+                            <label for="username">用戶名稱：</label>
+                            <input type="text" name="username" id="username" required><br><br>
+                    
+                            <label for="email">電子郵件地址：</label>
+                            <input type="email" name="email" id="email" required><br><br>
+                    
+                            <label for="confirm_email">確認電子郵件地址：</label>
+                            <input type="email" name="confirm_email" id="confirm_email" required><br><br>
+                    
+                            <label for="password">密碼：</label>
+                            <input type="password" name="password" id="password" required><br><br>
+                    
+                            <label for="confirm_password">確認密碼：</label>
+                            <input type="password" name="confirm_password" id="confirm_password" required><br><br>
+                    
+                            <button type="submit">註冊</button>
+                        </form>
                 </div>
                 <div class="form-message" id="message" style="display: none;">
                     <p>請確認郵箱是否收到驗證信，並點擊確認鏈接完成註冊!</p><br>
@@ -135,47 +144,6 @@
             </div>
         </div>
     </div>
-
-    <!-- 註冊的腳本 -->
-    <script>
-        function register(){
-            const username = document.getElementById("username").value;
-            const email = document.getElementById("email").value;
-            const confirmEmail = document.getElementById("confirmEmail").value;
-            const password = document.getElementById("password").value;
-            const confirmPassword = document.getElementById("confirmPassword").value;
-            const message = document.getElementById("message");
-            const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-
-            // 檢查電郵地址是否完整
-            if(!username || !email || !confirmEmail || !password || !confirmPassword){
-                alert("請輸入完整的註冊資訊");
-                return false;
-            }
-            if(!emailPattern.test(email)){
-                alert("請輸入有效的電郵地址");
-                return false;
-            }
-            if(email !== confirmEmail){
-                alert("電郵地址不相符");
-                return false;
-            }
-            if(password !== confirmPassword){
-                alert("密碼不相符");
-                return false;
-            }
-
-            message.style.display = "block";
-
-            // 5秒後消失通知
-            setTimeout(() => {
-                message.style.display = "none";
-                window.location.href = "Account.html";
-            }, 5000);
-
-            return false;
-        }
-    </script>
 
     <!-- 頁尾 -->
     <div class="footer">

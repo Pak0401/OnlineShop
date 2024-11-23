@@ -1,0 +1,92 @@
+/* 賬號頁面整體樣式 */
+.account-page {
+    width: 100%;
+    padding: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url('../image/cat.png');
+    background-size: cover;
+    background-position: center;
+    height: 100%;
+}
+
+/* 表單容器 */
+.form-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.85);
+    border-radius: 10px;
+    padding: 20px;
+    width: 400px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* 表單內容 */
+form {
+    width: 100%;
+    text-align: center;
+}
+
+/* 輸入框樣式 */
+form input {
+    width: 90%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: all 0.3s ease-in-out;
+}
+
+/* 聚焦時輸入框的樣式 */
+form input:focus {
+    border-color: #007BFF;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    outline: none;
+}
+
+/* 註冊按鈕 */
+form button {
+    width: 90%;
+    padding: 10px;
+    margin-top: 20px;
+    border: none;
+    border-radius: 5px;
+    background: #007BFF;
+    color: #fff;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+}
+
+/* 按鈕的懸停效果 */
+form button:hover {
+    background: #0056b3;
+}
+
+/* 表單鏈接 */
+.form a {
+    display: block;
+    margin-top: 15px;
+    text-decoration: none;
+    color: #007BFF;
+    font-size: 14px;
+}
+
+.form a:hover {
+    text-decoration: underline;
+}
+
+/* 表單彈窗消息 */
+.form-message {
+    background: rgba(0, 123, 255, 0.1);
+    color: #007BFF;
+    border: 1px solid #007BFF;
+    border-radius: 5px;
+    padding: 15px;
+    margin-top: 20px;
+    font-size: 14px;
+    display: none;
+}

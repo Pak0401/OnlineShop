@@ -1,0 +1,98 @@
+/* 賬號頁面整體樣式 */
+.account-page {
+    width: 100%;
+    padding: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url('../image/cat.png'); /* 替換為你的背景圖片 */
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+}
+
+/* 表單容器 */
+.form-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.85);
+    border-radius: 10px;
+    padding: 20px;
+    width: 400px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.form-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    height: 50px;
+}
+
+.form-btn span {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+}
+
+/* 表單內容 */
+form {
+    width: 100%;
+    text-align: center;
+}
+
+/* 輸入框樣式 */
+form input {
+    width: 90%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: all 0.3s ease-in-out;
+}
+
+/* 輸入框聚焦時的樣式 */
+form input:focus {
+    border-color: #007BFF;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    outline: none;
+}
+
+/* 按鈕樣式 */
+form .login-btn {
+    width: 90%;
+    padding: 10px;
+    margin-top: 20px;
+    border: none;
+    border-radius: 5px;
+    background: #007BFF;
+    color: #fff;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+}
+
+/* 按鈕懸停效果 */
+form .login-btn:hover {
+    background: #0056b3;
+}
+
+/* 表單鏈接 */
+.form-link {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.form-link a {
+    text-decoration: none;
+    color: #007BFF;
+    font-size: 16px;
+}
+
+.form-link a:hover {
+    text-decoration: underline;
+}
