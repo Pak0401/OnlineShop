@@ -7,26 +7,46 @@ if (!isset($_SESSION['cart'])) {
 }
 
 // 處理刪除商品
-if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['pid'])) {
+if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['pid']) && isset($_GET['variant'])) {
     $pid = intval($_GET['pid']);
+    $variant = htmlspecialchars($_GET['variant']);
+
     foreach ($_SESSION['cart'] as $key => $item) {
-        if ($item['pid'] === $pid) {
+        if ($item['pid'] === $pid && $item['variant'] === $variant) {
             unset($_SESSION['cart'][$key]);
-            $_SESSION['cart'] = array_values($_SESSION['cart']); // 重新索引陣列
             break;
         }
     }
+
+    $_SESSION['cart'] = array_values($_SESSION['cart']); // 重新索引購物車
 }
+
 
 // 處理更改數量
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_cart'])) {
-    foreach ($_POST['quantities'] as $pid => $quantity) {
-        foreach ($_SESSION['cart'] as &$item) {
-            if ($item['pid'] == $pid) {
-                $item['quantity'] = max(1, intval($quantity)); // 確保數量至少為 1
+    $updated_cart = []; // 初始化一個新的購物車數據陣列
+
+    // 獲取數量和產品識別數據
+    if (isset($_POST['quantities']) && is_array($_POST['quantities'])) {
+        foreach ($_POST['quantities'] as $key => $quantity) {
+            // 分離 PID 和 Variant 作為鍵
+            list($pid, $variant) = explode('_', $key);
+
+            // 確保數量為有效整數
+            $quantity = max(1, intval($quantity));
+
+            // 查找原始購物車數據並保留其他資訊
+            foreach ($_SESSION['cart'] as $item) {
+                if ($item['pid'] == $pid && $item['variant'] == $variant) {
+                    $item['quantity'] = $quantity; // 更新數量
+                    $updated_cart[] = $item; // 加回到新的購物車
+                    break;
+                }
             }
         }
     }
+
+    $_SESSION['cart'] = $updated_cart; // 更新購物車
 }
 ?>
 <!DOCTYPE html>
@@ -91,7 +111,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_cart'])) {
             <table>
                 <tr>
                     <th>商品</th>
-                    <th>重量</th>
+                    <th>類別</th>
                     <th>數量</th>
                     <th>單價</th>
                     <th>總價格</th>
@@ -115,14 +135,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_cart'])) {
                     </td>
                     <td><?php echo htmlspecialchars($item['variant']); ?></td>
                     <td>
-                        <input type="number" name="quantities[<?php echo $item['pid']; ?>]" value="<?php echo intval($item['quantity']); ?>" min="1">
+                        <!-- 使用 PID 和 Variant 作為鍵 -->
+                        <input type="number" name="quantities[<?php echo $item['pid'] . '_' . urlencode($item['variant']); ?>]" value="<?php echo intval($item['quantity']); ?>" min="1">
                     </td>
                     <td>$<?php echo number_format(floatval($item['price']), 2); ?></td>
                     <td>$<?php echo number_format($subtotal, 2); ?></td>
                     <td>
-                        <a href="Cart.php?action=delete&pid=<?php echo $item['pid']; ?>" class="btn delete-btn">刪除</a>
+                        <a href="Cart.php?action=delete&pid=<?php echo $item['pid']; ?>&variant=<?php echo urlencode($item['variant']); ?>" class="btn delete-btn">刪除</a>
                     </td>
                 </tr>
+
                 <?php endforeach; ?>
             </table>
             <button type="submit" name="update_cart" class="btn update-btn">更新購物車</button>

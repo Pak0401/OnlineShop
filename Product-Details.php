@@ -30,7 +30,7 @@ while ($row = $result_variants->fetch_assoc()) {
     $variants[] = $row;
 }
 
-session_start(); // 啟用 Session
+session_start();
 
 // 確保購物車已初始化
 if (!isset($_SESSION['cart'])) {
@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_to_cart'])) {
     $quantity = intval($_POST['quantity']);
     $variant = htmlspecialchars($_POST['variant']);
 
-    // 檢查購物車內是否已存在該產品
+    // 檢查購物車內是否已存在該產品（基於 PID 和 Variant）
     $product_exists = false;
     foreach ($_SESSION['cart'] as &$item) {
         if ($item['pid'] === $pid && $item['variant'] === $variant) {
@@ -70,6 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_to_cart'])) {
     header("Location: Cart.php");
     exit();
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -136,7 +137,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_to_cart'])) {
                     <label for="Variant">選擇重量/規格:</label><br>
                     <select name="variant">
                         <?php foreach ($variants as $variant): ?>
-                            <option value="<?php echo $variant['PID']; ?>">
+                            <option value="<?php echo htmlspecialchars($variant['Variant']); ?>">
                                 <?php echo htmlspecialchars($variant['Variant']) . " - $" . htmlspecialchars($variant['Price']); ?>
                             </option>
                         <?php endforeach; ?>
