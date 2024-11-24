@@ -10,8 +10,10 @@ if ($conn->connect_error) {
 $pid = isset($_GET['pid']) ? intval($_GET['pid']) : 1;
 
 // 獲取主產品數據
-$sql_product = "SELECT * FROM productdata WHERE PID = $pid";
-$result_product = $conn->query($sql_product);
+$stmt = $conn->prepare("SELECT * FROM productdata WHERE PID = ?");
+$stmt->bind_param("i", $pid);
+$stmt->execute();
+$result_product = $stmt->get_result();
 
 if ($result_product->num_rows > 0) {
     $product = $result_product->fetch_assoc();
@@ -26,6 +28,47 @@ $result_variants = $conn->query($sql_variants);
 $variants = [];
 while ($row = $result_variants->fetch_assoc()) {
     $variants[] = $row;
+}
+
+session_start(); // 啟用 Session
+
+// 確保購物車已初始化
+if (!isset($_SESSION['cart'])) {
+    $_SESSION['cart'] = [];
+}
+
+// 處理加入購物車的請求
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_to_cart'])) {
+    $pid = intval($_POST['pid']);
+    $pname = htmlspecialchars($_POST['pname']);
+    $price = floatval($_POST['price']);
+    $quantity = intval($_POST['quantity']);
+    $variant = htmlspecialchars($_POST['variant']);
+
+    // 檢查購物車內是否已存在該產品
+    $product_exists = false;
+    foreach ($_SESSION['cart'] as &$item) {
+        if ($item['pid'] === $pid && $item['variant'] === $variant) {
+            $item['quantity'] += $quantity; // 如果已存在，增加數量
+            $product_exists = true;
+            break;
+        }
+    }
+
+    // 如果產品尚未存在於購物車，新增到購物車
+    if (!$product_exists) {
+        $_SESSION['cart'][] = [
+            'pid' => $pid,
+            'name' => $pname,
+            'price' => $price,
+            'quantity' => $quantity,
+            'variant' => $variant
+        ];
+    }
+
+    // 重新導向到購物車頁面（避免表單重複提交）
+    header("Location: Cart.php");
+    exit();
 }
 ?>
 
@@ -55,8 +98,9 @@ while ($row = $result_variants->fetch_assoc()) {
                     <li><a href="Account.html">登入</a></li>
                 </ul>
             </nav>
-            <a href="Test.php">
+            <a href="Cart.php">
                 <img src="image/cart.png" width="40px" height="40px">
+                <span id="cart-count"><?php echo count($_SESSION['cart']); ?></span>
             </a>
             <img src="image/menu.png" class="menu-icon" onclick="menutoggle()">
         </div>
@@ -83,19 +127,21 @@ while ($row = $result_variants->fetch_assoc()) {
                 </h4>
 
                 <!-- 選擇重量或其他變量 -->
-                <form action="Test.php" method="get">
+                <form action="" method="POST">
                     <input type="hidden" name="pid" value="<?php echo $product['PID']; ?>">
+                    <input type="hidden" name="pname" value="<?php echo htmlspecialchars($product['PName']); ?>">
+                    <input type="hidden" name="price" value="<?php echo $minPrice; ?>">
                     <input type="number" name="quantity" value="1" min="1"><br>
 
                     <label for="Variant">選擇重量/規格:</label><br>
-                        <select name="variant">
-                            <?php foreach ($variants as $variant): ?>
-                                <option value="<?php echo $variant['PID']; ?>">
-                                    <?php echo htmlspecialchars($variant['Variant']) . " - $" . htmlspecialchars($variant['Price']); ?>
-                                </option>
-                            <?php endforeach; ?>
-                        </select><br>
-                    <button type="submit" class="btn">加到購物車</button>
+                    <select name="variant">
+                        <?php foreach ($variants as $variant): ?>
+                            <option value="<?php echo $variant['PID']; ?>">
+                                <?php echo htmlspecialchars($variant['Variant']) . " - $" . htmlspecialchars($variant['Price']); ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select><br>
+                    <button type="submit" name="add_to_cart">加到購物車</button>
                 </form>
             </div>
         </div>

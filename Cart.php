@@ -5,6 +5,29 @@ session_start();
 if (!isset($_SESSION['cart'])) {
     $_SESSION['cart'] = [];
 }
+
+// 處理刪除商品
+if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['pid'])) {
+    $pid = intval($_GET['pid']);
+    foreach ($_SESSION['cart'] as $key => $item) {
+        if ($item['pid'] === $pid) {
+            unset($_SESSION['cart'][$key]);
+            $_SESSION['cart'] = array_values($_SESSION['cart']); // 重新索引陣列
+            break;
+        }
+    }
+}
+
+// 處理更改數量
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_cart'])) {
+    foreach ($_POST['quantities'] as $pid => $quantity) {
+        foreach ($_SESSION['cart'] as &$item) {
+            if ($item['pid'] == $pid) {
+                $item['quantity'] = max(1, intval($quantity)); // 確保數量至少為 1
+            }
+        }
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -30,7 +53,7 @@ if (!isset($_SESSION['cart'])) {
             <nav>
                 <ul id="menuItems">
                     <li><a href="Index.html">主頁</a></li>
-                    <li><a href="Products.html">產品</a></li>
+                    <li><a href="Products.php">產品</a></li>
                     <li><a href="Contact.html">聯絡我們</a></li>
                     <li><a href="About.html">關於我們</a></li>
                     <li><a href="Account.html">登入</a></li>
@@ -64,36 +87,46 @@ if (!isset($_SESSION['cart'])) {
     <div class="small-container cart-page">
         <div class="small-title4">購物車</div>
         <?php if (!empty($_SESSION['cart'])): ?>
-        <table>
-            <tr>
-                <th>商品</th>
-                <th>重量</th>
-                <th>數量</th>
-                <th>總價格</th>
-            </tr>
-            <?php
-            $total = 0; // 初始化總金額
-            foreach ($_SESSION['cart'] as $item):
-                // 計算小計時使用 floatval 和 intval 確保型別正確
-                $subtotal = floatval($item['price']) * intval($item['quantity']);
-                $total += $subtotal;
-            ?>
-            <tr>
-                <td>
-                    <div class="cart-info">
-                        <img src="image/<?php echo htmlspecialchars($item['name']); ?>.png" alt="<?php echo htmlspecialchars($item['name']); ?>">
-                        <div>
-                            <p><?php echo htmlspecialchars($item['name']); ?></p>
-                            <middle>價格: $<?php echo number_format(floatval($item['price']), 2); ?></middle><br>
+        <form method="POST" action="">
+            <table>
+                <tr>
+                    <th>商品</th>
+                    <th>重量</th>
+                    <th>數量</th>
+                    <th>單價</th>
+                    <th>總價格</th>
+                    <th>操作</th>
+                </tr>
+                <?php
+                $total = 0; // 初始化總金額
+                foreach ($_SESSION['cart'] as $item):
+                    $subtotal = floatval($item['price']) * intval($item['quantity']);
+                    $total += $subtotal;
+                ?>
+                <tr>
+                    <td>
+                        <div class="cart-info">
+                            <img src="image/<?php echo htmlspecialchars($item['name']); ?>.png" alt="<?php echo htmlspecialchars($item['name']); ?>">
+                            <div>
+                                <p><?php echo htmlspecialchars($item['name']); ?></p>
+                                <middle>價格: $<?php echo number_format(floatval($item['price']), 2); ?></middle><br>
+                            </div>
                         </div>
-                    </div>
-                </td>
-                <td><?php echo htmlspecialchars($item['variant']); ?></td>
-                <td><?php echo intval($item['quantity']); ?></td>
-                <td>$<?php echo number_format($subtotal, 2); ?></td>
-            </tr>
-            <?php endforeach; ?>
-        </table>
+                    </td>
+                    <td><?php echo htmlspecialchars($item['variant']); ?></td>
+                    <td>
+                        <input type="number" name="quantities[<?php echo $item['pid']; ?>]" value="<?php echo intval($item['quantity']); ?>" min="1">
+                    </td>
+                    <td>$<?php echo number_format(floatval($item['price']), 2); ?></td>
+                    <td>$<?php echo number_format($subtotal, 2); ?></td>
+                    <td>
+                        <a href="Cart.php?action=delete&pid=<?php echo $item['pid']; ?>" class="btn delete-btn">刪除</a>
+                    </td>
+                </tr>
+                <?php endforeach; ?>
+            </table>
+            <button type="submit" name="update_cart" class="btn update-btn">更新購物車</button>
+        </form>
         <hr style="color: #2eceff">
         <div class="total-price">
             <table>

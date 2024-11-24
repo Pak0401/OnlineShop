@@ -30,6 +30,13 @@ while ($row = $result->fetch_assoc()) {
         $products[$mainName]['variants'] += 1;
     }
 }
+
+session_start(); // 啟用 Session
+
+// 確保購物車已初始化
+if (!isset($_SESSION['cart'])) {
+    $_SESSION['cart'] = [];
+}
 ?>
 
 <!DOCTYPE html>
@@ -58,8 +65,9 @@ while ($row = $result->fetch_assoc()) {
                     <li><a href="Account.html">登入</a></li>
                 </ul>
             </nav>
-            <a href="Cart.html">
+            <a href="Cart.php">
                 <img src="image/cart.png" width="40px" height="40px">
+                <span id="cart-count"><?php echo count($_SESSION['cart']); ?></span>
             </a>
             <img src="image/menu.png" class="menu-icon" onclick="menutoggle()">
         </div>

@@ -3,26 +3,129 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>購物車</title>
-    <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-            border: 1px solid #ccc;
-            padding: 10px;
-            text-align: center;
-        }
-        th {
-            background-color: #f4f4f4;
-        }
-        tfoot {
-            font-weight: bold;
-        }
-    </style>
+    <title>OnlineShop | Cart</title>
+    <link rel="stylesheet" href="css/Style.css">
+    <link rel="stylesheet" href="css/Cart.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-    <h1>購物車</h1>
+    <div class="small-container cart-page">
+        <h1>購物車</h1>
+        <table>
+            <tr>
+                <th>商品</th>
+                <th>重量/規格</th>
+                <th>數量</th>
+                <th>單價</th>
+                <th>總價格</th>
+                <th>操作</th>
+            </tr>
+            <?php
+            $total = 0;
+            foreach ($_SESSION['cart'] as $item):
+                $subtotal = $item['price'] * $item['quantity'];
+                $total += $subtotal;
+            ?>
+            <tr id="product-<?php echo $item['id']; ?>">
+                <td><?php echo htmlspecialchars($item['name']); ?></td>
+                <td><?php echo htmlspecialchars($item['variant']); ?></td>
+                <td>
+                    <input type="number" class="quantity" data-id="<?php echo $item['id']; ?>" value="<?php echo htmlspecialchars($item['quantity']); ?>" min="1">
+                </td>
+                <td>$<?php echo htmlspecialchars($item['price']); ?></td>
+                <td class="subtotal">$<?php echo htmlspecialchars($subtotal); ?></td>
+                <td>
+                    <button class="delete-btn" data-id="<?php echo $item['id']; ?>">刪除</button>
+                </td>
+            </tr>
+            <?php endforeach; ?>
+        </table>
+        <div class="total-price">
+            <table>
+                <tr>
+                    <td>總計:</td>
+                    <td id="total">$<?php echo $total; ?></td>
+                </tr>
+                <tr>
+                    <td>運費:</td>
+                    <td>免費</td>
+                </tr>
+            </table>
+        </div>
+        <a href="Payment.html" class="btn">前往結帳</a>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            // 更新數量
+            $('.quantity').on('change', function() {
+                const pid = $(this).data('id');
+                const quantity = $(this).val();
+
+                $.ajax({
+                    url: 'cart_api.php',
+                    method: 'POST',
+                    data: {
+                        action: 'update',
+                        pid: pid,
+                        quantity: quantity
+                    },
+                    success: function(response) {
+                        const res = JSON.parse(response);
+                        if (res.status === 'success') {
+                            alert(res.message);
+
+                            // 更新小計和總計
+                            const updatedCart = res.cart;
+                            let newTotal = 0;
+
+                            updatedCart.forEach(item => {
+                                if (item.id === parseInt(pid)) {
+                                    $(`#product-${item.id} .subtotal`).text(`$${item.price * item.quantity}`);
+                                }
+                                newTotal += item.price * item.quantity;
+                            });
+
+                            $('#total').text(`$${newTotal}`);
+                        } else {
+                            alert(res.message);
+                        }
+                    }
+                });
+            });
+
+            // 刪除產品
+            $('.delete-btn').on('click', function() {
+                const pid = $(this).data('id');
+
+                $.ajax({
+                    url: 'cart_api.php',
+                    method: 'POST',
+                    data: {
+                        action: 'delete',
+                        pid: pid
+                    },
+                    success: function(response) {
+                        const res = JSON.parse(response);
+                        if (res.status === 'success') {
+                            alert(res.message);
+
+                            // 移除產品行並更新總計
+                            $(`#product-${pid}`).remove();
+
+                            let newTotal = 0;
+                            res.cart.forEach(item => {
+                                newTotal += item.price * item.quantity;
+                            });
+
+                            $('#total').text(`$${newTotal}`);
+                        } else {
+                            alert(res.message);
+                        }
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>
