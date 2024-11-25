@@ -69,31 +69,40 @@ input:focus{
     font-weight: bold;
 }
 
-.other-pd{
-    text-align: left;
-    font-size: 20px;
+.other-pd {
     margin-top: 50px;
-    position: relative;
+    text-align: left;
 }
 
-.other-pd::after{
+h2 {
+    font-size: 24px; 
+    text-align: left; 
+    margin: 20px 0;
+    padding: 0; 
+    position: relative; 
+}
+
+h2::after {
     content: '';
-    background: #636363;
-    width: 125px;
-    height: 5px;
-    border-radius: 5px;
+    display: block;
+    width: 100px; 
+    height: 4px;
+    background-color: #636363;
+    margin-top: 5px;
     position: absolute;
-    bottom: -5px;
-    left: 0;
-    z-index: 1;
+    bottom: -5px; 
+    left: 0; 
 }
 
-.row-Otherpd{
+/* 其他產品排版區域 */
+.row-Otherpd {
     display: flex;
-    align-items: center;
     flex-wrap: wrap;
     justify-content: space-between;
-    margin: 50px auto 50px;
+    gap: 20px; 
+    margin: 0 auto; 
+    max-width: 1200px;
+    padding: 0 10px; 
 }
 
 /* 手機產品版面 */
@@ -101,4 +110,90 @@ input:focus{
     .pd-detail .row{
         text-align: left;
     }
+}
+
+/* 產品卡片樣式 */
+.col-pd-4 {
+    border: 1px solid #20beee;
+    border-radius: 10px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    flex: 1 1 calc(25% - 20px); 
+    max-width: calc(25% - 20px); 
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background-color: #fff; 
+}
+
+/* 圖片樣式 */
+.col-pd-4 img {
+    width: 100%;
+    max-height: 150px; 
+    object-fit: contain;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+
+/* 卡片標題 */
+.col-pd-4 h4 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #000;
+    font-weight: bold;
+}
+
+/* 價格區域 */
+.col-pd-4 p {
+    font-size: 16px;
+    color: #20beee;
+    font-weight: bold;
+    margin: 5px 0;
+}
+
+/* 懸停效果 */
+.col-pd-4:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.other-pd {
+    position: relative;
+    margin: 20px 0;
+}
+
+/* 通用按鈕樣式 */
+button.AddCart {
+    cursor: pointer;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    margin-top: 15px;
+    color: #fff;
+    background-color: #20beee;
+    transition: background 0.3s ease;
+}
+
+button.AddCart:hover {
+    background-color: #007bff; 
+}
+
+/* 查看商品按鈕樣式 */
+.view-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    margin-top: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+
+.view-btn:hover {
+    background-color: #0056b3;
+    color: #fff;
 }

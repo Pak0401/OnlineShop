@@ -72,6 +72,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_to_cart'])) {
 }
 
 $is_logged_in = isset($_SESSION['user_id']); // 檢查是否已登入
+
+// 獲取隨機的 4 個其他產品，基於 GID 分組，避免重複
+$sql_random_products = "
+    SELECT p.GID, p.PName, MIN(p.Price) AS minPrice, MAX(p.Price) AS maxPrice 
+    FROM productdata p 
+    WHERE p.GID != ? 
+    GROUP BY p.GID 
+    ORDER BY RAND() 
+    LIMIT 4";
+$stmt_random = $conn->prepare($sql_random_products);
+$stmt_random->bind_param("i", $gid); // 使用 GID 避免同產品變體出現
+$stmt_random->execute();
+$result_random_products = $stmt_random->get_result();
+
+$random_products = [];
+while ($row = $result_random_products->fetch_assoc()) {
+    $random_products[] = $row;
+}
 ?>
 
 <!DOCTYPE html>
@@ -228,8 +246,34 @@ $is_logged_in = isset($_SESSION['user_id']); // 檢查是否已登入
                             </option>
                         <?php endforeach; ?>
                     </select><br>
-                    <button type="submit" name="add_to_cart">加到購物車</button>
+                    <button type="submit" name="add_to_cart" class="AddCart">加到購物車</button>
                 </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 其他產品 -->
+    <div class="small-container">
+        <div class="other-pd">
+            <h2>其他產品</h2>
+            <div class="row-Otherpd">
+                <?php foreach ($random_products as $random_product): ?> <!-- 調試輸出 -->
+                    <div class="col-pd-4">
+                        <img src="image/<?php echo htmlspecialchars($random_product['PName']); ?>.png" alt="<?php echo htmlspecialchars($random_product['PName']); ?>">
+                        <h4><?php echo htmlspecialchars($random_product['PName']); ?></h4>
+                        <p>
+                            $
+                            <?php 
+                                $minPrice = isset($random_product['minPrice']) ? htmlspecialchars($random_product['minPrice']) : 'N/A';
+                                $maxPrice = isset($random_product['maxPrice']) ? htmlspecialchars($random_product['maxPrice']) : 'N/A';
+                                echo $minPrice . " - $" . $maxPrice;
+                            ?>
+                        </p>
+                        <a href="Product-Details.php?pid=<?php echo htmlspecialchars($random_product['PID']); ?>">
+                            <button class="view-btn">查看商品</button>
+                        </a>
+                    </div>
+                <?php endforeach; ?>
             </div>
         </div>
     </div>

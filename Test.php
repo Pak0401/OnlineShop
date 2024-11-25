@@ -1,76 +1,100 @@
 <?php
-// 啟用 Session
-session_start();
+// 連接資料庫
+$conn = new mysqli("localhost", "root", "", "product_data");
 
-// 檢查用戶是否已登入，未登入則重定向到登入頁面
-if (!isset($_SESSION['uid'])) {
-    header("Location: Login.php"); // 登入頁面
-    exit();
-}
-
-// 資料庫連線
-$host = "localhost";
-$username = "root";
-$password = "";
-$database = "userdata";
-
-$conn = new mysqli($host, $username, $password, $database);
-
-// 檢查資料庫連線
 if ($conn->connect_error) {
     die("資料庫連線失敗：" . $conn->connect_error);
 }
 
-// 取得當前用戶的資訊
-$uid = $_SESSION['uid'];
-$stmt = $conn->prepare("SELECT UID, UName, Email, Password FROM data WHERE UID = ?");
-$stmt->bind_param("i", $uid);
+// 接收產品 ID
+$pid = isset($_GET['pid']) ? intval($_GET['pid']) : 0;
+
+if ($pid === 0) {
+    die("產品 ID 無效。");
+}
+
+// 查詢對應的產品數據
+$stmt = $conn->prepare("SELECT * FROM productdata WHERE PID = ?");
+$stmt->bind_param("i", $pid);
 $stmt->execute();
 $result = $stmt->get_result();
 
-// 如果用戶存在，將數據存入變數
 if ($result->num_rows > 0) {
-    $user = $result->fetch_assoc();
+    $product = $result->fetch_assoc();
 } else {
-    echo "無法找到用戶資料。";
-    exit();
+    die("找不到該產品。");
 }
 
-// 更新密碼處理
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_password'])) {
-    $current_password = trim($_POST['current_password']);
-    $new_password = trim($_POST['new_password']);
-    $confirm_new_password = trim($_POST['confirm_new_password']);
 
-    // 驗證當前密碼
-    if (!password_verify($current_password, $user['Password'])) {
-        echo "<script>alert('當前密碼不正確！');</script>";
-    } elseif ($new_password !== $confirm_new_password) {
-        echo "<script>alert('新密碼與確認密碼不一致！');</script>";
-    } else {
-        // 更新密碼
-        $hashed_new_password = password_hash($new_password, PASSWORD_BCRYPT);
-        $update_stmt = $conn->prepare("UPDATE data SET Password = ? WHERE UID = ?");
-        $update_stmt->bind_param("si", $hashed_new_password, $uid);
+// 獲取同一產品的所有變體（基於 GID 分組）
+$gid = $product['GID']; // 使用 GID 進行分組
+$sql_variants = "SELECT * FROM productdata WHERE GID = '$gid'";
+$result_variants = $conn->query($sql_variants);
+$variants = [];
+while ($row = $result_variants->fetch_assoc()) {
+    $variants[] = $row;
+}
 
-        if ($update_stmt->execute()) {
-            echo "<script>alert('密碼更新成功！');</script>";
-        } else {
-            echo "<script>alert('密碼更新失敗，請重試。');</script>";
+session_start();
+
+// 確保購物車已初始化
+if (!isset($_SESSION['cart'])) {
+    $_SESSION['cart'] = [];
+}
+
+// 處理加入購物車的請求
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_to_cart'])) {
+    $pid = intval($_POST['pid']);
+    $pname = htmlspecialchars($_POST['pname']);
+    $price = floatval($_POST['price']);
+    $quantity = intval($_POST['quantity']);
+    $variant = htmlspecialchars($_POST['variant']);
+
+    // 檢查購物車內是否已存在該產品（基於 PID 和 Variant）
+    $product_exists = false;
+    foreach ($_SESSION['cart'] as &$item) {
+        if ($item['pid'] === $pid && $item['variant'] === $variant) {
+            $item['quantity'] += $quantity; // 如果已存在，增加數量
+            $product_exists = true;
+            break;
         }
     }
-}
 
-// 處理登出請求
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['logout'])) {
-    session_unset();
-    session_destroy();
-    header("Location: Index.php"); // 跳轉到登入頁面
+    // 如果產品尚未存在於購物車，新增到購物車
+    if (!$product_exists) {
+        $_SESSION['cart'][] = [
+            'pid' => $pid,
+            'name' => $pname,
+            'price' => $price,
+            'quantity' => $quantity,
+            'variant' => $variant
+        ];
+    }
+
+    // 重新導向到購物車頁面（避免表單重複提交）
+    header("Location: Cart.php");
     exit();
 }
 
-$stmt->close();
-$conn->close();
+$is_logged_in = isset($_SESSION['user_id']); // 檢查是否已登入
+
+// 獲取隨機的 4 個其他產品，基於 GID 分組，避免重複
+$sql_random_products = "
+    SELECT p.PID, p.PName, MIN(p.Price) AS minPrice, MAX(p.Price) AS maxPrice 
+    FROM productdata p 
+    WHERE p.GID != ? 
+    GROUP BY p.GID 
+    ORDER BY RAND() 
+    LIMIT 4";
+$stmt_random = $conn->prepare($sql_random_products);
+$stmt_random->bind_param("i", $gid); // 避免同一產品變體出現
+$stmt_random->execute();
+$result_random_products = $stmt_random->get_result();
+
+$random_products = [];
+while ($row = $result_random_products->fetch_assoc()) {
+    $random_products[] = $row;
+}
 ?>
 
 <!DOCTYPE html>
@@ -78,22 +102,18 @@ $conn->close();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OnlineShop | About</title>
+    <title><?php echo htmlspecialchars($product['PName']); ?> | Details</title>
     <link rel="stylesheet" href="css/Style.css">
-    <link rel="stylesheet" href="css/Chat.css">
-    <link rel="stylesheet" href="css/Account.css">
     <link rel="stylesheet" href="Test.css">
+    <link rel="stylesheet" href="css/Products.css">
+    <link rel="stylesheet" href="css/Chat.css">
 </head>
 <body>
-    <!-- 圖文格式 -->
     <div class="container">
         <div class="navbar">
-            <!-- Logo -->
             <div class="logo">
-                <img src="image/logo.PNg" width="125px">
+                <img src="image/logo.png" width="125px">
             </div>
-            <img scr="image/menu.png">
-            <!-- 橫向菜單 -->
             <nav>
                 <ul id="menuItems">
                     <li><a href="Index.php">主頁</a></li>
@@ -113,6 +133,7 @@ $conn->close();
             </nav>
             <a href="Cart.php">
                 <img src="image/cart.png" width="40px" height="40px">
+                <span id="cart-count"><?php echo count($_SESSION['cart']); ?></span>
             </a>
             <img src="image/menu.png" class="menu-icon" onclick="menutoggle()">
         </div>
@@ -133,7 +154,7 @@ $conn->close();
             }
         }
     </script>
-    
+
     <!-- 客服 -->
     <div class="service">
         <!-- 聊天按鈕 -->
@@ -195,42 +216,69 @@ $conn->close();
         });
     </script>
 
-    <!-- 賬戶 -->
-    <div class="background-container">
-        <div class="background-image left"></div>
-        <div class="background-image right"></div>
-            <div class="account-page">
-                <h1>賬戶資訊</h1>
-                <div class="account-info">
-                    <p><strong>用戶 UID：</strong> <?php echo htmlspecialchars($user['UID']); ?></p>
-                    <p><strong>用戶名稱：</strong> <?php echo htmlspecialchars($user['UName']); ?></p>
-                    <p><strong>用戶電郵：</strong> <?php echo htmlspecialchars($user['Email']); ?></p>
-                </div>
+    <!-- 產品詳細內容 -->
+    <div class="small-container pd-detail">
+        <div class="row">
+            <div class="col-pd-1">
+                <img src="image/<?php echo htmlspecialchars($product['PName']); ?>.png" alt="<?php echo htmlspecialchars($product['PName']); ?>">
+            </div>
+            <div class="col-pd-1">
+                <div class="small-title1" style="margin-bottom: 30px;">主頁/產品/<?php echo htmlspecialchars($product['PName']); ?></div>
+                <h1><?php echo htmlspecialchars($product['PName']); ?></h1>
+                <h3>產品描述</h3>
+                <p><?php echo nl2br(htmlspecialchars($product['Description'])); ?></p>
+                <h4>$
+                    <?php
+                    // 計算價格範圍
+                    $minPrice = min(array_column($variants, 'Price'));
+                    $maxPrice = max(array_column($variants, 'Price'));
+                    echo "$minPrice - $maxPrice";
+                    ?>
+                </h4>
 
-                <div class="change-password">
-                    <h2>更改密碼</h2>
-                    <form action="" method="POST">
-                        <label for="current_password">當前密碼：</label>
-                        <input type="password" id="current_password" name="current_password" required><br><br>
+                <!-- 選擇重量或其他變量 -->
+                <form action="" method="POST">
+                    <input type="hidden" name="pid" value="<?php echo $product['PID']; ?>">
+                    <input type="hidden" name="pname" value="<?php echo htmlspecialchars($product['PName']); ?>">
+                    <input type="hidden" name="price" value="<?php echo $minPrice; ?>">
+                    <input type="number" name="quantity" value="1" min="1"><br>
 
-                        <label for="new_password">新密碼：</label>
-                        <input type="password" id="new_password" name="new_password" required><br><br>
-
-                        <label for="confirm_new_password">確認新密碼：</label>
-                        <input type="password" id="confirm_new_password" name="confirm_new_password" required><br><br>
-
-                        <button type="submit" name="update_password">更新密碼</button>
-                    </form>
-                </div>
-
-                <div class="logout">
-                    <form action="" method="POST">
-                        <button type="submit" name="logout">登出</button>
-                    </form>
-                </div>
+                    <label for="Variant">選擇重量/規格:</label><br>
+                    <select name="variant">
+                        <?php foreach ($variants as $variant): ?>
+                            <option value="<?php echo htmlspecialchars($variant['Variant']); ?>">
+                                <?php echo htmlspecialchars($variant['Variant']) . " - $" . htmlspecialchars($variant['Price']); ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select><br>
+                    <button type="submit" name="add_to_cart" class="AddCart">加到購物車</button>
+                </form>
             </div>
         </div>
     </div>
+
+    <!-- 其他產品 -->
+    <div class="small-container">
+        <div class="other-pd">
+            <h2>其他產品</h2>
+            <div class="row-Otherpd">
+                <?php foreach ($random_products as $random_product): ?>
+                    <a href="Product-Details.php?pid=<?php echo htmlspecialchars($random_product['PID']); ?>" class="card-link">
+                        <div class="col-pd-4">
+                            <img src="image/<?php echo htmlspecialchars($random_product['PName']); ?>.png" alt="<?php echo htmlspecialchars($random_product['PName']); ?>">
+                            <h4><?php echo htmlspecialchars($random_product['PName']); ?></h4>
+                            <p>
+                                $<?php echo htmlspecialchars($random_product['minPrice']); ?> 
+                                - 
+                                $<?php echo htmlspecialchars($random_product['maxPrice']); ?>
+                            </p>
+                        </div>
+                    </a>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    </div>
+
 
     <!-- 頁尾 -->
     <div class="footer">
@@ -269,3 +317,7 @@ $conn->close();
     </div>
 </body>
 </html>
+
+<?php
+$conn->close();
+?>
