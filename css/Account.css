@@ -1,0 +1,162 @@
+/* 賬號頁面整體樣式 */
+.account-page {
+    width: 100%;
+    padding: 150px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh; /* 確保內容最小高度占滿視窗 */
+    z-index: 2;
+}
+
+/* 賬戶信息容器 */
+.account-info {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 10px;
+    padding: 20px 30px;
+    margin-bottom: 30px;
+    width: 100%;
+    max-width: 600px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    font-family: Arial, sans-serif;
+}
+
+.account-info h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.account-info p {
+    font-size: 18px;
+    color: #555;
+    margin: 10px 0;
+}
+
+/* 更改密碼容器 */
+.change-password {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 10px;
+    padding: 20px 30px;
+    width: 100%;
+    max-width: 600px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    font-family: Arial, sans-serif;
+}
+
+.change-password h2 {
+    font-size: 22px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* 表單內容 */
+form {
+    width: 100%;
+    text-align: center;
+}
+
+/* 輸入框樣式 */
+form input {
+    width: 90%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: all 0.3s ease-in-out;
+}
+
+/* 聚焦時輸入框的樣式 */
+form input:focus {
+    border-color: #007BFF;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    outline: none;
+}
+
+/* 更新按鈕樣式 */
+form button {
+    width: 90%;
+    padding: 10px;
+    margin-top: 20px;
+    border: none;
+    border-radius: 5px;
+    background: #007BFF;
+    color: #fff;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+}
+
+/* 按鈕懸停效果 */
+form button:hover {
+    background: #0056b3;
+}
+
+/* 登出按鈕容器 */
+.logout {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+/* 登出按鈕 */
+.logout form button {
+    padding: 10px;
+    width: 300px;
+    border: none;
+    border-radius: 5px;
+    background: #FF4D4D;
+    color: #fff;
+    font-size: 18px;
+    text-align: center;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+}
+
+/* 按鈕懸停效果 */
+.logout form button:hover {
+    background: #cc0000;
+}
+
+/* 背景容器設置 */
+.background-container {
+    display: flex;
+    position: relative;
+    min-height: 100vh;
+    width: 100%;
+    background-color: #f5f5f5; /* 設置背景底色 */
+    justify-content: center; /* 確保內容區域置中 */
+    align-items: center;
+    padding: 20px; /* 增加邊距，防止內容貼邊 */
+    box-sizing: border-box;
+    overflow: hidden; /* 防止圖片溢出 */
+}
+
+/* 左右背景圖片樣式 */
+.background-image {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 50%; /* 控制背景圖片寬度 */
+    background-size: cover;
+    background-position: center;
+    z-index: 0; /* 背景圖片位於底層 */
+    opacity: 0.9; /* 半透明效果 */
+    z-index: 0;
+}
+
+/* 左側背景圖片 */
+.background-image.left {
+    left: 0;
+    background-image: url('../image/Dog+Cat.jpg'); /* 替換為左側背景圖片路徑 */
+}
+
+/* 右側背景圖片 */
+.background-image.right {
+    right: 0;
+    background-image: url('../image/Cats.jpg'); /* 替換為右側背景圖片路徑 */
+}

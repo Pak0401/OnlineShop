@@ -37,6 +37,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 20px;
+    height: 180px;
 }
 
 nav{
@@ -123,7 +124,7 @@ p{
 /* Logo的圖文格式 */
 .container{
     max-width: auto;
-    margin-top: 50px;
+    margin-top: 180px;
     padding-left: 25px;
     padding-right: 25px;
     background: #000;

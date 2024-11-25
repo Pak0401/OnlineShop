@@ -75,8 +75,6 @@ $conn->close();
 session_start();
 $is_logged_in = isset($_SESSION['user_id']); // 檢查是否已登入
 
-session_start(); // 啟用 Session
-
 // 確保購物車已初始化
 if (!isset($_SESSION['cart'])) {
     $_SESSION['cart'] = [];

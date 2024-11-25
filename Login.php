@@ -15,9 +15,6 @@ if ($conn->connect_error) {
 session_start();
 $is_logged_in = isset($_SESSION['user_id']); // 檢查是否已登入
 
-// 啟用 Session
-session_start();
-
 // 處理登入請求
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = trim($_POST['email']);
@@ -209,7 +206,7 @@ $conn->close();
                     <label for="password">密碼：</label>
                     <input type="password" name="password" id="password" required><br><br>
                     
-                    <button type="submit">登入</button>
+                    <button type="submit" class="login-btn">登入</button>
                 </form>
                     <!-- 記得add link -->
                     <div class="form-link">

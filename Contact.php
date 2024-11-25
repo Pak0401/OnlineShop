@@ -9,7 +9,6 @@ if (!isset($_SESSION['cart'])) {
     $_SESSION['cart'] = [];
 }
 
-session_start();
 $is_logged_in = isset($_SESSION['user_id']); // 檢查是否已登入
 ?> 
 

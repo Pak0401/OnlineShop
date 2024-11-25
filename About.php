@@ -6,7 +6,6 @@ if (!isset($_SESSION['cart'])) {
     $_SESSION['cart'] = [];
 }
 
-session_start();
 $is_logged_in = isset($_SESSION['user_id']); // 檢查是否已登入
 ?>
 <!DOCTYPE html>
@@ -48,6 +47,7 @@ $is_logged_in = isset($_SESSION['user_id']); // 檢查是否已登入
             </nav>
             <a href="Cart.php">
                 <img src="image/cart.png" width="40px" height="40px">
+                <span id="cart-count"><?php echo count($_SESSION['cart']); ?></span>
             </a>
             <img src="image/menu.png" class="menu-icon" onclick="menutoggle()">
         </div>

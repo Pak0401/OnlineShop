@@ -1,6 +1,7 @@
 /* 購物車 */
 .cart-page{
     margin: 40px auto 80px;
+    margin-top: 210px;
 }
 
 .cart-page table{
@@ -75,20 +76,16 @@ td:last-child{
     text-align: center;
 }
 
-/* 購物車刪除按鈕 */
-.cart-btn{
-    display: inline-block;
-    background: #ff4800;
+/* 刪除按鈕 */
+.cart-page .remove-btn {
+    background-color: #ff4800;
     color: #fff;
-    padding: 5px 20px;
-    margin-top: 5px;
     border-radius: 20px;
-    transition: background 0.3s;
+    padding: 5px 20px;
 }
 
-.cart-btn:hover{
-    background: #8c3512;
-    color: #fff;
+.cart-page .remove-btn:hover {
+    background: #cc0000;
 }
 
 /* 總金額 */
@@ -110,22 +107,7 @@ td:last-child{
 
 /* 結帳按鈕 */
 .pay-btn{
-    display: inline-block;
-    background: #20beee;
-    color: #fff;
-    padding: 5px 30px;
-    margin-top: 10px;
-    border-radius: 30px;
-    transition: background 0.3s;
-}
-
-.pay-btn{
     float: right;
-}
-
-.pay-btn:hover{
-    background: #ff9b18;
-    color: #fff;
 }
 
 @media (max-width: 768px) {
@@ -133,3 +115,4 @@ td:last-child{
         display: none;
     }
 }
+

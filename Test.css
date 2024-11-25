@@ -1,462 +1,137 @@
-/* 基本資料[class] (因為有點亂)
-    手機 col-p-12
-    平板 col-ip-6
-    電腦 col-pc-4
-
-    推薦產品的整體格式 small-container
-    推薦產品的圖文 col-pd-4
-
-    新品推出的整體格式 container2
-    新品推出的格式 row-2
-    新品推出文字格式 col-dp-7
-    購買鏈接 btn
-
-    合作品牌的整體格式 small-container2
-    合作品牌格式 row3
-    合作品牌圖片 col-b-5
-
-    頁尾格式 footer-row
-    頁尾文字 footer-col-1/2/3/4
-*/
-
-*{
-    margin: 0;
-    padding: 0;
+/* 背景容器設置 */
+.background-container {
+    display: flex;
+    position: relative;
+    min-height: 100vh;
+    width: 100%;
+    background-color: #f5f5f5; /* 設置背景底色 */
+    justify-content: center; /* 確保內容區域置中 */
+    align-items: center;
+    padding: 20px; /* 增加邊距，防止內容貼邊 */
     box-sizing: border-box;
+    overflow: hidden; /* 防止圖片溢出 */
 }
 
-.navbar{
-    position: fixed;
+/* 左右背景圖片樣式 */
+.background-image {
+    position: absolute;
     top: 0;
-    bottom: auto;
+    bottom: 0;
+    width: 50%; /* 控制背景圖片寬度 */
+    background-size: cover;
+    background-position: center;
+    z-index: 0; /* 背景圖片位於底層 */
+    opacity: 0.9; /* 半透明效果 */
+    z-index: 0;
+}
+
+/* 左側背景圖片 */
+.background-image.left {
     left: 0;
-    width: 100%;
-    z-index: 3;
-    background: #000;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 20px;
+    background-image: url('image/Dog+Cat.jpg'); /* 替換為左側背景圖片路徑 */
 }
 
-nav{
-    flex: 1;
-    text-align: right;
-}
-
-nav ul{
-    display: inline-block;
-    list-style-type: none;
-}
-
-nav ul li{
-    display: inline-block;
-    margin-right: 20px;
-}
-
-a{
-    text-decoration: none;
-    color: #fff;
-    text-decoration: underline;
-}
-
-p{
-    color: #373737;
-    font-size: 20px;
-}
-
-.menu-icon{
-    width: 28px;
-    margin-left: 20px;
-    display: none;
-}
-
-/* 手機菜單 */
-@media (max-width: 768px){
-    
-    /* 控制navbar在手機上的顯示 */
-    .navbar{
-        position: fixed;
-        top: 0;
-        bottom: auto;
-        left: 0;
-        width: 100%;
-        z-index: 3;
-        background: #000;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 20px;
-    }
-
-    nav ul{
-        position: absolute;
-        top: 110px;
-        left: 0;
-        background: #000;
-        width: 100%;
-        overflow: hidden;
-        transition: max-height 0.3s;
-        /* z-index類似圖層 */
-        z-index: 2;
-    }
-
-    nav ul li{ 
-        display: block;
-        margin-right: 25px;
-        margin-bottom: 10px;
-        padding: 10px 0;
-        text-align: right;
-        /* z-index類似圖層 */
-        z-index: 2;
-    }
-
-    .menu-icon{
-        width: 50px;
-        display: block;
-        cursor: pointer;
-        /* z-index類似圖層 */
-        z-index: 2;
-    }
-}
-
-/* Logo的圖文格式 */
-.container{
-    max-width: auto;
-    margin-top: 100px !important;
-    padding-left: 25px;
-    padding-right: 25px;
-    background: #000;
-}
-
-/* 主頁的格式 */
-.row{
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    justify-content: space-around;
-}
-
-.col-ip-6 img, .col-pc-6 img{
-    max-width: 100%;
-    height: auto;
-    padding:15px;
-}
-
-.col-ip-6, .col-pc-6{
-    width: 50%;
-    padding: 15px;
-}
-
-/* 手機的圖文格式(btw好似有啲問題?)
-   喜報今日(10月6號)有冇問題啦 哈利 */
-@media (max-width: 768px) {
-    .row{
-        flex-direction: column;
-        text-align: center;
-    }
-
-    .homeImg{
-        width: 100%;
-    }
-
-    .honeImg img{
-        width: 100vw;
-        height: auto;
-        max-width: none;
-    }
-
-    .col-p-12 img{
-        width: 100%;
-        max-width: 100%;
-    };
-
-    .col-p-12{
-        width: 100%;
-    }
-    
-}
-
-/* 推薦產品的圖文格式 */
-.categories{
-    margin: 70px 0;
-}
-
-.small-container{
-    max-width: 1500px;
-    margin: auto;
-    padding-left: 25px;
-    padding-right: 25px;
-}
-
-/* 標題> [推薦產品] */
-.title{
-    text-align: center;
-    margin: 0 auto 80px;
-    position: relative;
-    line-height: 60px;
-}
-
-/* 推薦產品的標示 */
-.title::before{
-    content: '';
-    background: #636363;
-    width: 140px;    
-    height: 5px;
-    border-radius: 5px;
-    position: absolute;
-    top: 0; 
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 1;
-}
-
-.title::after{
-    content: '';
-    background: #636363;
-    width: 140px;    
-    height: 5px;
-    border-radius: 5px;
-    position: absolute;
-    bottom: 0; 
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 1;
-}
-
-/* 產品的格式 */
-.col-pd-4{
-    border: 1px solid #20beee;
-    border-radius: 10px;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
-    padding: 15px;
-    flex-basis: 20%;
-    min-width: 250px;
-    margin-bottom: 30px;
-    transition: transform 0.5s;
-}
-
-.col-pd-4 img{
-    width: 100%;
-}
-
-/* 產品的動畫 */
-.col-pd-4:hover{
-    transform: translateY(-10px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
-}
-
-/* 訂單的格式 */
-.container2{
-    margin: auto;
-    padding-left: 25px;
-    padding-right: 25px;
-    background: radial-gradient(#ffdf75 3%, #ff9b18 100%);
-    height: auto;
-}
-
-.title2{
-    text-align: center;
-    font-size: 30px;
-    position: relative;
-    width: 250px;
-    border: 10px groove #20beee;
-    border-radius: 5px;
-    background-color: #cecece;
-}
-
-/* 圖片滑動 */
-.row2{
-    display: flex;
-    width: 100%;
-    align-items: center;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    font-family: Arial;
-    margin: auto;
-    box-sizing: border-box;
-}
-
-img{
-    vertical-align: middle;
-}
-
-.slidesContainer{
-    position: relative;
-}
-
-.slidesContainer a{
-    text-decoration: none;
-}
-
-.slideImg{
-    display: none;
-}
-
-.cursor{
-    cursor: pointer;
-}
-
-/* 箭頭(前/後) */
-.prev, .next{
-    cursor: pointer;
-    position: absolute;
-    top: 50%;
-    width: auto;
-    padding: 16px;
-    margin-top: -50px;
-    color: white;
-    font-weight: bold;
-    font-size: 20px;
-    transition: 0.6s ease;
-    border-radius: 0 3px 3px 0;
-    user-select: none;
-    -webkit-user-select: none;
-}
-
-.next{
+/* 右側背景圖片 */
+.background-image.right {
     right: 0;
-    border-radius: 3px 0 0 3px;
+    background-image: url('image/Cats.jpg'); /* 替換為右側背景圖片路徑 */
 }
 
-.prev:hover, .next:hover{
-    background-color: rgba(0, 0, 0, 0.8);
-}
-
-.row2:after{
-    content: "";
-    display: table;
-    clear: both;
-}
-
-.active, .test:hover{
-    opacity: 1;
-}
-
-/* 最新產品的文字 */
-.col-dp-7{
-    width: 50%;
-    padding: 15px;
-}
-
-/* 購買鏈接 */
-.btn{
-    display: inline-block;
-    background: #20beee;
-    color: #fff;
-    padding: 8px 30px;
-    margin: 30px 0;
-    border-radius: 30px;
-    transition: background 0.3s;
-}
-
-.btn:hover{
-    background: #ff9b18;
-}
-
-/* 合作品牌 */
-.brands{
-    margin: 50px auto;
-}
-
-/* 合作品牌的Logo */
-.small-container2{
-    padding-left: 25px;
-    padding-right: 25px;
-    margin: auto;
-    height: auto;
-}
-
-/* 標題> [合作品牌] */
-.title3{
-    height: 100px;
+/* 內容區域 */
+.content {
+    z-index: 2; /* 確保內容在背景圖片之上 */
+    background: rgba(255, 255, 255, 0.95); /* 半透明白色背景 */
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* 添加陰影 */
+    padding: 30px 50px;
+    max-width: 600px;
+    width: 100%;
     text-align: center;
-    font-size: 35px;
-    margin-bottom: 20px;
-    position: relative;
-    line-height: 60px;
-    color: #000000;
+    font-family: Arial, sans-serif;
 }
 
-/* 如果想要讓標題有低線，
-上面title要有position: relative，
-下面title3要有position: absolute */
-.title3::after{
-    content: '';
-    background: #ffdc15;
-    width: 155px;    
-    height: 5px;
+/* 標題樣式 */
+.content h1 {
+    margin-bottom: 20px;
+    font-size: 28px;
+    color: #333;
+}
+
+/* 賬戶資訊樣式 */
+.account-details p {
+    margin: 10px 0;
+    font-size: 18px;
+    color: #555;
+}
+
+/* 更改密碼區域樣式 */
+.change-password h2 {
+    margin-top: 30px;
+    font-size: 22px;
+    color: #333;
+}
+
+.change-password form {
+    margin-top: 20px;
+}
+
+/* 輸入框樣式 */
+form input {
+    width: 90%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
     border-radius: 5px;
-    position: absolute;
-    bottom: 40px; 
-    left: 50%;
-    transform: translateX(-50%);
+    font-size: 16px;
+    transition: all 0.3s ease-in-out;
 }
 
-.row3{
-    display: flex;
-    max-width: 2000px;
-    align-items: center;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    margin: auto;
+/* 聚焦時的輸入框樣式 */
+form input:focus {
+    border-color: #007BFF;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    outline: none;
 }
 
-.col-b-5 img{
-    width: 100%;
+/* 提交按鈕樣式 */
+form button {
+    padding: 10px 20px;
+    border: none;
+    background-color: #007BFF;
+    color: #fff;
+    font-size: 18px;
     cursor: pointer;
-    filter: grayscale(80%)
+    border-radius: 5px;
+    transition: 0.3s;
+    width: 90%; /* 確保按鈕寬度與輸入框一致 */
+    margin-top: 15px;
 }
 
-.col-b-5 img:hover{
-    filter: grayscale(0);
+/* 按鈕懸停效果 */
+form button:hover {
+    background-color: #0056b3;
 }
 
-/* 手機的合作品牌 */
-@media (max-width: 768px){
-    .col-b-5 img{
-        filter: none;
-    }
-}
-
-/* 頁尾 */
-.footer-row{
+/* 登出按鈕樣式 */
+.logout {
     display: flex;
+    justify-content: center;
     align-items: center;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    width: 100%;
+    margin-top: 20px;
 }
 
-@media (max-width: 768px) {
-    .footer-row {
-        flex-direction: column; /* 小螢幕垂直排列 */
-        align-items: center;
-    }
+.logout form button {
+    width: 90%;
+    padding: 10px;
+    background-color: #FF4D4D;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
-.footer{
-    background: #000;
-    color: #cecece;
-    font-size: 20px;
-    padding: 30px 0 30px;
-}
-
-.footer-container{
-    max-width: auto;
-    margin: auto;
-    padding: 0 25px;
-}
-
-.footer p{
-    color: #cecece;
-}
-
-.footer h3{
-    margin-bottom: 20px;
-}
-
-.footer-col-1, .footer-col-2, .footer-col-3, .footer-col-4{
-    min-width: 250px;
-    margin-bottom: 20px;
+.logout form button:hover {
+    background-color: #cc0000;
 }

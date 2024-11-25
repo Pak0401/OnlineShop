@@ -71,7 +71,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_to_cart'])) {
     exit();
 }
 
-session_start();
 $is_logged_in = isset($_SESSION['user_id']); // 檢查是否已登入
 ?>
 

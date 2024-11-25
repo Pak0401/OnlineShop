@@ -48,6 +48,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_cart'])) {
 
     $_SESSION['cart'] = $updated_cart; // 更新購物車
 }
+
+$is_logged_in = isset($_SESSION['user_id']); // 檢查是否已登入
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -56,8 +58,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_cart'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OnlineShop | Cart</title>
     <link rel="stylesheet" href="css/Style.css">
-    <link rel="stylesheet" href="css/Products.css">
-    <link rel="stylesheet" href="css/Product1-Details.css">
     <link rel="stylesheet" href="css/Cart.css">
     <link rel="stylesheet" href="css/Chat.css">
 </head>
@@ -76,7 +76,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_cart'])) {
                     <li><a href="Products.php">產品</a></li>
                     <li><a href="Contact.html">聯絡我們</a></li>
                     <li><a href="About.html">關於我們</a></li>
-                    <li><a href="Account.html">登入</a></li>
+                    <?php
+                    if (isset($_SESSION['uid'])) {
+                        // 如果已登入，顯示賬戶連結
+                        echo '<li><a href="Account.php">賬戶</a></li>';
+                    } else {
+                        // 如果未登入，顯示登入連結
+                        echo '<li><a href="Login.php">登入</a></li>';
+                    }
+                    ?>
                 </ul>
             </nav>
             <a href="Cart.php">
@@ -223,7 +231,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_cart'])) {
                 </tr>
             </table>
         </div>
-        <a href="Payment.html" class="pay-btn">前往結帳</a>
+        <a href="Payment.html" class="btn pay-btn">前往結帳</a>
         <?php else: ?>
             <p>購物車是空的。</p>
         <?php endif; ?>
