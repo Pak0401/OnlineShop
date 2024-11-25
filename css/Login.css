@@ -1,3 +1,8 @@
+body, html {
+    margin: 0;
+    padding: 0;
+}
+
 /* 賬號頁面整體樣式 */
 .account-page {
     width: 100%;
@@ -8,7 +13,7 @@
     background-image: url('../image/cat.png'); /* 替換為你的背景圖片 */
     background-size: cover;
     background-position: center;
-    height: 100vh;
+    height: 100%;
 }
 
 /* 表單容器 */
@@ -21,21 +26,6 @@
     padding: 20px;
     width: 400px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-}
-
-.form-btn {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 20px;
-    height: 50px;
-}
-
-.form-btn span {
-    font-size: 24px;
-    font-weight: bold;
-    color: #333;
-    text-align: center;
 }
 
 /* 表單內容 */
@@ -60,6 +50,21 @@ form input:focus {
     border-color: #007BFF;
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
     outline: none;
+}
+
+.form-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    height: 50px;
+}
+
+.form-btn span {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
 }
 
 /* 按鈕樣式 */

@@ -1,3 +1,81 @@
+<?php
+// 資料庫連線
+$host = "localhost"; // 主機名稱
+$username = "root";  // 資料庫用戶名
+$password = "";      // 資料庫密碼
+$database = "userdata"; // 資料庫名稱
+
+$conn = new mysqli($host, $username, $password, $database);
+
+// 檢查連線
+if ($conn->connect_error) {
+    die("資料庫連線失敗：" . $conn->connect_error);
+}
+
+session_start();
+$is_logged_in = isset($_SESSION['user_id']); // 檢查是否已登入
+
+// 啟用 Session
+session_start();
+
+// 處理登入請求
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $email = trim($_POST['email']);
+    $password = trim($_POST['password']);
+
+    // 驗證是否填寫
+    if (empty($email) || empty($password)) {
+        die("請填寫所有欄位！");
+    }
+
+    // 從資料庫查詢用戶
+    $stmt = $conn->prepare("SELECT UID, UName, Password FROM data WHERE Email = ?");
+    if (!$stmt) {
+        die("SQL 語法錯誤：" . $conn->error);
+    }
+
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $stmt->store_result();
+
+    // 如果用戶存在
+    if ($stmt->num_rows > 0) {
+        $stmt->bind_result($uid, $username, $db_password);
+        $stmt->fetch();
+
+        // **密碼驗證**
+        if (password_verify($password, $db_password)) {
+            session_start(); // 密碼正確，設置 Session
+            $_SESSION['uid'] = $uid;
+            $_SESSION['username'] = $username;
+            $_SESSION['email'] = $email;
+
+            // 跳轉至 Login.php
+            echo "<script>
+                    alert('登入成功！');
+                    window.location.href = 'Index.php';
+                  </script>";
+        } else {
+            // 密碼錯誤
+            echo "<script>
+                    alert('密碼錯誤！');
+                    window.history.back();
+                  </script>";
+        }
+    } else {
+        // 用戶不存在
+        echo "<script>
+                alert('用戶不存在！');
+                window.history.back();
+              </script>";
+    }
+
+    $stmt->close();
+}
+
+$conn->close();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,7 +83,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OnlineShop | Account</title>
     <link rel="stylesheet" href="css/Style.css">
-    <link rel="stylesheet" href="css/Register.css">
+    <link rel="stylesheet" href="css/Login.css">
     <link rel="stylesheet" href="css/Chat.css">
 </head>
 <body>
@@ -19,11 +97,19 @@
             <!-- 橫向菜單 -->
             <nav>
                 <ul id="menuItems">
-                    <li><a href="Index.html">主頁</a></li>
+                    <li><a href="Index.php">主頁</a></li>
                     <li><a href="Products.php">產品</a></li>
-                    <li><a href="Contact.html">聯絡我們</a></li>
-                    <li><a href="About.html">關於我們</a></li>
-                    <li><a href="Account.html">登入</a></li>
+                    <li><a href="Contact.php">聯絡我們</a></li>
+                    <li><a href="About.php">關於我們</a></li>
+                    <?php
+                    if (isset($_SESSION['uid'])) {
+                        // 如果已登入，顯示賬戶連結
+                        echo '<li><a href="Account.php">賬戶</a></li>';
+                    } else {
+                        // 如果未登入，顯示登入連結
+                        echo '<li><a href="Login.php">登入</a></li>';
+                    }
+                    ?>
                 </ul>
             </nav>
             <a href="Cart.php">
@@ -111,35 +197,25 @@
     </script>
 
 
-    <!-- 註冊 -->
+    <!-- 登入 -->
     <div class="account-page">
         <div class="form-row">
-            <div class="form-container form-text">
-                <div class="form">
-                    <body>
-                        <h1 style="text-align: center; color: #333; margin-bottom: 20px;">註冊</h1>
-                        <form action="register.php" method="POST">
-                            <label for="username">用戶名稱：</label>
-                            <input type="text" name="username" id="username" required><br><br>
+            <div class="form-container">
+                <h1>登入</h1>
+                <form action="Login.php" method="POST">
+                    <label for="email">電子郵件地址：</label>
+                    <input type="email" name="email" id="email" required><br><br>
                     
-                            <label for="email">電子郵件地址：</label>
-                            <input type="email" name="email" id="email" required><br><br>
+                    <label for="password">密碼：</label>
+                    <input type="password" name="password" id="password" required><br><br>
                     
-                            <label for="confirm_email">確認電子郵件地址：</label>
-                            <input type="email" name="confirm_email" id="confirm_email" required><br><br>
-                    
-                            <label for="password">密碼：</label>
-                            <input type="password" name="password" id="password" required><br><br>
-                    
-                            <label for="confirm_password">確認密碼：</label>
-                            <input type="password" name="confirm_password" id="confirm_password" required><br><br>
-                    
-                            <button type="submit">註冊</button>
-                        </form>
-                </div>
-                <div class="form-message" id="message" style="display: none;">
-                    <p>請確認郵箱是否收到驗證信，並點擊確認鏈接完成註冊!</p><br>
-                    <p>並在數秒後，回到登入頁面</p>
+                    <button type="submit">登入</button>
+                </form>
+                    <!-- 記得add link -->
+                    <div class="form-link">
+                        <a href=""><u>忘記密碼</u></a><br>
+                        <a href="Register.php"><u>立即註冊</u></a>
+                    </div>
                 </div>
             </div>
         </div>

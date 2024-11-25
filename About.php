@@ -1,12 +1,23 @@
+<?php
+session_start(); // 啟用 Session
+
+// 確保購物車已初始化
+if (!isset($_SESSION['cart'])) {
+    $_SESSION['cart'] = [];
+}
+
+session_start();
+$is_logged_in = isset($_SESSION['user_id']); // 檢查是否已登入
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OnlineShop | Account</title>
+    <title>OnlineShop | About</title>
     <link rel="stylesheet" href="css/Style.css">
-    <link rel="stylesheet" href="css/Login.css">
     <link rel="stylesheet" href="css/Chat.css">
+    <link rel="stylesheet" href="css/About.css">
 </head>
 <body>
     <!-- 圖文格式 -->
@@ -14,16 +25,25 @@
         <div class="navbar">
             <!-- Logo -->
             <div class="logo">
-                <img src="image/logo.png" width="125px">
+                <img src="image/logo.PNg" width="125px">
             </div>
+            <img scr="image/menu.png">
             <!-- 橫向菜單 -->
             <nav>
                 <ul id="menuItems">
-                    <li><a href="Index.html">主頁</a></li>
+                    <li><a href="Index.php">主頁</a></li>
                     <li><a href="Products.php">產品</a></li>
-                    <li><a href="Contact.html">聯絡我們</a></li>
-                    <li><a href="About.html">關於我們</a></li>
-                    <li><a href="Account.html">登入</a></li>
+                    <li><a href="Contact.php">聯絡我們</a></li>
+                    <li><a href="About.php">關於我們</a></li>
+                    <?php
+                    if (isset($_SESSION['uid'])) {
+                        // 如果已登入，顯示賬戶連結
+                        echo '<li><a href="Account.php">賬戶</a></li>';
+                    } else {
+                        // 如果未登入，顯示登入連結
+                        echo '<li><a href="Login.php">登入</a></li>';
+                    }
+                    ?>
                 </ul>
             </nav>
             <a href="Cart.php">
@@ -48,7 +68,7 @@
             }
         }
     </script>
-
+    
     <!-- 客服 -->
     <div class="service">
         <!-- 聊天按鈕 -->
@@ -110,33 +130,57 @@
         });
     </script>
 
+    <!-- 關於我們 -->
+    <div class="abt-container">
+        <div class="abt-text">
+            <h1>關於我們</h1><hr><br>
+            <p>我們是一個專注於寵物用品的公司，致力於為寵物和它們的主人提供最好的服務和產品。 我們的目標是為寵物提供高品質的生活，讓每一隻寵物都能健康、幸福地成長。</p>
+            <p>我們提供各種各樣的寵物食品、玩具和日常用品。每一件產品都經過嚴格的測試，確保符合安全標準。</p>
+            <p>我們明瞭作為寵物主人的你，於工作的壓力及生活的緊張下，已經忙得分身不暇，餘下的時間亦想跟心愛的寵物多些相聚及溝通，實在不能花太多的時間外出四處尋找優質的寵物產品，
+               亦因此，我們為各位寵物家長篩選世界各地各式各樣的優質產品，將好的留低，將差的淘汰，令到各位寵物主人們買得放心，用得安心，這就是我們的信念及承諾。</p>
+            <p>我們保證，決不為謀取暴利而售賣危害寵物健康的產品，務求以全線健康的寵物產品，為你的寵物帶來健康及全面的呵護，寵物食品由原產地入口，經本地特約代理分銷，
+               信心十足，我們不會將水貨混合行貨出售，以不正當手法，欺騙顧客。我們將歇力地為大家搜羅世界各地的高質素產品，集合在我們的網店，令你能夠足不出戶，就能夠安心又放心地挑選心儀的產品。</p>
+                
+        </div>
 
-    <!-- 登入 -->
-    <div class="account-page">
-        <div class="form-row">
-            <div class="form-container form-text">
-                <div class="form-btn">
-                    <span>登入</span>
-                </div>
-                <div class="form">
-                    <form>
-                        <input type="text" placeholder="電郵地址"><br>
-                        <input type="password" placeholder="密碼"><br>
-                        <button type="submit" class="login-btn">登入</button>
-                    </form><br>
-                    <!-- 記得add link -->
-                    <div class="form-link">
-                        <a href=""><u>忘記密碼</u></a><br>
-                        <a href="Register.html"><u>立即註冊</u></a>
-                    </div>
-                </div>
+        <!-- 轉換圖片 -->
+        <div class="abtslide-container">
+            <div class="abtslide fade">
+                <img src="image/cat.png" style="width:100%">
+            </div>
+            <div class="abtslide fade">
+                <img src="image/cat2.png" style="width:100%">
+            </div>
+            <div class="abtslide fade">
+                <img src="image/cat3.png" style="width:100%">
             </div>
         </div>
     </div>
 
+    <!-- 轉換圖片的腳本 -->
+    <script>
+        let slideIndex = 0;
+        showSlides();
+
+        function showSlides() {
+            let i;
+            let slides = document.getElementsByClassName("abtslide");
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            slideIndex++;
+            if (slideIndex > slides.length) {
+                slideIndex = 1;
+            }
+            slides[slideIndex-1].style.display = "block";
+            setTimeout(showSlides, 3000); // 三秒自動換一張圖
+        }
+    </script>
+
     <!-- 頁尾 -->
     <div class="footer">
         <div class="footer-container">
+            <!-- 避免row的部分出問題，另外分開了 -->
             <div class="footer-row">
                 <div class="footer-col-1">
                     <h3><b>關於我們</b></h3>

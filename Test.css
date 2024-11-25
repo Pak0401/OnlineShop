@@ -1,84 +1,462 @@
-/* 賬號 */
-.account-page{
-    width: 100%;
-    padding: 50px ;
+/* 基本資料[class] (因為有點亂)
+    手機 col-p-12
+    平板 col-ip-6
+    電腦 col-pc-4
+
+    推薦產品的整體格式 small-container
+    推薦產品的圖文 col-pd-4
+
+    新品推出的整體格式 container2
+    新品推出的格式 row-2
+    新品推出文字格式 col-dp-7
+    購買鏈接 btn
+
+    合作品牌的整體格式 small-container2
+    合作品牌格式 row3
+    合作品牌圖片 col-b-5
+
+    頁尾格式 footer-row
+    頁尾文字 footer-col-1/2/3/4
+*/
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-.form-row{
+.navbar{
+    position: fixed;
+    top: 0;
+    bottom: auto;
+    left: 0;
+    width: 100%;
+    z-index: 3;
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+nav{
+    flex: 1;
+    text-align: right;
+}
+
+nav ul{
+    display: inline-block;
+    list-style-type: none;
+}
+
+nav ul li{
+    display: inline-block;
+    margin-right: 20px;
+}
+
+a{
+    text-decoration: none;
+    color: #fff;
+    text-decoration: underline;
+}
+
+p{
+    color: #373737;
+    font-size: 20px;
+}
+
+.menu-icon{
+    width: 28px;
+    margin-left: 20px;
+    display: none;
+}
+
+/* 手機菜單 */
+@media (max-width: 768px){
+    
+    /* 控制navbar在手機上的顯示 */
+    .navbar{
+        position: fixed;
+        top: 0;
+        bottom: auto;
+        left: 0;
+        width: 100%;
+        z-index: 3;
+        background: #000;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px;
+    }
+
+    nav ul{
+        position: absolute;
+        top: 110px;
+        left: 0;
+        background: #000;
+        width: 100%;
+        overflow: hidden;
+        transition: max-height 0.3s;
+        /* z-index類似圖層 */
+        z-index: 2;
+    }
+
+    nav ul li{ 
+        display: block;
+        margin-right: 25px;
+        margin-bottom: 10px;
+        padding: 10px 0;
+        text-align: right;
+        /* z-index類似圖層 */
+        z-index: 2;
+    }
+
+    .menu-icon{
+        width: 50px;
+        display: block;
+        cursor: pointer;
+        /* z-index類似圖層 */
+        z-index: 2;
+    }
+}
+
+/* Logo的圖文格式 */
+.container{
+    max-width: auto;
+    margin-top: 100px !important;
+    padding-left: 25px;
+    padding-right: 25px;
+    background: #000;
+}
+
+/* 主頁的格式 */
+.row{
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.col-ip-6 img, .col-pc-6 img{
+    max-width: 100%;
+    height: auto;
+    padding:15px;
+}
+
+.col-ip-6, .col-pc-6{
+    width: 50%;
+    padding: 15px;
+}
+
+/* 手機的圖文格式(btw好似有啲問題?)
+   喜報今日(10月6號)有冇問題啦 哈利 */
+@media (max-width: 768px) {
+    .row{
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .homeImg{
+        width: 100%;
+    }
+
+    .honeImg img{
+        width: 100vw;
+        height: auto;
+        max-width: none;
+    }
+
+    .col-p-12 img{
+        width: 100%;
+        max-width: 100%;
+    };
+
+    .col-p-12{
+        width: 100%;
+    }
+    
+}
+
+/* 推薦產品的圖文格式 */
+.categories{
+    margin: 70px 0;
+}
+
+.small-container{
+    max-width: 1500px;
+    margin: auto;
+    padding-left: 25px;
+    padding-right: 25px;
+}
+
+/* 標題> [推薦產品] */
+.title{
+    text-align: center;
+    margin: 0 auto 80px;
+    position: relative;
+    line-height: 60px;
+}
+
+/* 推薦產品的標示 */
+.title::before{
+    content: '';
+    background: #636363;
+    width: 140px;    
+    height: 5px;
+    border-radius: 5px;
+    position: absolute;
+    top: 0; 
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+}
+
+.title::after{
+    content: '';
+    background: #636363;
+    width: 140px;    
+    height: 5px;
+    border-radius: 5px;
+    position: absolute;
+    bottom: 0; 
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+}
+
+/* 產品的格式 */
+.col-pd-4{
+    border: 1px solid #20beee;
+    border-radius: 10px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+    padding: 15px;
+    flex-basis: 20%;
+    min-width: 250px;
+    margin-bottom: 30px;
+    transition: transform 0.5s;
+}
+
+.col-pd-4 img{
+    width: 100%;
+}
+
+/* 產品的動畫 */
+.col-pd-4:hover{
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+}
+
+/* 訂單的格式 */
+.container2{
+    margin: auto;
+    padding-left: 25px;
+    padding-right: 25px;
+    background: radial-gradient(#ffdf75 3%, #ff9b18 100%);
+    height: auto;
+}
+
+.title2{
+    text-align: center;
+    font-size: 30px;
+    position: relative;
+    width: 250px;
+    border: 10px groove #20beee;
+    border-radius: 5px;
+    background-color: #cecece;
+}
+
+/* 圖片滑動 */
+.row2{
+    display: flex;
+    width: 100%;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    font-family: Arial;
+    margin: auto;
+    box-sizing: border-box;
+}
+
+img{
+    vertical-align: middle;
+}
+
+.slidesContainer{
+    position: relative;
+}
+
+.slidesContainer a{
+    text-decoration: none;
+}
+
+.slideImg{
+    display: none;
+}
+
+.cursor{
+    cursor: pointer;
+}
+
+/* 箭頭(前/後) */
+.prev, .next{
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    width: auto;
+    padding: 16px;
+    margin-top: -50px;
+    color: white;
+    font-weight: bold;
+    font-size: 20px;
+    transition: 0.6s ease;
+    border-radius: 0 3px 3px 0;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.next{
+    right: 0;
+    border-radius: 3px 0 0 3px;
+}
+
+.prev:hover, .next:hover{
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.row2:after{
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.active, .test:hover{
+    opacity: 1;
+}
+
+/* 最新產品的文字 */
+.col-dp-7{
+    width: 50%;
+    padding: 15px;
+}
+
+/* 購買鏈接 */
+.btn{
+    display: inline-block;
+    background: #20beee;
+    color: #fff;
+    padding: 8px 30px;
+    margin: 30px 0;
+    border-radius: 30px;
+    transition: background 0.3s;
+}
+
+.btn:hover{
+    background: #ff9b18;
+}
+
+/* 合作品牌 */
+.brands{
+    margin: 50px auto;
+}
+
+/* 合作品牌的Logo */
+.small-container2{
+    padding-left: 25px;
+    padding-right: 25px;
+    margin: auto;
+    height: auto;
+}
+
+/* 標題> [合作品牌] */
+.title3{
+    height: 100px;
+    text-align: center;
+    font-size: 35px;
+    margin-bottom: 20px;
+    position: relative;
+    line-height: 60px;
+    color: #000000;
+}
+
+/* 如果想要讓標題有低線，
+上面title要有position: relative，
+下面title3要有position: absolute */
+.title3::after{
+    content: '';
+    background: #ffdc15;
+    width: 155px;    
+    height: 5px;
+    border-radius: 5px;
+    position: absolute;
+    bottom: 40px; 
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.row3{
+    display: flex;
+    max-width: 2000px;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin: auto;
+}
+
+.col-b-5 img{
+    width: 100%;
+    cursor: pointer;
+    filter: grayscale(80%)
+}
+
+.col-b-5 img:hover{
+    filter: grayscale(0);
+}
+
+/* 手機的合作品牌 */
+@media (max-width: 768px){
+    .col-b-5 img{
+        filter: none;
+    }
+}
+
+/* 頁尾 */
+.footer-row{
     display: flex;
     align-items: center;
     flex-wrap: wrap;
     justify-content: space-between;
-    margin: 30px auto 30px;
-    background-image: url('../image/cat.png');
-    background-size: cover;
-    background-position: center;
-    height: 400px;
-    padding: 20px;
-    position: relative;
+    width: 100%;
 }
 
-.form-text{
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 1;
-    width: 80%;
-    padding: 20px;
-    text-align: center;
+@media (max-width: 768px) {
+    .footer-row {
+        flex-direction: column; /* 小螢幕垂直排列 */
+        align-items: center;
+    }
 }
 
-.form-container{
-    width: 300px;
-    height: 320px;
-    background: rgba(255, 255, 255, 0.8);
-    text-align: center;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+.footer{
+    background: #000;
+    color: #cecece;
+    font-size: 20px;
+    padding: 30px 0 30px;
 }
 
-.form-btn span{
-    cursor: pointer;
-    display: inline-block;
+.footer-container{
+    max-width: auto;
+    margin: auto;
+    padding: 0 25px;
 }
 
-form input{
-    width: 80%;
-    margin: 7px auto;
-    padding: 5px 5px;
-    border: none;
-    border: 1px solid #333;
-    outline: none;
+.footer p{
+    color: #cecece;
 }
 
-form .login-btn{
-    margin: 5px auto;
-    padding: 5px 5px;
-    border: none;
-    border: 1px solid #333;
-    outline: none;
+.footer h3{
+    margin-bottom: 20px;
 }
 
-.form a{
-    text-decoration: underline;
-    color: #333;
-}
-
-.form-link{
-    text-align: center;
-    margin-top: 80px;
-}
-
-.form-message{
-    background: rgba(255, 255, 255, 1);
-    border-radius: 10px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 1;
-    width: 300px;
-    padding: 20px;
-    text-align: center;
+.footer-col-1, .footer-col-2, .footer-col-3, .footer-col-4{
+    min-width: 250px;
+    margin-bottom: 20px;
 }
