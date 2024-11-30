@@ -1,24 +1,11 @@
-<!-- Not yet finished -->
-<!-- Not yet finished -->
-<!-- Not yet finished -->
-<?php
-session_start(); // 啟用 Session
-
-// 確保購物車已初始化
-if (!isset($_SESSION['cart'])) {
-    $_SESSION['cart'] = [];
-}
-
-$is_logged_in = isset($_SESSION['user_id']); // 檢查是否已登入
-?> 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OnlineShop | Contact</title>
+    <title>聯絡我們</title>
     <link rel="stylesheet" href="css/Style.css">
+    <link rel="stylesheet" href="Test.css">
     <link rel="stylesheet" href="css/Chat.css">
 </head>
 <body>
@@ -27,9 +14,8 @@ $is_logged_in = isset($_SESSION['user_id']); // 檢查是否已登入
         <div class="navbar">
             <!-- Logo -->
             <div class="logo">
-                <img src="image/logo.PNg" width="125px">
+                <img src="image/logo.png" width="125px">
             </div>
-            <img scr="image/menu.png">
             <!-- 橫向菜單 -->
             <nav>
                 <ul id="menuItems">
@@ -37,20 +23,11 @@ $is_logged_in = isset($_SESSION['user_id']); // 檢查是否已登入
                     <li><a href="Products.php">產品</a></li>
                     <li><a href="Contact.php">聯絡我們</a></li>
                     <li><a href="About.php">關於我們</a></li>
-                    <?php
-                    if (isset($_SESSION['uid'])) {
-                        // 如果已登入，顯示賬戶連結
-                        echo '<li><a href="Account.php">賬戶</a></li>';
-                    } else {
-                        // 如果未登入，顯示登入連結
-                        echo '<li><a href="Login.php">登入</a></li>';
-                    }
-                    ?>
+                    <li><a href="Account.php">登入</a></li>
                 </ul>
             </nav>
             <a href="Cart.php">
                 <img src="image/cart.png" width="40px" height="40px">
-                <span id="cart-count"><?php echo count($_SESSION['cart']); ?></span>
             </a>
             <img src="image/menu.png" class="menu-icon" onclick="menutoggle()">
         </div>
@@ -71,7 +48,7 @@ $is_logged_in = isset($_SESSION['user_id']); // 檢查是否已登入
             }
         }
     </script>
-    
+
     <!-- 客服 -->
     <div class="service">
         <!-- 聊天按鈕 -->
@@ -133,7 +110,48 @@ $is_logged_in = isset($_SESSION['user_id']); // 檢查是否已登入
         });
     </script>
 
-    <!-- 聯絡我們 -->
+    <div class="contact-page">
+        <!-- 查詢 -->
+        <div class="contact-section">
+            <h3><i class="fa fa-phone" style="color: #007BFF;"></i> 查詢</h3>
+            <p>
+                <i class="fa fa-phone"></i> 熱線 | Hot Line<br>
+                電話: +852 1234 5678<br>
+                <i class="fa fa-envelope"></i> 電郵地址 | E-Mail<br>
+                76tw4@example.com<br>
+                <i class="fa fa-whatsapp"></i> Whatsapp: +852 1234 5678
+            </p>
+        </div>
+
+         <!-- 地址 -->
+        <div class="contact-section">
+            <h3>地址</h3>
+            <p>
+                香港九龍區鑽石山xx路xx號<br>
+                xx, xxxxxx Road, Diamond Hill, Kowloon, Hong Kong
+            </p>
+        </div>
+
+        <!-- 營業時間 -->
+        <div class="contact-section">
+            <h3>營業時間</h3>
+            <p>
+                星期一至五 | 10:00 – 20:00<br>
+                星期六 | 10:00 – 17:00<br>
+                星期日及公眾假期休息
+            </p>
+        </div>
+
+        <!-- 追蹤我們 -->
+        <div class="contact-section">
+            <h3>追蹤我們</h3>
+            <div class="social-icons">
+                <a href="#"><i class="fa fa-facebook"></i> Facebook</a>
+                <a href="#"><i class="fa fa-instagram"></i> Instagram</a>
+                <a href="#"><i class="fa fa-whatsapp"></i> Whatsapp</a>
+            </div>
+        </div>
+    </div>
 
     <!-- 頁尾 -->
     <div class="footer">
@@ -150,7 +168,7 @@ $is_logged_in = isset($_SESSION['user_id']); // 檢查是否已登入
                     <p>電話: +852 1234 5678</p>
                     <p>Whatsapp: +852 1234 5678</p>
                     <p>電郵: 7t6w4@example.com</p>
-                    <p>地址: 香港九龍區xx路xx號</p>
+                    <p>地址: 香港九龍區鑽石山xx路xx號</p>
                 </div>
                 <div class="footer-col-3">
                     <h3><b>社群鏈接</b></h3>
@@ -170,6 +188,6 @@ $is_logged_in = isset($_SESSION['user_id']); // 檢查是否已登入
             <hr>
             <p class="copyright">© 2022 All Rights Reserved.</p>
         </div>
-    </div>
+    </div>    
 </body>
 </html>

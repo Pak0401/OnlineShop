@@ -171,7 +171,6 @@ $conn->close();
         });
     </script>
 
-
     <!-- 註冊 -->
     <div class="account-page">
         <div class="form-row">
@@ -229,7 +228,7 @@ $conn->close();
                     <p>電話: +852 1234 5678</p>
                     <p>Whatsapp: +852 1234 5678</p>
                     <p>電郵: 7t6w4@example.com</p>
-                    <p>地址: 香港九龍區xx路xx號</p>
+                    <p>地址: 香港九龍區鑽石山xx路xx號</p>
                 </div>
                 <div class="footer-col-3">
                     <h3><b>社群鏈接</b></h3>

@@ -75,7 +75,7 @@ $is_logged_in = isset($_SESSION['user_id']); // 檢查是否已登入
 
 // 獲取隨機的 4 個其他產品，基於 GID 分組，避免重複
 $sql_random_products = "
-    SELECT p.GID, p.PName, MIN(p.Price) AS minPrice, MAX(p.Price) AS maxPrice 
+    SELECT p.GID, p.PID, p.PName, MIN(p.Price) AS minPrice, MAX(p.Price) AS maxPrice 
     FROM productdata p 
     WHERE p.GID != ? 
     GROUP BY p.GID 
@@ -292,7 +292,7 @@ while ($row = $result_random_products->fetch_assoc()) {
                     <p>電話: +852 1234 5678</p>
                     <p>Whatsapp: +852 1234 5678</p>
                     <p>電郵: 7t6w4@example.com</p>
-                    <p>地址: 香港九龍區xx路xx號</p>
+                    <p>地址: 香港九龍區鑽石山xx路xx號</p>
                 </div>
                 <div class="footer-col-3">
                     <h3><b>社群鏈接</b></h3>

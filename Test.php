@@ -1,139 +1,33 @@
-<?php
-// 連接資料庫
-$conn = new mysqli("localhost", "root", "", "product_data");
-
-if ($conn->connect_error) {
-    die("資料庫連線失敗：" . $conn->connect_error);
-}
-
-// 接收產品 ID
-$pid = isset($_GET['pid']) ? intval($_GET['pid']) : 0;
-
-if ($pid === 0) {
-    die("產品 ID 無效。");
-}
-
-// 查詢對應的產品數據
-$stmt = $conn->prepare("SELECT * FROM productdata WHERE PID = ?");
-$stmt->bind_param("i", $pid);
-$stmt->execute();
-$result = $stmt->get_result();
-
-if ($result->num_rows > 0) {
-    $product = $result->fetch_assoc();
-} else {
-    die("找不到該產品。");
-}
-
-
-// 獲取同一產品的所有變體（基於 GID 分組）
-$gid = $product['GID']; // 使用 GID 進行分組
-$sql_variants = "SELECT * FROM productdata WHERE GID = '$gid'";
-$result_variants = $conn->query($sql_variants);
-$variants = [];
-while ($row = $result_variants->fetch_assoc()) {
-    $variants[] = $row;
-}
-
-session_start();
-
-// 確保購物車已初始化
-if (!isset($_SESSION['cart'])) {
-    $_SESSION['cart'] = [];
-}
-
-// 處理加入購物車的請求
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_to_cart'])) {
-    $pid = intval($_POST['pid']);
-    $pname = htmlspecialchars($_POST['pname']);
-    $price = floatval($_POST['price']);
-    $quantity = intval($_POST['quantity']);
-    $variant = htmlspecialchars($_POST['variant']);
-
-    // 檢查購物車內是否已存在該產品（基於 PID 和 Variant）
-    $product_exists = false;
-    foreach ($_SESSION['cart'] as &$item) {
-        if ($item['pid'] === $pid && $item['variant'] === $variant) {
-            $item['quantity'] += $quantity; // 如果已存在，增加數量
-            $product_exists = true;
-            break;
-        }
-    }
-
-    // 如果產品尚未存在於購物車，新增到購物車
-    if (!$product_exists) {
-        $_SESSION['cart'][] = [
-            'pid' => $pid,
-            'name' => $pname,
-            'price' => $price,
-            'quantity' => $quantity,
-            'variant' => $variant
-        ];
-    }
-
-    // 重新導向到購物車頁面（避免表單重複提交）
-    header("Location: Cart.php");
-    exit();
-}
-
-$is_logged_in = isset($_SESSION['user_id']); // 檢查是否已登入
-
-// 獲取隨機的 4 個其他產品，基於 GID 分組，避免重複
-$sql_random_products = "
-    SELECT p.PID, p.PName, MIN(p.Price) AS minPrice, MAX(p.Price) AS maxPrice 
-    FROM productdata p 
-    WHERE p.GID != ? 
-    GROUP BY p.GID 
-    ORDER BY RAND() 
-    LIMIT 4";
-$stmt_random = $conn->prepare($sql_random_products);
-$stmt_random->bind_param("i", $gid); // 避免同一產品變體出現
-$stmt_random->execute();
-$result_random_products = $stmt_random->get_result();
-
-$random_products = [];
-while ($row = $result_random_products->fetch_assoc()) {
-    $random_products[] = $row;
-}
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo htmlspecialchars($product['PName']); ?> | Details</title>
+    <title>聯絡我們</title>
     <link rel="stylesheet" href="css/Style.css">
     <link rel="stylesheet" href="Test.css">
-    <link rel="stylesheet" href="css/Products.css">
     <link rel="stylesheet" href="css/Chat.css">
 </head>
 <body>
+    <!-- 圖文格式 -->
     <div class="container">
         <div class="navbar">
+            <!-- Logo -->
             <div class="logo">
                 <img src="image/logo.png" width="125px">
             </div>
+            <!-- 橫向菜單 -->
             <nav>
                 <ul id="menuItems">
                     <li><a href="Index.php">主頁</a></li>
                     <li><a href="Products.php">產品</a></li>
                     <li><a href="Contact.php">聯絡我們</a></li>
                     <li><a href="About.php">關於我們</a></li>
-                    <?php
-                    if (isset($_SESSION['uid'])) {
-                        // 如果已登入，顯示賬戶連結
-                        echo '<li><a href="Account.php">賬戶</a></li>';
-                    } else {
-                        // 如果未登入，顯示登入連結
-                        echo '<li><a href="Login.php">登入</a></li>';
-                    }
-                    ?>
+                    <li><a href="Account.php">登入</a></li>
                 </ul>
             </nav>
             <a href="Cart.php">
                 <img src="image/cart.png" width="40px" height="40px">
-                <span id="cart-count"><?php echo count($_SESSION['cart']); ?></span>
             </a>
             <img src="image/menu.png" class="menu-icon" onclick="menutoggle()">
         </div>
@@ -216,73 +110,53 @@ while ($row = $result_random_products->fetch_assoc()) {
         });
     </script>
 
-    <!-- 產品詳細內容 -->
-    <div class="small-container pd-detail">
-        <div class="row">
-            <div class="col-pd-1">
-                <img src="image/<?php echo htmlspecialchars($product['PName']); ?>.png" alt="<?php echo htmlspecialchars($product['PName']); ?>">
-            </div>
-            <div class="col-pd-1">
-                <div class="small-title1" style="margin-bottom: 30px;">主頁/產品/<?php echo htmlspecialchars($product['PName']); ?></div>
-                <h1><?php echo htmlspecialchars($product['PName']); ?></h1>
-                <h3>產品描述</h3>
-                <p><?php echo nl2br(htmlspecialchars($product['Description'])); ?></p>
-                <h4>$
-                    <?php
-                    // 計算價格範圍
-                    $minPrice = min(array_column($variants, 'Price'));
-                    $maxPrice = max(array_column($variants, 'Price'));
-                    echo "$minPrice - $maxPrice";
-                    ?>
-                </h4>
+    <div class="contact-page">
+        <!-- 查詢 -->
+        <div class="contact-section">
+            <h3><i class="fa fa-phone" style="color: #007BFF;"></i> 查詢</h3>
+            <p>
+                <i class="fa fa-phone"></i> 熱線 | Hot Line<br>
+                電話: +852 1234 5678<br>
+                <i class="fa fa-envelope"></i> 電郵地址 | E-Mail<br>
+                76tw4@example.com<br>
+                <i class="fa fa-whatsapp"></i> Whatsapp: +852 1234 5678
+            </p>
+        </div>
 
-                <!-- 選擇重量或其他變量 -->
-                <form action="" method="POST">
-                    <input type="hidden" name="pid" value="<?php echo $product['PID']; ?>">
-                    <input type="hidden" name="pname" value="<?php echo htmlspecialchars($product['PName']); ?>">
-                    <input type="hidden" name="price" value="<?php echo $minPrice; ?>">
-                    <input type="number" name="quantity" value="1" min="1"><br>
+         <!-- 地址 -->
+        <div class="contact-section">
+            <h3>地址</h3>
+            <p>
+                香港九龍區鑽石山xx路xx號<br>
+                xx, xxxxxx Road, Diamond Hill, Kowloon, Hong Kong
+            </p>
+        </div>
 
-                    <label for="Variant">選擇重量/規格:</label><br>
-                    <select name="variant">
-                        <?php foreach ($variants as $variant): ?>
-                            <option value="<?php echo htmlspecialchars($variant['Variant']); ?>">
-                                <?php echo htmlspecialchars($variant['Variant']) . " - $" . htmlspecialchars($variant['Price']); ?>
-                            </option>
-                        <?php endforeach; ?>
-                    </select><br>
-                    <button type="submit" name="add_to_cart" class="AddCart">加到購物車</button>
-                </form>
+        <!-- 營業時間 -->
+        <div class="contact-section">
+            <h3>營業時間</h3>
+            <p>
+                星期一至五 | 10:00 – 20:00<br>
+                星期六 | 10:00 – 17:00<br>
+                星期日及公眾假期休息
+            </p>
+        </div>
+
+        <!-- 追蹤我們 -->
+        <div class="contact-section">
+            <h3>追蹤我們</h3>
+            <div class="social-icons">
+                <a href="#"><i class="fa fa-facebook"></i> Facebook</a>
+                <a href="#"><i class="fa fa-instagram"></i> Instagram</a>
+                <a href="#"><i class="fa fa-whatsapp"></i> Whatsapp</a>
             </div>
         </div>
     </div>
-
-    <!-- 其他產品 -->
-    <div class="small-container">
-        <div class="other-pd">
-            <h2>其他產品</h2>
-            <div class="row-Otherpd">
-                <?php foreach ($random_products as $random_product): ?>
-                    <a href="Product-Details.php?pid=<?php echo htmlspecialchars($random_product['PID']); ?>" class="card-link">
-                        <div class="col-pd-4">
-                            <img src="image/<?php echo htmlspecialchars($random_product['PName']); ?>.png" alt="<?php echo htmlspecialchars($random_product['PName']); ?>">
-                            <h4><?php echo htmlspecialchars($random_product['PName']); ?></h4>
-                            <p>
-                                $<?php echo htmlspecialchars($random_product['minPrice']); ?> 
-                                - 
-                                $<?php echo htmlspecialchars($random_product['maxPrice']); ?>
-                            </p>
-                        </div>
-                    </a>
-                <?php endforeach; ?>
-            </div>
-        </div>
-    </div>
-
 
     <!-- 頁尾 -->
     <div class="footer">
         <div class="footer-container">
+            <!-- 避免row的部分出問題，另外分開了 -->
             <div class="footer-row">
                 <div class="footer-col-1">
                     <h3><b>關於我們</b></h3>
@@ -294,7 +168,7 @@ while ($row = $result_random_products->fetch_assoc()) {
                     <p>電話: +852 1234 5678</p>
                     <p>Whatsapp: +852 1234 5678</p>
                     <p>電郵: 7t6w4@example.com</p>
-                    <p>地址: 香港九龍區xx路xx號</p>
+                    <p>地址: 香港九龍區鑽石山xx路xx號</p>
                 </div>
                 <div class="footer-col-3">
                     <h3><b>社群鏈接</b></h3>
@@ -314,10 +188,6 @@ while ($row = $result_random_products->fetch_assoc()) {
             <hr>
             <p class="copyright">© 2022 All Rights Reserved.</p>
         </div>
-    </div>
+    </div>    
 </body>
 </html>
-
-<?php
-$conn->close();
-?>

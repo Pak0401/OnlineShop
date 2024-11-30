@@ -1,89 +1,87 @@
-/* 其他產品區域 */
-.other-pd {
-    margin-top: 50px;
-    text-align: left;
-}
-
-h2 {
-    font-size: 24px; /* 調整標題字體大小 */
-    text-align: left; /* 確保標題靠左對齊 */
-    margin: 20px 0; /* 設置標題的上下間距 */
-    padding: 0; /* 移除不必要的填充 */
-    position: relative; /* 需要時支持定位 */
-}
-
-h2::after {
-    content: '';
-    display: block;
-    width: 100px; /* 調整下劃線的寬度 */
-    height: 4px; /* 下劃線的厚度 */
-    background-color: #636363; /* 下劃線的顏色 */
-    margin-top: 5px;
-    position: absolute;
-    bottom: -5px; /* 與標題間距 */
-    left: 0; /* 下劃線從左側開始 */
-}
-
-/* 其他產品排版區域 */
-.row-Otherpd {
+/* 聯繫我們頁面通用樣式 */
+.contact-page {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between; /* 保證產品均勻分布 */
-    gap: 20px; /* 卡片之間的間距 */
-    margin: 0 auto; /* 保證居中 */
-    max-width: 1200px; /* 限制寬度，避免過分拉伸 */
-    padding: 0 10px; /* 增加左右內邊距 */
-}
-
-/* 產品卡片樣式 */
-.col-pd-4 {
-    border: 1px solid #20beee; /* 卡片邊框 */
-    padding: 15px;
+    justify-content: space-between;
+    padding: 50px;
+    background: linear-gradient(to right, #f8f9fa, #e9ecef);
     border-radius: 10px;
-    text-align: center;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-
-/* 圖片樣式 */
-.col-pd-4 img {
-    width: 100%;
-    max-height: 150px; /* 限制圖片最大高度 */
-    object-fit: contain; /* 保持圖片比例 */
-    border-radius: 5px;
-    margin-bottom: 15px;
-}
-
-/* 卡片標題 */
-.col-pd-4 h4 {
-    font-size: 18px;
-    margin-bottom: 10px;
-    color: #000;
-    font-weight: bold;
-}
-
-/* 價格區域 */
-.col-pd-4 p {
-    font-size: 16px;
-    color: #20beee;
-    font-weight: bold;
-    margin: 5px 0;
-}
-
-/* 懸停效果 */
-.col-pd-4:hover {
-    transform: translateY(-5px); /* 鼠標懸停效果 */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* 卡片陰影 */
-}
-
-.other-pd {
+.contact-section {
     position: relative;
-    margin: 20px 0;
+    width: 45%;
+    margin-bottom: 20px;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    transition: transform 0.3s ease-in-out;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
 }
 
-/* 讓 a 標籤填充整個卡片區域 */
-.card-link {
-    text-decoration: none; /* 移除超鏈接的下劃線 */
-    color: inherit; /* 保持文字顏色 */
-    display: block; /* 讓 <a> 標籤充滿內部內容 */
+.contact-section:hover {
+    transform: scale(1.03);
+}
+
+.contact-section::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 5px;
+    height: 100%;
+    background: #007BFF;
+    border-radius: 10px 0 0 10px;
+}
+
+.contact-section h3 {
+    font-size: 22px;
+    color: #333;
+    margin-bottom: 15px;
+    text-align: left;
+    border-bottom: 3px solid #f00;
+    display: inline-block;
+    padding-bottom: 5px;
+}
+
+.contact-section p {
+    font-size: 16px;
+    color: #555;
+    line-height: 1.8;
+}
+
+.contact-section a.button {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    background: linear-gradient(to right, #007BFF, #0056b3);
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.contact-section a.button:hover {
+    background: linear-gradient(to right, #0056b3, #003f7f);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+}
+
+.social-icons {
+    display: flex;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.social-icons a {
+    text-decoration: none;
+    font-size: 20px;
+    color: #555;
+    transition: color 0.3s;
+}
+
+.social-icons a:hover {
+    color: #007BFF;
 }

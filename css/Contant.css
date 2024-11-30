@@ -1,3 +1,87 @@
-/* Not yet finished */
-/* Not yet finished */
-/* Not yet finished */
+/* 聯繫我們頁面通用樣式 */
+.contact-page {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 50px;
+    background: linear-gradient(to right, #f8f9fa, #e9ecef);
+    border-radius: 10px;
+}
+
+.contact-section {
+    position: relative;
+    width: 45%;
+    margin-bottom: 20px;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    transition: transform 0.3s ease-in-out;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.contact-section:hover {
+    transform: scale(1.03);
+}
+
+.contact-section::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 5px;
+    height: 100%;
+    background: #007BFF;
+    border-radius: 10px 0 0 10px;
+}
+
+.contact-section h3 {
+    font-size: 22px;
+    color: #333;
+    margin-bottom: 15px;
+    text-align: left;
+    border-bottom: 3px solid #f00;
+    display: inline-block;
+    padding-bottom: 5px;
+}
+
+.contact-section p {
+    font-size: 16px;
+    color: #555;
+    line-height: 1.8;
+}
+
+.contact-section a.button {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    background: linear-gradient(to right, #007BFF, #0056b3);
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.contact-section a.button:hover {
+    background: linear-gradient(to right, #0056b3, #003f7f);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+}
+
+.social-icons {
+    display: flex;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.social-icons a {
+    text-decoration: none;
+    font-size: 20px;
+    color: #555;
+    transition: color 0.3s;
+}
+
+.social-icons a:hover {
+    color: #007BFF;
+}
