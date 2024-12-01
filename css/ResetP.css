@@ -1,0 +1,98 @@
+/* 確保頁面高度和垂直居中 */
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+}
+
+/* 主容器，確保內容置中 */
+.main-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; 
+    position: relative;
+    overflow: hidden; 
+    z-index: 1;
+}
+
+/* 重置表單容器 */
+.reset-container {
+    text-align: center;
+    background: rgba(255, 255, 255, 0.9); 
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 400px;
+    z-index: 2; 
+}
+
+/* 標題樣式 */
+.reset-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* 輸入框樣式 */
+.reset-container input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+/* 按鈕樣式 */
+.reset-container button {
+    width: 100%;
+    padding: 10px;
+    background: #007BFF;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.reset-container button:hover {
+    background: #0056b3;
+}
+
+/* 錯誤/通知信息 */
+.message {
+    text-align: center;
+    margin-top: 10px;
+    color: red;
+    font-size: 14px;
+}
+
+/* 左右背景圖片樣式 */
+.background-image {
+    position: absolute;
+    top: 180px; 
+    bottom: 0; 
+    width: 50%; 
+    height: 100%; 
+    background-size: cover; 
+    background-position: center;
+    z-index: 0; 
+    opacity: 0.9; 
+}
+
+/* 左側背景圖片 */
+.background-image.left {
+    left: 0;
+    background-image: url('../image/Dogs.jpg'); 
+}
+
+/* 右側背景圖片 */
+.background-image.right {
+    right: 0;
+    background-image: url('../image/Cats2.jpg'); 
+}

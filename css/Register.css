@@ -1,7 +1,7 @@
 /* 賬號頁面整體樣式 */
 .account-page {
     width: 100%;
-    padding: 180px 50px 50px; /* 修改這一行，增加 padding-top */
+    padding: 180px 50px 50px; 
     display: flex;
     justify-content: center;
     align-items: center;

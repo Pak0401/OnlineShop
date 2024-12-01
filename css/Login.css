@@ -6,11 +6,11 @@ body, html {
 /* 賬號頁面整體樣式 */
 .account-page {
     width: 100%;
-    padding: 180px 50px 50px; /* 與 Register.css 一致的 padding */
+    padding: 180px 50px 50px; 
     display: flex;
     justify-content: center;
     align-items: center;
-    background-image: url('../image/cat.png'); /* 替換為你的背景圖片 */
+    background-image: url('../image/cat.png'); 
     background-size: cover;
     background-position: center;
     height: 100%;

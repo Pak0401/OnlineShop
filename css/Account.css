@@ -5,7 +5,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    min-height: 100vh; /* 確保內容最小高度占滿視窗 */
+    min-height: 100vh; 
     z-index: 2;
 }
 
@@ -128,12 +128,12 @@ form button:hover {
     position: relative;
     min-height: 100vh;
     width: 100%;
-    background-color: #f5f5f5; /* 設置背景底色 */
-    justify-content: center; /* 確保內容區域置中 */
+    background-color: #f5f5f5;
+    justify-content: center; 
     align-items: center;
-    padding: 20px; /* 增加邊距，防止內容貼邊 */
+    padding: 20px;
     box-sizing: border-box;
-    overflow: hidden; /* 防止圖片溢出 */
+    overflow: hidden; 
 }
 
 /* 左右背景圖片樣式 */
@@ -141,22 +141,21 @@ form button:hover {
     position: absolute;
     top: 0;
     bottom: 0;
-    width: 50%; /* 控制背景圖片寬度 */
+    width: 50%; 
     background-size: cover;
     background-position: center;
-    z-index: 0; /* 背景圖片位於底層 */
-    opacity: 0.9; /* 半透明效果 */
-    z-index: 0;
+    z-index: 0; 
+    opacity: 0.9;
 }
 
 /* 左側背景圖片 */
 .background-image.left {
     left: 0;
-    background-image: url('../image/Dog+Cat.jpg'); /* 替換為左側背景圖片路徑 */
+    background-image: url('../image/Dog+Cat.jpg');
 }
 
 /* 右側背景圖片 */
 .background-image.right {
     right: 0;
-    background-image: url('../image/Cats.jpg'); /* 替換為右側背景圖片路徑 */
+    background-image: url('../image/Cats.jpg');
 }
