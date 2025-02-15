@@ -23,6 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $confirm_email = trim($_POST['confirm_email']);
     $password = trim($_POST['password']);
     $confirm_password = trim($_POST['confirm_password']);
+    $role = "user";
 
     // 基本驗證
     if (empty($username) || empty($email) || empty($password)) {
@@ -40,7 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (!$stmt) {
             $errorMessage = "SQL 語法錯誤：" . $conn->error;
         } else {
-            $stmt->bind_param("sss", $username, $email, $hashed_password);
+            $stmt->bind_param("sss", $username, $email, $hashed_password, $role);
             if ($stmt->execute()) {
                 $successMessage = "註冊成功！3秒後將返回登入頁面...";
                 echo "<script>

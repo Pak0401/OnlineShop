@@ -160,7 +160,7 @@ $is_logged_in = isset($_SESSION['user_id']); // 檢查是否已登入
                 messageElement.textContent = message;
                 chatContent.appendChild(messageElement);
                 chatInput.value = "";
-                chatContent.scrollTop = chatContent.scrollHeight; // 自動滾動到底部
+                chatContent.scrollTop = chatContent.scrollHeight; 
             }
         });
 
