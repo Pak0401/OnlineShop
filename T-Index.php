@@ -1,16 +1,16 @@
 <?php
-// 連接數據庫
-$host = 'localhost';
-$user = 'root';
-$pass = '';
-$db_name = 'product_data';
+session_start();
 
-$conn = new mysqli($host, $user, $pass, $db_name);
-if ($conn->connect_error) {
-    die("數據庫連接失敗: " . $conn->connect_error);
+// 載入兩個資料庫連線
+require 'User-db.php';
+require 'Prod-db.php';
+
+// 確保兩個連線都已經建立
+if (!isset($conn_userdata) || !isset($conn_productdata)) {
+    die("❌ 資料庫連線錯誤，請檢查 db.php 檔案");
 }
 
-// 查詢基於 GID 的推薦產品，並計算價格範圍
+// 從 productdata 查詢推薦產品
 $sql = "
     SELECT 
         productdata.GID,
@@ -32,53 +32,9 @@ $sql = "
     LIMIT 4;
 ";
 
-$result = $conn->query($sql);
-
-// 將結果存入 PHP 陣列
-$recommendedProducts = [];
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        $recommendedProducts[] = $row;
-    }
-}
-
-// 查詢最新商品，按 GID 分組，每組取一條
-$sql = "
-    SELECT 
-        NPID, 
-        PName, 
-        Price, 
-        PID, 
-        GID 
-    FROM 
-        new_pdata
-    GROUP BY 
-        GID
-    ORDER BY 
-        NPID ASC
-    LIMIT 4;
-";
-
-$result = $conn->query($sql);
-
-// 存儲商品數據
-$newProducts = [];
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        $newProducts[] = $row;
-    }
-}
-
-// 關閉數據庫連接
-$conn->close();
-
-session_start();
-$is_logged_in = isset($_SESSION['user_id']); // 檢查是否已登入
-
-// 確保購物車已初始化
-if (!isset($_SESSION['cart'])) {
-    $_SESSION['cart'] = [];
-}
+$stmt = $conn_productdata->prepare($sql);
+$stmt->execute();
+$recommendedProducts = $stmt->fetchAll();
 ?>
 
 <!DOCTYPE html>
@@ -103,22 +59,18 @@ if (!isset($_SESSION['cart'])) {
             <!-- 橫向菜單 -->
             <nav>
                 <ul id="menuItems">
-                    <li><a href="Index.php">主頁</a></li>
-                    <li><a href="Products.php">產品</a></li>
-                    <li><a href="Contact.php">聯絡我們</a></li>
-                    <li><a href="About.php">關於我們</a></li>
-                    <?php
-                    if (isset($_SESSION['uid'])) {
-                        // 如果已登入，顯示賬戶連結
-                        echo '<li><a href="Account.php">賬戶</a></li>';
-                    } else {
-                        // 如果未登入，顯示登入連結
-                        echo '<li><a href="Test2.php">登入</a></li>';
-                    }
-                    ?>
+                    <li><a href="T-Index.php">主頁</a></li>
+                    <li><a href="T-Products.php">產品</a></li>
+                    <li><a href="T-Contact.php">聯絡我們</a></li>
+                    <li><a href="T-About.php">關於我們</a></li>
+                    <?php if (!empty($_SESSION['uid'])): ?>
+                        <li><a href="T-Account.php">賬戶</a></li>
+                    <?php else: ?>
+                        <li><a href="T-Login.php">登入</a></li>
+                    <?php endif; ?>
                 </ul>
             </nav>
-            <a href="Cart.php">
+            <a href="T-Cart.php">
                 <img src="image/cart.png" width="40px" height="40px">
                 <span id="cart-count"><?php echo count($_SESSION['cart']); ?></span>
             </a>
@@ -227,64 +179,76 @@ if (!isset($_SESSION['cart'])) {
         <div class="small-container">
             <h1 class="title">推薦產品</h1>
             <div class="row">
-                <?php foreach ($recommendedProducts as $product): ?>
-                <div class="col-pd-4">
-                    <a href="Product-Details.php?pid=<?php echo htmlspecialchars($product['PID']); ?>">
-                        <img src="image/<?php echo htmlspecialchars($product['PName']); ?>.png" alt="<?php echo htmlspecialchars($product['PName']); ?>">
-                    </a>
-                    <h3><b><?php echo htmlspecialchars($product['FPName']); ?></b></h3>
-                    <div class="rating">
-                        <p>價格: $<?php echo htmlspecialchars($product['MinPrice']); ?> - $<?php echo htmlspecialchars($product['MaxPrice']); ?></p>
-                        <?php echo "<p class='hreat'><span style='color: red;'>&#9829;</span> " . rand(50, 200) . "</p>";?>
-                    </div>
-                </div>
-                <?php endforeach; ?>
+                <?php if (!empty($recommendedProducts) && is_array($recommendedProducts)): ?>
+                    <?php foreach ($recommendedProducts as $product): ?>
+                        <div class="col-pd-4">
+                            <a href="T-Product-Details.php?pid=<?php echo htmlspecialchars($product['PID']); ?>">
+                                <img src="image/<?php echo strtolower(str_replace(' ', '_', htmlspecialchars($product['PName']))); ?>.png" 
+                                    alt="<?php echo htmlspecialchars($product['PName']); ?>">
+                            </a>
+                            <h3><b><?php echo htmlspecialchars($product['FPName']); ?></b></h3>
+                            <div class="rating">
+                                <p>價格: 
+                                    <?php 
+                                        echo isset($product['MinPrice']) && isset($product['MaxPrice']) 
+                                            ? "$" . htmlspecialchars($product['MinPrice']) . " - $" . htmlspecialchars($product['MaxPrice'])
+                                            : "暫無價格";
+                                    ?>
+                                </p>
+                                <?php echo "<p class='heart'><span style='color: red;'>&#9829;</span> " . rand(50, 200) . "</p>"; ?>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <p>目前沒有推薦產品。</p>
+                <?php endif; ?>
             </div>
         </div>
     </div>
 
     <!-- 訂單 部分 -->
     <div class="offer">
-    <!-- 圖文格式2 -->
-    <div class="container2">
-        <!-- 最新商品 -->
-        <div class="row2">
-            <!-- 圖片滑動 -->
-            <div class="slidesContainer">
-                <?php foreach ($newProducts as $product): ?>
-                <div class="slidesImg">
-                    <img 
-                        src="image/<?php echo htmlspecialchars($product['PName']); ?>.png" 
-                        alt="<?php echo htmlspecialchars($product['PName']); ?>" 
-                        width="100%">
+        <div class="container2">
+            <div class="row2">
+                <div class="slidesContainer">
+                    <?php if (!empty($newProducts) && is_array($newProducts)): ?>
+                        <?php foreach ($newProducts as $product): ?>
+                            <div class="slidesImg">
+                                <img src="image/<?php echo strtolower(str_replace(' ', '_', htmlspecialchars($product['PName']))); ?>.png" 
+                                    alt="<?php echo htmlspecialchars($product['PName']); ?>" width="100%">
+                            </div>
+                        <?php endforeach; ?>
+                        <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+                        <a class="next" onclick="plusSlides(1)">&#10095;</a>
+                    <?php else: ?>
+                        <p>目前沒有新商品。</p>
+                    <?php endif; ?>
                 </div>
-
-                <?php endforeach; ?>
-                <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-                <a class="next" onclick="plusSlides(1)">&#10095;</a>
-                </div>
-                                        
+                                                    
                 <div class="col-pd-7">
-                <h2 class="title2">最新商品出售中</h2>
+                    <h2 class="title2">最新商品出售中</h2>
                     <h1><b>毛孩用品[強力殺菌噴霧]</b></h1>
-                    <h4>
-                        確保毛孩的健康, 殺菌尤其重要,
-                        <br>為毛孩提供最好的生活, 快來購買吧!
-                    </h4><br>
+                    <h4>確保毛孩的健康, 殺菌尤其重要, <br>為毛孩提供最好的生活, 快來購買吧!</h4><br>
                     <p>
                         <?php 
-                        // 計算價格範圍
-                        $prices = array_column($newProducts, 'Price'); // 取出所有價格
-                        $minPrice = min($prices);
-                        $maxPrice = max($prices);
-                        echo "$" . htmlspecialchars($minPrice) . " - $" . htmlspecialchars($maxPrice);
+                            if (!empty($newProducts)) {
+                                $prices = array_column($newProducts, 'Price'); 
+                                if (!empty($prices)) {
+                                    echo "$" . htmlspecialchars(min($prices)) . " - $" . htmlspecialchars(max($prices));
+                                } else {
+                                    echo "暫無價格";
+                                }
+                            } else {
+                                echo "暫無商品";
+                            }
                         ?>
                     </p>
-                    <a href="Products.php" class="btn">立即購買</a>
+                    <a href="T-Products.php" class="btn">立即購買</a>
                 </div>
             </div>
         </div>
     </div>
+
 
     <!-- 訂單 腳本 -->
     <script>

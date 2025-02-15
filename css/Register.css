@@ -1,57 +1,109 @@
-/* 賬號頁面整體樣式 */
+/* 全局重置 */
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+/* 賬號頁面樣式 */
 .account-page {
     width: 100%;
-    padding: 180px 50px 50px; 
+    padding: 100px 50px;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-image: url('../image/cat.png');
+    background-image: url('../image/cat.png'); 
     background-size: cover;
     background-position: center;
-    height: 100%;
+    height: 100vh;
 }
 
 /* 表單容器 */
 .form-row {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: rgba(255, 255, 255, 0.85);
+    background: rgba(255, 255, 255, 0.9);
     border-radius: 10px;
-    padding: 20px;
+    padding: 30px;
     width: 400px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
-/* 表單內容 */
-form {
-    width: 100%;
+/* 表單標題 */
+.form-title {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
     text-align: center;
 }
 
-/* 輸入框樣式 */
-form input {
-    width: 90%;
-    padding: 10px;
-    margin: 10px 0;
+/* 統一輸入框樣式 */
+.input-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 320px;
+    align-items: center; /* 讓內容置中 */
+    text-align: center; /* 讓標籤置中 */
+    margin-bottom: 15px;
+}
+
+.input-container label {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.input-container input {
+    width: 100%;
+    padding: 12px;
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 16px;
-    transition: all 0.3s ease-in-out;
+    transition: border 0.3s ease-in-out;
 }
 
 /* 聚焦時輸入框的樣式 */
-form input:focus {
+.input-container input:focus {
     border-color: #007BFF;
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
     outline: none;
 }
 
+/* 密碼輸入框容器 */
+.password-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-container input {
+    flex: 1;
+    padding-right: 40px; /* 預留右側空間 */
+}
+
+/* 眼睛圖示 */
+.toggle-password {
+    position: absolute;
+    right: 10px; /* 貼齊右側 */
+    top: 67%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 18px;
+    color: #666;
+}
+
+.toggle-password:hover {
+    color: #007BFF;
+}
+
 /* 註冊按鈕 */
-form button {
-    width: 90%;
-    padding: 10px;
-    margin-top: 20px;
+.register-btn {
+    width: 100%;
+    max-width: 320px;
+    padding: 12px;
     border: none;
     border-radius: 5px;
     background: #007BFF;
@@ -61,32 +113,7 @@ form button {
     transition: background 0.3s ease-in-out;
 }
 
-/* 按鈕的懸停效果 */
-form button:hover {
+/* 按鈕懸停效果 */
+.register-btn:hover {
     background: #0056b3;
-}
-
-/* 表單鏈接 */
-.form a {
-    display: block;
-    margin-top: 15px;
-    text-decoration: none;
-    color: #007BFF;
-    font-size: 14px;
-}
-
-.form a:hover {
-    text-decoration: underline;
-}
-
-/* 表單彈窗消息 */
-.form-message {
-    background: rgba(0, 123, 255, 0.1);
-    color: #007BFF;
-    border: 1px solid #007BFF;
-    border-radius: 5px;
-    padding: 15px;
-    margin-top: 20px;
-    font-size: 14px;
-    display: none;
 }

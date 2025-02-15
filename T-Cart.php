@@ -7,34 +7,41 @@ if (!isset($_SESSION['cart'])) {
     $_SESSION['cart'] = [];
 }
 
-// 確保 `conn_productdata` 連線正常
-if (!isset($conn_productdata)) {
-    die("❌ 資料庫連線錯誤，請檢查 Prod-db.php");
-}
+// 處理加入購物車請求
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_to_cart'])) {
+    $pid = intval($_POST['pid']);
+    $pname = htmlspecialchars($_POST['pname']);
+    $price = floatval($_POST['price']);
+    $quantity = max(1, intval($_POST['quantity'])); // 確保數量至少為 1
+    $variant = htmlspecialchars($_POST['variant']);
 
-// **查詢購物車內所有的 PID**
-$pids = array_column($_SESSION['cart'], 'pid');
-$product_map = [];
-
-if (!empty($pids)) {
-    $placeholders = implode(',', array_fill(0, count($pids), '?'));
-    $stmt = $conn_productdata->prepare("SELECT PID, PName, Price, Variant FROM productdata WHERE PID IN ($placeholders)");
-    $stmt->execute($pids);
-    $products_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-    // 建立 PID 對應的產品資料
-    foreach ($products_data as $product) {
-        $product_map[$product['PID']] = $product;
+    // 檢查購物車內是否已存在該產品（基於 PID 和 Variant
+    $product_exists = false;
+    foreach ($_SESSION['cart'] as &$item) {
+        if ($item['pid'] === $pid && $item['variant'] === $variant) {
+            $item['quantity'] += $quantity; // 如果已存在，增加數量
+            $product_exists = true;
+            break;
+        }
     }
+
+    // 如果產品尚未存在於購物車，新增到購物車
+    if (!$product_exists) {
+        $_SESSION['cart'][] = [
+            'pid' => $pid,
+            'name' => $pname,
+            'price' => $price,
+            'quantity' => $quantity,
+            'variant' => $variant
+        ];
+    }
+
+    // 重新導向到購物車頁面，避免重複提交
+    header("Location: T-Cart.php");
+    exit();
 }
 
-// **刪除購物車內不存在的商品**
-$_SESSION['cart'] = array_filter($_SESSION['cart'], function ($item) use ($product_map) {
-    return isset($product_map[$item['pid']]);
-});
-$_SESSION['cart'] = array_values($_SESSION['cart']); // 重新索引
-
-// **刪除購物車商品**
+// 刪除購物車商品
 if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['pid']) && isset($_GET['variant'])) {
     $pid = intval($_GET['pid']);
     $variant = htmlspecialchars($_GET['variant']);
@@ -47,42 +54,28 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['pid']
     }
 
     $_SESSION['cart'] = array_values($_SESSION['cart']); // 重新索引
-    header("Location: cart.php");
+    header("Location: T-Cart.php");
     exit();
 }
 
-// **更新購物車數量**
+// 更新購物車數量
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_cart'])) {
-    $updated_cart = [];
+    foreach ($_POST['quantities'] as $key => $quantity) {
+        list($pid, $variant) = explode('_', $key);
+        $pid = intval($pid);
+        $quantity = max(1, intval($quantity));
 
-    if (isset($_POST['quantities']) && is_array($_POST['quantities'])) {
-        foreach ($_POST['quantities'] as $key => $quantity) {
-            list($pid, $variant) = explode('_', $key);
-            $pid = intval($pid);
-            $quantity = max(1, intval($quantity));
-
-            // 確保 PID 仍然存在
-            if (!isset($product_map[$pid])) {
-                continue; // 跳過無效的產品
-            }
-
-            // 更新數量
-            foreach ($_SESSION['cart'] as $item) {
-                if ($item['pid'] == $pid && $item['variant'] == $variant) {
-                    $item['quantity'] = $quantity;
-                    $updated_cart[] = $item;
-                    break;
-                }
+        foreach ($_SESSION['cart'] as &$item) {
+            if ($item['pid'] == $pid && $item['variant'] == $variant) {
+                $item['quantity'] = $quantity;
+                break;
             }
         }
     }
-
-    $_SESSION['cart'] = $updated_cart;
-    header("Location: cart.php");
+    
+    header("Location: T-Cart.php");
     exit();
 }
-
-$is_logged_in = isset($_SESSION['uid']); // 檢查是否已登入
 ?>
 
 <!DOCTYPE html>
@@ -106,22 +99,22 @@ $is_logged_in = isset($_SESSION['uid']); // 檢查是否已登入
             <!-- 橫向菜單 -->
             <nav>
                 <ul id="menuItems">
-                    <li><a href="Index.php">主頁</a></li>
-                    <li><a href="Products.php">產品</a></li>
-                    <li><a href="Contact.php">聯絡我們</a></li>
-                    <li><a href="About.php">關於我們</a></li>
+                    <li><a href="T-Index.php">主頁</a></li>
+                    <li><a href="T-Products.php">產品</a></li>
+                    <li><a href="T-Contact.php">聯絡我們</a></li>
+                    <li><a href="T-About.php">關於我們</a></li>
                     <?php
                     if (isset($_SESSION['uid'])) {
                         // 如果已登入，顯示賬戶連結
-                        echo '<li><a href="Account.php">賬戶</a></li>';
+                        echo '<li><a href="T-Account.php">賬戶</a></li>';
                     } else {
                         // 如果未登入，顯示登入連結
-                        echo '<li><a href="Login.php">登入</a></li>';
+                        echo '<li><a href="T-Login.php">登入</a></li>';
                     }
                     ?>
                 </ul>
             </nav>
-            <a href="Cart.php">
+            <a href="T-Cart.php">
                 <img src="image/cart.png" width="40px" height="40px">
                 <span id="cart-count"><?php echo count($_SESSION['cart']); ?></span>
             </a>
@@ -244,7 +237,7 @@ $is_logged_in = isset($_SESSION['uid']); // 檢查是否已登入
                     <td>$<?php echo number_format(floatval($item['price']), 2); ?></td>
                     <td>$<?php echo number_format($subtotal, 2); ?></td>
                     <td>
-                        <a href="Cart.php?action=delete&pid=<?php echo $item['pid']; ?>&variant=<?php echo urlencode($item['variant']); ?>" class="btn delete-btn">刪除</a>
+                        <a href="T-Cart.php?action=delete&pid=<?php echo $item['pid']; ?>&variant=<?php echo urlencode($item['variant']); ?>" class="btn delete-btn">刪除</a>
                     </td>
                 </tr>
 

@@ -6,7 +6,7 @@ body, html {
 /* 賬號頁面整體樣式 */
 .account-page {
     width: 100%;
-    padding: 180px 50px 50px; 
+    padding: 100px 50px;
     display: flex;
     justify-content: center;
     align-items: center;

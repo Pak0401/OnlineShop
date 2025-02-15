@@ -1,76 +1,81 @@
 <?php
-// 啟用 Session
 session_start();
+require 'user-db.php'; // 確保正確載入 PDO 連線
 
-// 檢查用戶是否已登入，未登入則重定向到登入頁面
-if (!isset($_SESSION['uid'])) {
-    header("Location: Login.php"); // 登入頁面
-    exit();
-}
+// 初始化 $message，防止 Undefined Variable 錯誤
+$message = "";
 
-// **載入資料庫連接**
-require 'db.php';
+// 處理忘記密碼
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['check_email'])) {
+    $email = trim($_POST['email']);
+    $email = filter_var($email, FILTER_SANITIZE_EMAIL);
 
-// 取得當前用戶的資訊
-$uid = $_SESSION['uid'];
-
-try {
-    // **使用 PDO 預處理語句來獲取用戶資料**
-    $stmt = $conn->prepare("SELECT UID, UName, Email, Password FROM data WHERE UID = ?");
-    $stmt->execute([$uid]);
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    // **如果找不到用戶，則登出並重定向**
-    if (!$user) {
-        session_destroy();
-        header("Location: Login.php");
-        exit();
-    }
-} catch (PDOException $e) {
-    die("❌ 資料庫錯誤：" . $e->getMessage());
-}
-
-// **更新密碼處理**
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_password'])) {
-    $current_password = trim($_POST['current_password']);
-    $new_password = trim($_POST['new_password']);
-    $confirm_new_password = trim($_POST['confirm_new_password']);
-
-    // **驗證當前密碼**
-    if (!password_verify($current_password, $user['Password'])) {
-        echo "<script>alert('❌ 當前密碼不正確！');</script>";
-    } elseif ($new_password !== $confirm_new_password) {
-        echo "<script>alert('❌ 新密碼與確認密碼不一致！');</script>";
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $message = "請輸入有效的電子郵件地址。";
     } else {
-        // **更新密碼**
-        $hashed_new_password = password_hash($new_password, PASSWORD_BCRYPT);
-        try {
-            $update_stmt = $conn->prepare("UPDATE data SET Password = ? WHERE UID = ?");
-            $update_stmt->execute([$hashed_new_password, $uid]);
-            echo "<script>alert('✅ 密碼更新成功！');</script>";
-        } catch (PDOException $e) {
-            echo "<script>alert('❌ 密碼更新失敗，請重試。');</script>";
+        $stmt = $conn_userdata->prepare("SELECT UID FROM data WHERE Email = ?");
+        $stmt->bindValue(1, $email, PDO::PARAM_STR);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($result) {
+            $_SESSION['email_verified'] = $email;
+            $message = "電子郵件驗證成功，請輸入新密碼。";
+        } else {
+            $message = "該電子郵件地址未註冊。";
         }
     }
 }
 
-// **處理登出請求**
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['logout'])) {
-    session_unset();
-    session_destroy();
-    header("Location: Test3.php"); // 跳轉到首頁
-    exit();
+// 處理更改密碼
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_password'])) {
+    $new_password = trim($_POST['new_password']);
+    $confirm_password = trim($_POST['confirm_password']);
+    $email = $_SESSION['email_verified'] ?? null;
+
+    if (!$email) {
+        $message = "未驗證電子郵件地址，請先驗證。";
+    } elseif (empty($new_password) || empty($confirm_password)) {
+        $message = "請輸入並確認新密碼。";
+    } elseif ($new_password !== $confirm_password) {
+        $message = "新密碼與確認密碼不一致。";
+    } else {
+        // 確保新密碼與舊密碼不同
+        $stmt = $conn_userdata->prepare("SELECT Password FROM data WHERE Email = ?");
+        $stmt->bindValue(1, $email, PDO::PARAM_STR);
+        $stmt->execute();
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (password_verify($new_password, $user['Password'])) {
+            $message = "新密碼不能與當前密碼相同，請嘗試其他密碼。";
+        } else {
+            // 更新密碼
+            $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
+            $stmt = $conn_userdata->prepare("UPDATE data SET Password = ? WHERE Email = ?");
+            $stmt->bindValue(1, $hashed_password, PDO::PARAM_STR);
+            $stmt->bindValue(2, $email, PDO::PARAM_STR);
+            if ($stmt->execute()) {
+                unset($_SESSION['email_verified']); // 清除 session
+                header("Location: Login.php");
+                exit();
+            } else {
+                $message = "密碼更改失敗，請稍後再試。";
+            }
+        }
+    }
 }
+
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OnlineShop | About</title>
+    <title>OnlineShop | Account</title>
     <link rel="stylesheet" href="css/Style.css">
+    <link rel="stylesheet" href="css/ResetP.css">
     <link rel="stylesheet" href="css/Chat.css">
-    <link rel="stylesheet" href="css/Account.css">
 </head>
 <body>
     <!-- 圖文格式 -->
@@ -78,28 +83,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['logout'])) {
         <div class="navbar">
             <!-- Logo -->
             <div class="logo">
-                <img src="image/logo.PNg" width="125px">
+                <img src="image/logo.png" width="125px">
             </div>
-            <img scr="image/menu.png">
             <!-- 橫向菜單 -->
             <nav>
                 <ul id="menuItems">
-                    <li><a href="Index.php">主頁</a></li>
-                    <li><a href="Products.php">產品</a></li>
-                    <li><a href="Contact.php">聯絡我們</a></li>
-                    <li><a href="About.php">關於我們</a></li>
+                    <li><a href="T-Index.php">主頁</a></li>
+                    <li><a href="T-Products.php">產品</a></li>
+                    <li><a href="T-Contact.php">聯絡我們</a></li>
+                    <li><a href="T-About.php">關於我們</a></li>
                     <?php
                     if (isset($_SESSION['uid'])) {
                         // 如果已登入，顯示賬戶連結
-                        echo '<li><a href="Account.php">賬戶</a></li>';
+                        echo '<li><a href="T-Account.php">賬戶</a></li>';
                     } else {
                         // 如果未登入，顯示登入連結
-                        echo '<li><a href="Test2.php">登入</a></li>';
+                        echo '<li><a href="T-Login.php">登入</a></li>';
                     }
                     ?>
                 </ul>
             </nav>
-            <a href="Cart.php">
+            <a href="T-Cart.php">
                 <img src="image/cart.png" width="40px" height="40px">
                 <span id="cart-count"><?php echo count($_SESSION['cart']); ?></span>
             </a>
@@ -184,43 +188,49 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['logout'])) {
         });
     </script>
 
-    <!-- 賬戶 -->
+    <!-- 重設密碼表單 -->
     <div class="background-container">
         <div class="background-image left"></div>
         <div class="background-image right"></div>
-            <div class="account-page">
-                <h1>賬戶資訊</h1>
-                <div class="account-info">
-                    <p><strong>用戶 UID：</strong> <?php echo htmlspecialchars($user['UID']); ?></p>
-                    <p><strong>用戶名稱：</strong> <?php echo htmlspecialchars($user['UName']); ?></p>
-                    <p><strong>用戶電郵：</strong> <?php echo htmlspecialchars($user['Email']); ?></p>
-                </div>
+        <div class="main-container">
+            <div class="reset-container">
+                <h2>忘記密碼</h2>
 
-                <div class="change-password">
-                    <h2>更改密碼</h2>
-                    <form action="" method="POST">
-                        <label for="current_password">當前密碼：</label>
-                        <input type="password" id="current_password" name="current_password" required><br><br>
+                <!-- 訊息提示 -->
+                <?php if ($message): ?>
+                    <div class="message"><?php echo $message; ?></div>
+                <?php endif; ?>
 
-                        <label for="new_password">新密碼：</label>
-                        <input type="password" id="new_password" name="new_password" required><br><br>
-
-                        <label for="confirm_new_password">確認新密碼：</label>
-                        <input type="password" id="confirm_new_password" name="confirm_new_password" required><br><br>
-
-                        <button type="submit" name="update_password">更新密碼</button>
+                <?php if (!isset($_SESSION['email_verified'])): ?>
+                    <!-- 驗證電子郵件 -->
+                    <form method="POST" action="">
+                        <input type="email" name="email" placeholder="輸入您的電子郵件地址" required>
+                        <button type="submit" name="check_email">驗證電子郵件</button>
                     </form>
-                </div>
+                <?php else: ?>
+                    <!-- 更改密碼 -->
+                    <form method="POST" action="">
+                        <div class="password-container">
+                            <input type="password" name="new_password" id="new_password" placeholder="輸入新密碼" required>
+                            <span class="toggle-password" onclick="togglePassword('new_password', this)">
+                                <i class="bi bi-eye-fill"></i>
+                            </span>
+                        </div>
 
-                <div class="logout">
-                    <form action="" method="POST">
-                        <button type="submit" name="logout">登出</button>
+                        <div class="password-container">
+                            <input type="password" name="confirm_password" id="confirm_password" placeholder="確認新密碼" required>
+                            <span class="toggle-password" onclick="togglePassword('confirm_password', this)">
+                                <i class="bi bi-eye-fill"></i>
+                            </span>
+                        </div>
+
+                        <button type="submit" name="change_password">更改密碼</button>
                     </form>
-                </div>
+                <?php endif; ?>
             </div>
         </div>
     </div>
-
+    
     <!-- 頁尾 -->
     <div class="footer">
         <div class="footer-container">
