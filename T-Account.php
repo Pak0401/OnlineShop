@@ -1,68 +1,48 @@
 <?php
-// *啟用 Session
 session_start();
+require 'User-db.php';
 
-// 檢查用戶是否已登入，未登入則重定向到登入頁面
+// 檢查是否登入
 if (!isset($_SESSION['uid'])) {
-    header("Location: T-Login.php"); // 登入頁面
+    header("Location: T-Login.php");
     exit();
 }
 
-require 'User-db.php';
-
-// 確保資料庫連線存在
+// 確保資料庫連線
 if (!isset($conn_userdata)) {
     die("❌ 錯誤：用戶資料庫連線失敗，請檢查 User-db.php！");
 }
 
-// 取得當前用戶的資訊
+// 獲取用戶資料
 $uid = $_SESSION['uid'];
 
-try {
-    // 使用 PDO 預處理語句來獲取用戶資料
-    $stmt = $conn_userdata->prepare("SELECT UID, UName, Email, Password FROM data WHERE UID = ?");
-    $stmt->execute([$uid]);
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+$stmt = $conn_userdata->prepare("SELECT UID, UName, Email, Role FROM data WHERE UID = ?");
+$stmt->execute([$uid]);
+$user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    // 如果找不到用戶，則登出並重定向
-    if (!$user) {
-        session_destroy();
-        header("Location: T-Login.php");
-        exit();
-    }
-} catch (PDOException $e) {
-    die("❌ 資料庫錯誤：" . $e->getMessage());
-}
+// 確保 `user_role` 被設置
+$_SESSION['user_role'] = $user['Role'] ?? 'user';
 
-// 更新密碼處理
+// 更改密碼邏輯
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_password'])) {
     $current_password = trim($_POST['current_password']);
     $new_password = trim($_POST['new_password']);
     $confirm_new_password = trim($_POST['confirm_new_password']);
 
-    // 驗證當前密碼
-    if (!password_verify($current_password, $user['Password'])) {
-        echo "<script>alert('❌ 當前密碼不正確！');</script>";
-    } elseif ($new_password !== $confirm_new_password) {
+    if ($new_password !== $confirm_new_password) {
         echo "<script>alert('❌ 新密碼與確認密碼不一致！');</script>";
     } else {
-        // 更新密碼
         $hashed_new_password = password_hash($new_password, PASSWORD_BCRYPT);
-        try {
-            $update_stmt = $conn_userdata->prepare("UPDATE data SET Password = ? WHERE UID = ?");
-            $update_stmt->execute([$hashed_new_password, $uid]);
-            echo "<script>alert('✅ 密碼更新成功！');</script>";
-        } catch (PDOException $e) {
-            echo "<script>alert('❌ 密碼更新失敗，請重試。');</script>";
-        }
+        $update_stmt = $conn_userdata->prepare("UPDATE data SET Password = ? WHERE UID = ?");
+        $update_stmt->execute([$hashed_new_password, $uid]);
+        echo "<script>alert('✅ 密碼更新成功！');</script>";
     }
 }
 
-// 處理登出請求
+// 登出邏輯
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['logout'])) {
-    session_unset();
     session_destroy();
-    header("Location: T-Index.php"); // 跳轉到首頁
+    header("Location: T-Index.php");
     exit();
 }
 ?>
@@ -72,7 +52,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['logout'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OnlineShop | About</title>
+    <title>OnlineShop | Account</title>
     <link rel="stylesheet" href="css/Style.css">
     <link rel="stylesheet" href="css/Chat.css">
     <link rel="stylesheet" href="css/Account.css">
@@ -89,7 +69,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['logout'])) {
             <!-- 橫向菜單 -->
             <nav>
                 <ul id="menuItems">
-                    <li><a href="Index.php">主頁</a></li>
+                    <li><a href="T-Index.php">主頁</a></li>
                     <li><a href="T-Products.php">產品</a></li>
                     <li><a href="T-Contact.php">聯絡我們</a></li>
                     <li><a href="T-About.php">關於我們</a></li>
@@ -145,79 +125,43 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['logout'])) {
             </div>
     </div>
 
-    <script>
-        // 選取按鈕和聊天室窗口的元素
-        const chatButton = document.getElementById("chatButton");
-        const chatBox = document.getElementById("chatBox");
-        const closeButton = document.getElementById("closeButton");
-
-        // 點擊按鈕時，顯示或隱藏聊天室框
-        chatButton.addEventListener("click", () => {
-            chatBox.style.display = chatBox.style.display === "none" ? "flex" : "none";
-        });
-
-        // 點擊右上方的關閉按鈕時，隱藏聊天室框
-        closeButton.addEventListener("click", () => {
-            chatBox.style.display = "none";
-        });
-
-        // 送出訊息功能
-        const sendButton = document.getElementById("sendButton");
-        const chatInput = document.getElementById("chatInput");
-        const chatContent = document.getElementById("chatContent");
-
-        sendButton.addEventListener("click", () => {
-            const message = chatInput.value.trim();
-            if (message) {
-                const messageElement = document.createElement("p");
-                messageElement.textContent = message;
-                chatContent.appendChild(messageElement);
-                chatInput.value = "";
-                chatContent.scrollTop = chatContent.scrollHeight; // 自動滾動到底部
-            }
-        });
-
-        // 允許按 Enter 鍵送出訊息
-        chatInput.addEventListener("keypress", (e) => {
-            if (e.key === "Enter") {
-                sendButton.click();
-            }
-        });
-    </script>
+    <script src="botResponse.js"></script>
+    <script src="Script.js"></script>
 
     <!-- 賬戶 -->
     <div class="background-container">
         <div class="background-image left"></div>
         <div class="background-image right"></div>
-            <div class="account-page">
-                <h1>賬戶資訊</h1>
-                <div class="account-info">
-                    <p><strong>用戶 UID：</strong> <?php echo htmlspecialchars($user['UID']); ?></p>
-                    <p><strong>用戶名稱：</strong> <?php echo htmlspecialchars($user['UName']); ?></p>
-                    <p><strong>用戶電郵：</strong> <?php echo htmlspecialchars($user['Email']); ?></p>
+        <div class="account-container">
+            <h1>我的帳戶</h1>
+
+            <p><strong>用戶名稱：</strong> <?php echo htmlspecialchars($user['UName']); ?></p>
+            <p><strong>電子郵件：</strong> <?php echo htmlspecialchars($user['Email']); ?></p>
+
+            <h2>更改密碼</h2>
+            <form method="POST">
+                <label for="current_password">當前密碼：</label>
+                <input type="password" name="current_password" required>
+
+                <label for="new_password">新密碼：</label>
+                <input type="password" name="new_password" required>
+
+                <label for="confirm_new_password">確認新密碼：</label>
+                <input type="password" name="confirm_new_password" required>
+
+                <button type="submit" name="update_password">更改密碼</button>
+            </form>
+
+            <?php if ($_SESSION['user_role'] === 'admin'): ?>
+                <div style="text-align: center; margin-top: 20px;">
+                    <a href="T-Backend.php" class="admin-button">前往後台</a>
                 </div>
+            <?php endif; ?>
 
-                <div class="change-password">
-                    <h2>更改密碼</h2>
-                    <form action="" method="POST">
-                        <label for="current_password">當前密碼：</label>
-                        <input type="password" id="current_password" name="current_password" required><br><br>
-
-                        <label for="new_password">新密碼：</label>
-                        <input type="password" id="new_password" name="new_password" required><br><br>
-
-                        <label for="confirm_new_password">確認新密碼：</label>
-                        <input type="password" id="confirm_new_password" name="confirm_new_password" required><br><br>
-
-                        <button type="submit" name="update_password">更新密碼</button>
-                    </form>
-                </div>
-
-                <div class="logout">
-                    <form action="" method="POST">
-                        <button type="submit" name="logout">登出</button>
-                    </form>
-                </div>
+            <form method="POST">
+                <button type="submit" name="logout" class="logout-btn">登出</button>
+            </form>
+        </div>
             </div>
         </div>
     </div>

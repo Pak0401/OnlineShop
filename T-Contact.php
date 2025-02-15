@@ -93,47 +93,10 @@ $is_logged_in = isset($_SESSION['uid']); // 檢查是否已登入
             </div>
     </div>
 
-    <script>
-        // 選取按鈕和聊天室窗口的元素
-        const chatButton = document.getElementById("chatButton");
-        const chatBox = document.getElementById("chatBox");
-        const closeButton = document.getElementById("closeButton");
+    <script src="botResponse.js"></script>
+    <script src="Script.js"></script>
 
-        // 點擊按鈕時，顯示或隱藏聊天室框
-        chatButton.addEventListener("click", () => {
-            chatBox.style.display = chatBox.style.display === "none" ? "flex" : "none";
-        });
-
-        // 點擊右上方的關閉按鈕時，隱藏聊天室框
-        closeButton.addEventListener("click", () => {
-            chatBox.style.display = "none";
-        });
-
-        // 送出訊息功能
-        const sendButton = document.getElementById("sendButton");
-        const chatInput = document.getElementById("chatInput");
-        const chatContent = document.getElementById("chatContent");
-
-        sendButton.addEventListener("click", () => {
-            const message = chatInput.value.trim();
-            if (message) {
-                const messageElement = document.createElement("p");
-                messageElement.textContent = message;
-                chatContent.appendChild(messageElement);
-                chatInput.value = "";
-                chatContent.scrollTop = chatContent.scrollHeight; // 自動滾動到底部
-            }
-        });
-
-        // 允許按 Enter 鍵送出訊息
-        chatInput.addEventListener("keypress", (e) => {
-            if (e.key === "Enter") {
-                sendButton.click();
-            }
-        });
-    </script>
-
-<div class="contact-page">
+    <div class="contact-page">
         <!-- 查詢 -->
         <div class="contact-section">
             <h3><i class="fa fa-phone" style="color: #007BFF;"></i> 查詢</h3>
