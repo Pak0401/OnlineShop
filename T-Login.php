@@ -131,8 +131,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
     </div>
 
-    <script src="botResponse.js"></script>
-    <script src="Script.js"></script>
+    <script src="Script/botResponse.js"></script>
+    <script src="Script/Script.js"></script>
 
     <!-- 登入 -->
     <div class="account-page">

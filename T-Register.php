@@ -131,8 +131,8 @@ $conn_userdata = null; // 關掉資料庫連線
             </div>
     </div>
 
-    <script src="botResponse.js"></script>
-    <script src="Script.js"></script>
+    <script src="Script/botResponse.js"></script>
+    <script src="Script/Script.js"></script>
 
     <!-- 註冊 -->
     <div class="account-page">

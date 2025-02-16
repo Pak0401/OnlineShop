@@ -125,8 +125,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['logout'])) {
             </div>
     </div>
 
-    <script src="botResponse.js"></script>
-    <script src="Script.js"></script>
+    <script src="Script/botResponse.js"></script>
+    <script src="Script/Script.js"></script>
 
     <!-- 賬戶 -->
     <div class="background-container">

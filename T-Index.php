@@ -115,8 +115,8 @@ $recommendedProducts = $stmt->fetchAll();
             </div>
     </div>
 
-    <script src="botResponse.js"></script>
-    <script src="Script.js"></script>
+    <script src="Script/botResponse.js"></script>
+    <script src="Script/Script.js"></script>
 
     <!-- *[col size max: 12]
         手機 col-p-12

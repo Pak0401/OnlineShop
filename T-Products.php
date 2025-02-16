@@ -122,8 +122,8 @@ if (!isset($_SESSION['cart'])) {
             </div>
     </div>
 
-    <script src="botResponse.js"></script>
-    <script src="Script.js"></script>
+    <script src="Script/botResponse.js"></script>
+    <script src="Script/Script.js"></script>
 
     <!-- 所有產品+排序 -->
     <div class="small-container">

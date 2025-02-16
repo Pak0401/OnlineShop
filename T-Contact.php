@@ -93,8 +93,8 @@ $is_logged_in = isset($_SESSION['uid']); // 檢查是否已登入
             </div>
     </div>
 
-    <script src="botResponse.js"></script>
-    <script src="Script.js"></script>
+    <script src="Script/botResponse.js"></script>
+    <script src="Script/Script.js"></script>
 
     <div class="contact-page">
         <!-- 查詢 -->

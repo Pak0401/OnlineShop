@@ -158,8 +158,8 @@ $random_products = $stmt_random->fetchAll(PDO::FETCH_ASSOC);
             </div>
     </div>
 
-    <script src="botResponse.js"></script>
-    <script src="Script.js"></script>
+    <script src="Script/botResponse.js"></script>
+    <script src="Script/Script.js"></script>
 
     <!-- 產品詳細內容 -->
     <div class="small-container pd-detail">

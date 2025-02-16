@@ -1,0 +1,181 @@
+/* 頂部容器 */
+.top-container {
+    width: 100vw;  /* 設置整個畫面寬度 */
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 2;  /* 確保最上層 */
+}
+
+/* 頂部導航欄 */
+.top-bar {
+    position: relative;
+    width: 100%;
+    height: 90px;
+    background-color: #222;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 30px; 
+    color: white;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 2;
+}
+
+/* Logo */
+.top-bar .logo img {
+    height: 70px;
+    width: auto;
+}
+
+/* 標題 */
+.top-bar h1 {
+    color: white;
+    font-size: 24px;
+    text-align: center;
+    margin: 0;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%); /* 讓標題真正水平置中 */
+}
+
+/* 返回首頁按鈕 */
+.top-bar .back-button {
+    background-color: #007BFF;
+    color: white;
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background 0.3s ease;
+    
+    position: absolute;
+    right: 80px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.top-bar .back-button:hover {
+    background-color: #0056b3;
+}
+
+/* 確保 body 沒有邊距，讓 top-bar 貼邊 */
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-x: hidden;
+}
+
+/* 側邊欄 */
+.sidebar {
+    width: 250px;
+    height: 100vh;
+    background: #333;
+    color: white;
+    position: fixed;
+    top: 70px;
+    left: 0;
+    padding-top: 20px;
+    transition: width 0.3s ease-in-out;
+    overflow-x: hidden;
+    white-space: nowrap; /* 避免文字換行 */
+    z-index: 1;
+}
+
+/* 側邊欄標題 + 按鈕 */
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 15px;
+    font-size: 18px;
+}
+
+/* 伸縮按鈕 */
+.toggle-sidebar {
+    background: #333;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+}
+
+.toggle-sidebar:hover {
+    background: #555;
+}
+
+/* 側邊欄菜單 */
+.menu {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.menu li {
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+}
+
+.menu li:hover {
+    background: #555;
+}
+
+/* 按鈕樣式 */
+.menu li button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 16px;
+    width: 100%;
+    text-align: left;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+}
+
+/* 收縮模式 */
+.sidebar.collapsed {
+    width: 60px;
+}
+
+.sidebar.collapsed .menu li span {
+    display: none; /* 隱藏文字 */
+}
+
+/* 主要內容區域 */
+.main-content {
+    margin-left: 250px;
+    padding: 20px;
+    transition: margin-left 0.3s ease-in-out;
+}
+
+.sidebar.collapsed + .main-content {
+    margin-left: 60px;
+}
+
+/* 主要內容區域 */
+.main-content {
+    margin-left: 200px;
+    padding: 60px 20px;
+    flex-grow: 1;
+    transition: margin-left 0.3s;
+}
+
+h2 {
+    border-bottom: 2px solid #333;
+    padding-bottom: 10px;
+}
+
+/* 折疊後的樣式 */
+.sidebar.collapsed {
+    width: 50px;
+}
+
+.main-content.collapsed {
+    margin-left: 50px;
+}
