@@ -76,6 +76,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_cart'])) {
     header("Location: T-Cart.php");
     exit();
 }
+
+// 確保購物車不為空
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["checkout"])) {
+    if (!empty($_SESSION["cart"])) {
+        $_SESSION["checkout_cart"] = $_SESSION["cart"]; // 儲存購物車數據
+        header("Location: T-Payment.php"); // 跳轉到結帳頁面
+        exit();
+    } else {
+        echo "<script>alert('購物車是空的，請先加入商品！');</script>";
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -197,8 +208,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_cart'])) {
                         <!-- 使用 PID 和 Variant 作為鍵 -->
                         <input type="number" name="quantities[<?php echo $item['pid'] . '_' . urlencode($item['variant']); ?>]" value="<?php echo intval($item['quantity']); ?>" min="1">
                     </td>
-                    <td>$<?php echo number_format(floatval($item['price']), 2); ?></td>
-                    <td>$<?php echo number_format($subtotal, 2); ?></td>
+                    <td>$<?php echo number_format(floatval($item['price'])); ?></td>
+                    <td>$<?php echo number_format($subtotal); ?></td>
                     <td>
                         <a href="T-Cart.php?action=delete&pid=<?php echo $item['pid']; ?>&variant=<?php echo urlencode($item['variant']); ?>" class="btn delete-btn">刪除</a>
                     </td>
@@ -213,7 +224,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_cart'])) {
             <table>
                 <tr>
                     <td>總計:</td>
-                    <td>$<?php echo number_format($total, 2); ?></td>
+                    <td>$<?php echo number_format($total); ?></td>
                 </tr>
                 <tr>
                     <td>運費:</td>
@@ -221,7 +232,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_cart'])) {
                 </tr>
             </table>
         </div>
-        <a href="Payment.html" class="btn pay-btn">前往結帳</a>
+        <form method="POST" action="T-Cart.php">
+            <button type="submit" name="checkout" class="btn pay-btn">前往結帳</button>
+        </form>
         <?php else: ?>
             <p>購物車是空的。</p>
         <?php endif; ?>
