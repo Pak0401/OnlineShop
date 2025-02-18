@@ -72,7 +72,9 @@ $recommendedProducts = $stmt->fetchAll();
             </nav>
             <a href="T-Cart.php">
                 <img src="image/cart.png" width="40px" height="40px">
-                <span id="cart-count"><?php echo count($_SESSION['cart']); ?></span>
+                <span id="cart-count">
+                    <?php echo isset($_SESSION['cart']) ? count($_SESSION['cart']) : 0; ?>
+                </span>
             </a>
             <img src="image/menu.png" class="menu-icon" onclick="menutoggle()">
         </div>
