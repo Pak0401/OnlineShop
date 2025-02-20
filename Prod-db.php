@@ -13,7 +13,7 @@ try {
         PDO::ATTR_EMULATE_PREPARES => false // 禁用模擬準備語句，提高安全性
     ]);
 } catch (PDOException $e) {
-    die("❌ productdata 資料庫連線失敗：" . $e->getMessage());
+    die("productdata 資料庫連線失敗：" . $e->getMessage());
 }
 
 // **將變數設為全域可用**

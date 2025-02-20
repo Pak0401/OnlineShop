@@ -1,6 +1,9 @@
 <?php
 session_start();
 
+// 檢查購物車是否有內容
+$cart = isset($_SESSION['cart']) ? $_SESSION['cart'] : [];
+
 // 計算購物車總額
 $total = 0;
 foreach ($_SESSION['cart'] as $item) {
@@ -110,9 +113,11 @@ $stripePublicKey = "pk_test_51QQkF4JTvI7Ka6t7ixrWxfzNrutdimkSHB64XvDjNhq75VNsT0o
         <div class="payment-container">
             <h2>訂單確認</h2>
             <table class="order-summary">
+            <p>您的訂單已建立，訂單編號如下：</p>
+            <p id="orderIdDisplay"></p></br>
                 <tr>
                     <th>總計</th>
-                    <td>$<span id="total-price">300</span></td>
+                    <td>$<span id="total-price"><?php echo number_format($total); ?></span></td>
                 </tr>
                 <tr>
                     <th>運費</th>
@@ -145,6 +150,7 @@ $stripePublicKey = "pk_test_51QQkF4JTvI7Ka6t7ixrWxfzNrutdimkSHB64XvDjNhq75VNsT0o
             .catch(error => console.error("錯誤:", error));
         });
     </script>
+    <script src="Script/orderNo.js"></script>
 
     <!-- 頁尾 -->
     <div class="footer">

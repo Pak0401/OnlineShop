@@ -203,3 +203,67 @@ button:hover {
         padding: 0 10px;
     }
 }
+
+/* 設置表單外觀 */
+#addProductForm {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+    justify-content: flex-start;
+}
+
+/* 標籤樣式 */
+#addProductForm label {
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+/* 文字輸入框 */
+#addProductForm input {
+    padding: 6px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    width: 120px;
+}
+
+/* 選擇框 */
+#addProductForm select {
+    padding: 6px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+/* 提交按鈕 */
+#addProductForm button {
+    padding: 8px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin-left: auto;
+}
+
+#addProductForm button:hover {
+    background-color: #0056b3;
+}
+
+/* 錯誤或成功訊息 */
+#responseMessage {
+    font-size: 14px;
+    font-weight: bold;
+    margin-top: 10px;
+}
