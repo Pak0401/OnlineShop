@@ -14,7 +14,7 @@ try {
 }
 
 // 查詢 `orders` 表
-$sql = "SELECT id, order_id, items, total_price, status, shipment_status, created_at FROM orders ORDER BY created_at DESC";
+$sql = "SELECT order_id, items, total_price, status, shipment_status, created_at FROM orders ORDER BY created_at DESC";
 $result = $pdo->query($sql);
 
 // 轉換為陣列

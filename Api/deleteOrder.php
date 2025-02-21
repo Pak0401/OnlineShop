@@ -1,16 +1,27 @@
 <?php
-require "../Order-db.php"; // 連接資料庫
+require_once '../Order-db.php'; // 連接資料庫
 
-if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
-    $orderId = $_GET['order_id'];
+header("Content-Type: application/json");
 
-    $stmt = $conn_orders->prepare("DELETE FROM orders WHERE order_id = :order_id");
-    $stmt->bindParam(':order_id', $orderId);
+$data = json_decode(file_get_contents("php://input"), true);
+
+if (!isset($data['order_id'])) {
+    echo json_encode(["success" => false, "message" => "缺少訂單 ID"]);
+    exit;
+}
+
+$order_id = $data['order_id'];
+
+try {
+    $stmt = $pdo->prepare("DELETE FROM orders WHERE order_id = :order_id");
+    $stmt->bindParam(':order_id', $order_id, PDO::PARAM_STR);
 
     if ($stmt->execute()) {
-        echo json_encode(['success' => true]);
+        echo json_encode(["success" => true]);
     } else {
-        echo json_encode(['success' => false]);
+        echo json_encode(["success" => false, "message" => "刪除失敗"]);
     }
+} catch (Exception $e) {
+    echo json_encode(["success" => false, "message" => "錯誤: " . $e->getMessage()]);
 }
 ?>

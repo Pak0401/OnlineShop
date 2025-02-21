@@ -107,3 +107,6 @@ require "../Order-db.php";
 
 <script src="../Script/Backend.js"></script>
 <script src="../Script/Order.js"></script>
+<script src="../Script/DelOrder.js"></script>
+</body>
+</html>
