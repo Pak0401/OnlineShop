@@ -42,10 +42,12 @@ require "../Order-db.php";
             <thead>
                 <tr>
                     <th>訂單編號</th>
+                    <th>用戶編號</th>
                     <th>商品</th>
                     <th>總價</th>
                     <th>狀態</th>
                     <th>運送狀態</th>
+                    <th>下單時間</th>
                     <th>操作</th>
                 </tr>
             </thead>
@@ -54,10 +56,12 @@ require "../Order-db.php";
                 <?php foreach ($orders as $row): ?>
                     <tr>
                         <td><?php echo htmlspecialchars($row['order_id']); ?></td>
+                        <td><?php echo htmlspecialchars($row['UID']); ?></td>
                         <td><?php echo htmlspecialchars($row['items']); ?></td>
                         <td><?php echo htmlspecialchars($row['total_price']); ?></td>
                         <td><?php echo htmlspecialchars($row['status']); ?></td>
                         <td><?php echo htmlspecialchars($row['shipment_status']); ?></td>
+                        <td><?php echo htmlspecialchars($row['created_at']); ?></td>
                         <td>
                             <button class="delete-btn" data-order_id="<?php echo htmlspecialchars($row['order_id']); ?>">刪除</button>
                         </td>
