@@ -1,5 +1,6 @@
 <?php
 session_start();
+require 'Prod-db.php'; // 載入商品資料庫連線
 
 // 檢查購物車是否有內容
 $cart = isset($_SESSION['cart']) ? $_SESSION['cart'] : [];
@@ -115,10 +116,29 @@ $stripePublicKey = "pk_test_51QQkF4JTvI7Ka6t7ixrWxfzNrutdimkSHB64XvDjNhq75VNsT0o
             <table class="order-summary">
             <p>您的訂單已建立，訂單編號如下：</p>
             <p id="orderIdDisplay"></p></br>
+            <table class="order-summary">
+                <tr>
+                    <th>產品名稱</th>
+                    <th>數量</th>
+                    <th>價格</th>
+                </tr>
+                <?php
+                if (!empty($_SESSION['cart'])) {
+                    foreach ($_SESSION['cart'] as $item) {
+                        echo "<tr>";
+                        echo "<td>" . htmlspecialchars($item['name']) . "</td>";
+                        echo "<td>" . intval($item['quantity']) . "</td>";
+                        echo "<td>$" . number_format($item['price'] * $item['quantity'], 2) . "</td>";
+                        echo "</tr>";
+                    }
+                } 
+                ?>
+
                 <tr>
                     <th>總計</th>
                     <td>$<span id="total-price"><?php echo number_format($total); ?></span></td>
                 </tr>
+
                 <tr>
                     <th>運費</th>
                     <td>免費</td>
@@ -130,7 +150,7 @@ $stripePublicKey = "pk_test_51QQkF4JTvI7Ka6t7ixrWxfzNrutdimkSHB64XvDjNhq75VNsT0o
         </div>
     </div>
 
-    <script>
+    <!-- <script>
         const stripe = Stripe("<?php echo $stripePublicKey; ?>");
 
         document.getElementById("checkout-button").addEventListener("click", function() {
@@ -149,8 +169,14 @@ $stripePublicKey = "pk_test_51QQkF4JTvI7Ka6t7ixrWxfzNrutdimkSHB64XvDjNhq75VNsT0o
             })
             .catch(error => console.error("錯誤:", error));
         });
+    </script> -->
+    <script>
+        let userId = <?= json_encode($_SESSION['UID'] ?? 0); ?>;
+        let cart = <?= json_encode($_SESSION['cart'] ?? []); ?>;
     </script>
     <script src="Script/orderNo.js"></script>
+    <script src="Script/SaveOrder.js"></script>
+
 
     <!-- 頁尾 -->
     <div class="footer">
