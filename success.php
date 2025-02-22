@@ -104,12 +104,16 @@ if (!empty($_SESSION['cart'])) {
     <div class="main-container">
         <div class="payment-container">
             <h2>付款成功！</h2>
-            <p>您的訂單已成功支付。</p></br>
+            <p>您的訂單已成功支付。</p>
+            <p>訂單編號： <span id="orderIdDisplay"></span></p>
             <button class="cancel-btn" onclick="window.location.href='T-Index.php'">
                 <span>返回購物車</span>
             </button>
         </div>
     </div>
+
+<script src="orderNo.js"></script>
+
 
     <!-- 頁尾 -->
     <div class="footer">

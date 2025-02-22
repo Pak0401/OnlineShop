@@ -1,6 +1,7 @@
 <?php
 session_start();
 require "../Order-db.php";
+require "../Item-db.php";
 ?>
 
 <!DOCTYPE html>
@@ -53,22 +54,22 @@ require "../Order-db.php";
             </thead>
             <tbody>
                 <?php if (!empty($orders)): ?>
-                <?php foreach ($orders as $row): ?>
-                    <tr>
-                        <td><?php echo htmlspecialchars($row['order_id']); ?></td>
-                        <td><?php echo htmlspecialchars($row['UID']); ?></td>
-                        <td><?php echo htmlspecialchars($row['items']); ?></td>
-                        <td><?php echo htmlspecialchars($row['total_price']); ?></td>
-                        <td><?php echo htmlspecialchars($row['status']); ?></td>
-                        <td><?php echo htmlspecialchars($row['shipment_status']); ?></td>
-                        <td><?php echo htmlspecialchars($row['created_at']); ?></td>
-                        <td>
-                            <button class="delete-btn" data-order_id="<?php echo htmlspecialchars($row['order_id']); ?>">刪除</button>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
+                    <?php foreach ($orders as $row): ?>
+                        <tr>
+                            <td><?php echo htmlspecialchars($row['order_id']); ?></td>
+                            <td><?php echo htmlspecialchars($row['UID']); ?></td>
+                            <td><?php echo htmlspecialchars($row['items']); ?></td>  <!-- 顯示商品 -->
+                            <td>$<?php echo number_format($row['total_price']); ?></td>  <!-- 顯示總價 -->
+                            <td><?php echo htmlspecialchars($row['status']); ?></td>
+                            <td><?php echo htmlspecialchars($row['shipment_status']); ?></td>
+                            <td><?php echo htmlspecialchars($row['created_at']); ?></td>
+                            <td>
+                                <button class="delete-btn" data-order_id="<?php echo htmlspecialchars($row['order_id']); ?>">刪除</button>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
                 <?php else: ?>
-                    <tr><td colspan="6" style="color: red;">沒有訂單資料</td></tr>
+                    <tr><td colspan="8" style="color: red;">沒有訂單資料</td></tr>
                 <?php endif; ?>
             </tbody>
         </table></br>

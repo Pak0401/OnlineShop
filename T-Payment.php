@@ -1,6 +1,7 @@
 <?php
 session_start();
 require 'Prod-db.php'; // 載入商品資料庫連線
+require 'Item-db.php'; // 載入訂單資料庫連線
 
 // 檢查購物車是否有內容
 $cart = isset($_SESSION['cart']) ? $_SESSION['cart'] : [];
@@ -125,7 +126,7 @@ $stripePublicKey = "pk_test_51QQkF4JTvI7Ka6t7ixrWxfzNrutdimkSHB64XvDjNhq75VNsT0o
                         echo "<tr>";
                         echo "<td>" . htmlspecialchars($item['name']) . "</td>";
                         echo "<td>" . intval($item['quantity']) . "</td>";
-                        echo "<td>$" . number_format($item['price'] * $item['quantity'], 2) . "</td>";
+                        echo "<td>$" . number_format($item['price'] * $item['quantity']) . "</td>";
                         echo "</tr>";
                     }
                 } 
