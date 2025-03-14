@@ -1,14 +1,66 @@
 <?php
-session_start();
+// 首先，您需要修改 orders 資料表結構，增加一個名為 items_text 的 TEXT 欄位
 
-// 如果結帳資料存在，則清空
-if (!empty($_SESSION["checkout_cart"])) {
-    unset($_SESSION["checkout_cart"]); // 清空 checkout_cart
+// 然後在 success.php 中這樣修改訂單處理
+session_start();
+include 'Order-db.php'; // 載入資料庫連線
+
+if (!isset($conn)) {
+    die("資料庫連線錯誤");
 }
 
-// 檢查購物車是否存在後再刪除
-if (!empty($_SESSION['cart'])) {
-    unset($_SESSION['cart']); // 清空購物車
+// 確保購物車不為空
+if (!empty($_SESSION["cart"])) {
+    // 將購物車項目轉換為簡化的文字格式
+    $items_text = "";
+    $total = 0;
+    
+    foreach ($_SESSION["cart"] as $item) {
+        $subtotal = $item["price"] * $item["quantity"];
+        $total += $subtotal;
+        
+        // 如果不是第一個項目，添加分隔符
+        if ($items_text != "") {
+            $items_text .= ", ";
+        }
+        
+        // 格式: PID - 產品名稱 * 數量
+        $items_text .= $item["pid"] . " - " . $item["name"] . " * " . $item["quantity"];
+    }
+    
+    // 生成訂單編號
+    $order_id = "ORD" . time() . rand(1000, 9999);
+
+    // 獲取用戶 ID
+    $user_id = isset($_SESSION['uid']) ? $_SESSION['uid'] : null;
+
+    // 設定初始狀態
+    $status = '已付款'; 
+    $shipment_status = '未發貨';
+
+    // 修改 SQL 語句，將購物車資料作為文字儲存
+    $stmt = $conn->prepare("INSERT INTO orders (order_id, UID, status, shipment_status, total_price, items_text, created_at) VALUES (?, ?, ?, ?, ?, ?, NOW())");
+    if (!$stmt) {
+        die("SQL 準備錯誤: " . $conn->error);
+    }
+    $stmt->bind_param("sissds", $order_id, $user_id, $status, $shipment_status, $total, $items_text);
+
+    // 執行訂單插入
+    if ($stmt->execute()) {
+        $_SESSION["last_order_id"] = $order_id; // 儲存訂單編號供前端顯示
+        
+        // 在成功儲存後才清空購物車
+        unset($_SESSION['cart']); // 清空購物車
+    } else {
+        die("訂單插入錯誤: " . $stmt->error);
+    }
+
+    // 關閉 SQL 連線
+    $stmt->close();
+    $conn->close();
+} else {
+    // 購物車是空的，記錄錯誤
+    error_log("結帳時購物車為空");
 }
 ?>
 
@@ -105,14 +157,14 @@ if (!empty($_SESSION['cart'])) {
         <div class="payment-container">
             <h2>付款成功！</h2>
             <p>您的訂單已成功支付。</p>
-            <p>訂單編號： <span id="orderIdDisplay"></span></p>
+            <p>訂單編號： <span id="orderIdDisplay">
+                <?php echo isset($_SESSION["last_order_id"]) ? $_SESSION["last_order_id"] : "無訂單"; ?>
+            </span></p> </br>
             <button class="cancel-btn" onclick="window.location.href='T-Index.php'">
                 <span>返回購物車</span>
             </button>
         </div>
     </div>
-
-<script src="orderNo.js"></script>
 
 
     <!-- 頁尾 -->

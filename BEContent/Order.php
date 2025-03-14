@@ -58,7 +58,7 @@ require "../Item-db.php";
                         <tr>
                             <td><?php echo htmlspecialchars($row['order_id']); ?></td>
                             <td><?php echo htmlspecialchars($row['UID']); ?></td>
-                            <td><?php echo htmlspecialchars($row['items']); ?></td>  <!-- 顯示商品 -->
+                            <td><?php echo htmlspecialchars($row['items_text']); ?></td>  <!-- 顯示商品 -->
                             <td>$<?php echo number_format($row['total_price']); ?></td>  <!-- 顯示總價 -->
                             <td><?php echo htmlspecialchars($row['status']); ?></td>
                             <td><?php echo htmlspecialchars($row['shipment_status']); ?></td>

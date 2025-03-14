@@ -1,22 +1,29 @@
 <?php
 // 設定資料庫連線資訊
-$host = "localhost"; // 你的 MySQL 主機
-$dbname = "orderdata"; // 你的資料庫名稱
-$username = "root"; // MySQL 帳號（WAMP 預設為 root）
-$password = ""; // MySQL 密碼（如果沒有設定則留空）
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "orderdata";
 
-try {
-    // 建立 PDO 連線
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    die("資料庫連接失敗: " . $e->getMessage());
+// 建立 MySQLi 連線
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// 檢查連線是否成功
+if ($conn->connect_error) {
+    die("資料庫連線失敗: " . $conn->connect_error);
 }
+$conn->set_charset("utf8");
 
 // 查詢 `orders` 表
-$sql = "SELECT order_id, UID, status, shipment_status, created_at FROM orders ORDER BY created_at DESC";
-$result = $pdo->query($sql);
+$sql = "SELECT order_id, UID, items_text, total_price, status, shipment_status, created_at FROM orders ORDER BY created_at DESC";
+$result = $conn->query($sql);
 
 // 轉換為陣列
-$orders = $result->fetchAll(PDO::FETCH_ASSOC);
+$orders = [];
+while ($row = $result->fetch_assoc()) {
+    $orders[] = $row;
+}
+
+// 釋放結果集
+$result->free();
 ?>
