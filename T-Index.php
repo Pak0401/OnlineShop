@@ -7,7 +7,7 @@ require 'Prod-db.php';
 
 // 確保兩個連線都已經建立
 if (!isset($conn_userdata) || !isset($conn_productdata)) {
-    die("❌ 資料庫連線錯誤，請檢查 db.php 檔案");
+    die("資料庫連線錯誤，請檢查 db.php 檔案");
 }
 
 // 從 productdata 查詢推薦產品
@@ -35,6 +35,27 @@ $sql = "
 $stmt = $conn_productdata->prepare($sql);
 $stmt->execute();
 $recommendedProducts = $stmt->fetchAll();
+
+// 查詢新產品，按 GID 分組
+$sql_new = "
+    SELECT 
+        MIN(new_pdata.NPID) as NPID,
+        new_pdata.PName,
+        MIN(new_pdata.Price) as MinPrice,
+        MAX(new_pdata.Price) as MaxPrice,
+        new_pdata.GID
+    FROM 
+        new_pdata
+    GROUP BY 
+        new_pdata.GID
+    ORDER BY 
+        MIN(new_pdata.NPID)  
+    LIMIT 4;
+";
+
+$stmt_new = $conn_productdata->prepare($sql_new);
+$stmt_new->execute();
+$newProducts = $stmt_new->fetchAll();
 ?>
 
 <!DOCTYPE html>
@@ -178,7 +199,7 @@ $recommendedProducts = $stmt->fetchAll();
                     <?php if (!empty($newProducts) && is_array($newProducts)): ?>
                         <?php foreach ($newProducts as $product): ?>
                             <div class="slidesImg">
-                                <img src="image/<?php echo strtolower(str_replace(' ', '_', htmlspecialchars($product['PName']))); ?>.png" 
+                                <img src="image/<?php echo htmlspecialchars($product['PName']); ?>.png" 
                                     alt="<?php echo htmlspecialchars($product['PName']); ?>" width="100%">
                             </div>
                         <?php endforeach; ?>
@@ -188,7 +209,7 @@ $recommendedProducts = $stmt->fetchAll();
                         <p>目前沒有新商品。</p>
                     <?php endif; ?>
                 </div>
-                                                    
+                                                                
                 <div class="col-pd-7">
                     <h2 class="title2">最新商品出售中</h2>
                     <h1><b>毛孩用品[強力殺菌噴霧]</b></h1>
@@ -196,9 +217,13 @@ $recommendedProducts = $stmt->fetchAll();
                     <p>
                         <?php 
                             if (!empty($newProducts)) {
-                                $prices = array_column($newProducts, 'Price'); 
-                                if (!empty($prices)) {
-                                    echo "$" . htmlspecialchars(min($prices)) . " - $" . htmlspecialchars(max($prices));
+                                $minPrices = array_column($newProducts, 'MinPrice'); 
+                                $maxPrices = array_column($newProducts, 'MaxPrice');
+                                
+                                if (!empty($minPrices) && !empty($maxPrices)) {
+                                    $overallMin = min($minPrices);
+                                    $overallMax = max($maxPrices);
+                                    echo "$" . htmlspecialchars($overallMin) . " - $" . htmlspecialchars($overallMax);
                                 } else {
                                     echo "暫無價格";
                                 }

@@ -16,7 +16,7 @@ session_start();
 <div class="top-bar">
     <div class="logo"><img src="../image/logo.png" style="width: 100%"></div>
     <h1>後台管理系統</h1>
-    <a href="T-Index.php" class="back-button">返回首頁</a>
+    <a href="../T-Index.php" class="back-button">返回首頁</a>
 </div>
 
 <!-- 側邊欄 -->

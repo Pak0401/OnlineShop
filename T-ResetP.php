@@ -56,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_password'])) {
             $stmt->bindValue(2, $email, PDO::PARAM_STR);
             if ($stmt->execute()) {
                 unset($_SESSION['email_verified']); // 清除 session
-                header("Location: Login.php");
+                header("Location: T-Login.php");
                 exit();
             } else {
                 $message = "密碼更改失敗，請稍後再試。";
